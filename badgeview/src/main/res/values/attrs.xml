@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BadgeView">
+        <attr name="bvColor" format="color" />
+        <attr name="bvISHideNull" format="boolean" />
+    </declare-styleable>
+</resources>

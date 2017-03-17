@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ****************************************主题 开始**************************************-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorPrimaryDark">@color/main_color</item>
+        <item name="colorAccent">@color/main_color</item>
+
+        <item name="android:statusBarColor">@color/main_color</item>
+        <item name="android:navigationBarColor">@color/main_color</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:buttonStyle">?android:attr/selectableItemBackground</item>
+        <item name="android:windowBackground">@color/activity_backgound</item>
+        <!--<item name="android:requiresFadingEdge">vertical</item>-->
+        <item name="android:listSelector">@color/translucent</item>
+        <item name="android:textCursorDrawable">@drawable/edittext_cursor_main_color</item>
+        <item name="android:textColorPrimary">@color/gray_text</item>
+        <!--<item name="android:requiresFadingEdge">vertical</item>-->
+        <item name="textColorError">@color/design_textinput_error_color_light</item>
+
+
+        <item name="SwipeRefreshLayout_Color1">@color/main_color</item>
+        <item name="SwipeRefreshLayout_Color2">#ffEA4335</item>
+        <item name="SwipeRefreshLayout_Color3">#ff34A853</item>
+        <item name="SwipeRefreshLayout_Color4">#ffFBBC05</item>
+
+    </style>
+
+    <!-- **************************************** 主题结束**************************************-->
+
+
+</resources>

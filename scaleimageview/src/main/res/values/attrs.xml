@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ScaleImageView -->
+
+    <declare-styleable name="ScaleImageView">
+        <attr name="widthScale" format="integer"></attr>
+        <attr name="heightScale" format="integer"></attr>
+        <attr name="primary">
+            <enum name="width" value="1" />
+            <enum name="height" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

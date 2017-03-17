@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">LoadingAndRetryManager</string>
+    <string name="http_request_failure">亲。。。加载失败</string>
+    <string name="no_data">亲,数据空空如也</string>
+    <string name="loadding">  加载中...</string>
+</resources>

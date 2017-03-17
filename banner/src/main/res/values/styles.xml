@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ConvenientBannerDefault">
+        <item name="circleColorDef">@drawable/banner_circle_default</item>
+        <item name="circleColorSelect">@drawable/banner_circle_select</item>
+        <item name="cbSpace">3dp</item>
+    </style>
+</resources>
