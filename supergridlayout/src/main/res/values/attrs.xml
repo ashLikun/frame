@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--SuperGridLayout属性-->
+    <declare-styleable name="SuperGridLayout">
+        <attr name="superGridLayoutHSpace" format="dimension" />
+        <attr name="superGridLayoutVSpace" format="dimension" />
+    </declare-styleable> <!--SuperGridLayout属性-->
+
+</resources>

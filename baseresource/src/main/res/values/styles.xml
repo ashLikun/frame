@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ****************************************主题 开始************************************Theme.AppCompat.Light.NoActionBar**-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorPrimaryDark">@color/main_color</item>
+        <item name="colorAccent">@color/main_color</item>
+        <item name="android:textColorPrimary">@color/gray_text</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:buttonStyle">@null</item>
+        <item name="android:windowBackground">@color/activity_backgound</item>
+        <!--<item name="android:requiresFadingEdge">vertical</item>-->
+        <item name="android:listSelector">@color/translucent</item>
+        <item name="android:textCursorDrawable">@drawable/edittext_cursor_main_color</item>
+        <item name="textColorError">@color/design_textinput_error_color_light</item>
+
+        <item name="SwipeRefreshLayout_Color1">@color/main_color</item>
+        <item name="SwipeRefreshLayout_Color2">#ffEA4335</item>
+        <item name="SwipeRefreshLayout_Color3">#ff34A853</item>
+        <item name="SwipeRefreshLayout_Color4">#ffFBBC05</item>
+    </style>
+
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="AppTheme.Translucent" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppTheme.MainTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/MainAnimation</item>
+    </style>
+
+
+    <style name="AppTheme.OtherTheme" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/OtherAnimation</item>
+    </style>
+
+    <style name="AppTheme.PhotoBrowse" parent="AppTheme">
+        <item name="android:windowBackground">@color/photo_browse</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+
+    <style name="OtherAnimation">
+
+        <item name="android:windowEnterAnimation">@anim/activity_open_enter</item>
+        <item name="android:windowExitAnimation">@anim/activity_colse_exit</item>
+    </style>
+
+    <style name="MainAnimation">
+        <!--<item name="android:activityOpenEnterAnimation">@null</item>-->
+        <!--<item name="android:activityOpenExitAnimation">@null</item>-->
+        <!--<item name="android:windowEnterAnimation">@anim/activity_open_enter</item>-->
+        <!--<item name="android:windowExitAnimation">@anim/activity_colse_exit</item>-->
+    </style>
+
+    <style name="PhotoBrowseAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/dialog_anim_scale_enter</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@anim/dialog_anim_scale_exit</item>
+    </style>
+
+
+    <style name="AnimationPreview">
+        <item name="android:windowEnterAnimation">@anim/popupwindow_animation_in</item>
+        <item name="android:windowExitAnimation">@anim/popupwindow_animation_out</item>
+    </style>
+
+
+    //=========================================================================SwitchButton======================================================================
+
+
+    //=========================================================================EditText======================================================================
+    <!--EditText 评论-->
+    <style name="editText_comment">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_xxm</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textColor">@color/gray_66</item>
+    </style>
+
+
+    //=========================================================================TextInputLayout======================================================================
+
+    <style name="TextInputLayout.CounterText.White">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_xxm</item>
+    </style>
+
+    <style name="TextInputLayout.ErrorText">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">@dimen/text_xxm</item>
+    </style>
+
+    <style name="TextInputLayout.CounterOverflowText">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">@dimen/text_xxm</item>
+    </style>
+
+    <style name="TextInputLayout.CounterText">
+        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textSize">@dimen/text_xxm</item>
+    </style>
+
+    <style name="TextInputLayout.CounterText.MainColor">
+        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textSize">@dimen/text_xxm</item>
+    </style>
+
+    <style name="Theme.TextInputLayout" parent="AppTheme">
+        <item name="textColorError">@color/red</item>
+    </style>
+
+
+    <style name="Theme.TextInputLayout.Login" parent="Theme.TextInputLayout">
+        <!--线的颜色-->
+        <item name="colorControlNormal">@color/main_color</item>
+    </style>
+
+    <style name="Theme.TextInputLayout.White" parent="Theme.TextInputLayout">
+        <!--线的颜色-->
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="TextInputLayout">
+        <item name="android:textColorHint">@color/text_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="errorEnabled">true</item>
+        <item name="android:theme">@style/Theme.TextInputLayout</item>
+    </style>
+
+    <style name="TextInputLayout.LogIn" parent="TextInputLayout">
+        <item name="counterTextAppearance">@style/TextInputLayout.CounterText.MainColor</item>
+        <item name="errorTextAppearance">@style/TextInputLayout.ErrorText</item>
+        <item name="android:theme">@style/Theme.TextInputLayout.Login</item>
+    </style>
+
+    <style name="TextInputLayout.White" parent="TextInputLayout">
+        <item name="counterTextAppearance">@style/TextInputLayout.CounterText.White</item>
+        <item name="errorTextAppearance">@style/TextInputLayout.ErrorText</item>
+        <item name="android:theme">@style/Theme.TextInputLayout.White</item>
+    </style>
+
+    //=========================================================================imageView======================================================================
+
+
+    //=========================================================================LinearLayout======================================================================
+    //=========================================================================Popwin======================================================================
+
+    <style name="popwin_anim_style_order_screen">
+        <item name="android:windowEnterAnimation">@anim/popupwindow_animation_in</item>
+        <item name="android:windowExitAnimation">@anim/popupwindow_animation_out</item>
+    </style>
+</resources>

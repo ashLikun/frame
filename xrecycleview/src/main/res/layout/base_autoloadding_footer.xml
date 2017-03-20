@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tvLoadMore"
+        app:mlpb_enable_circle_background="false"
+        app:mlpb_inner_radius="12dp"
+        app:mlpb_progress="50"
+        app:mlpb_progress_color="?colorPrimary"
+        app:mlpb_progress_stoke_width="3dp"
+        app:mlpb_progress_text_visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tvLoadMore"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:textColor="#ff000000" />
+</RelativeLayout>

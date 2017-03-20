@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AnimCheckBox">
+        <attr name="ab_strokeWidth" format="dimension" />
+        <attr name="ab_strokeColor" format="color" />
+        <attr name="ab_outColor" format="color" />
+        <attr name="ab_circleColor" format="color" />
+        <attr name="ab_isSelect" format="boolean" />
+        <attr name="ab_isCircle" format="boolean" />
+        <attr name="ab_autoSelect" format="boolean" />
+        <attr name="ab_text" format="string" />
+        <attr name="ab_textSize" format="dimension" />
+        <attr name="ab_textColor" format="color" />
+    </declare-styleable>
+</resources>

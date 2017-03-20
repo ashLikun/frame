@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Toolbar" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">?colorPrimary</item>
+        <!-- 导航按钮 -->
+        <!--<item name="navigationIcon">@drawable/abc_ic_ab_back_material</item>-->
+        <!-- 标题/副标题的字体样式-->
+        <item name="titleTextAppearance">@style/ToolbarTitle</item>
+        <item name="subtitleTextAppearance">@style/ToolbarSubTitle</item>
+        <item name="titleMargin">0dp</item>
+        <!-- menu高度 -->
+        <item name="maxButtonHeight">56dp</item>
+        <item name="popupTheme">@style/ToolbarPopupTheme</item>
+        <item name="theme">@style/ToolbarTheme</item>
+    </style>
+
+    <style name="Toolbar.Navigation.ButtonStyle" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="background">@android:color/white</item>
+        <item name="android:tint">@android:color/white</item>
+    </style>
+
+    <style name="Toolbar.Navigation.ButtonStyle.Black" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="background">@android:color/black</item>
+        <item name="android:tint">@android:color/black</item>
+    </style>
+
+    <style name="Toolbar.Overflow.ButtonStyle" parent="Base.Widget.AppCompat.ActionButton.Overflow">
+        <item name="background">@android:color/black</item>
+        <item name="android:tint">@android:color/black</item>
+    </style>
+
+    <style name="ToolbarMenuTextSize" parent="@style/TextAppearance.AppCompat.Menu">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">?colorPrimary</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ToolbarSubTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="actionMenuTextColor">@android:color/black</item>
+        <!--菜单样式-->
+        <item name="actionMenuTextAppearance">@style/ToolbarMenuTextSize</item>
+        <!-- toolbar上面的Button整体样式 -->
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Navigation.ButtonStyle.Black</item>
+        <item name="actionOverflowButtonStyle">@style/Toolbar.Overflow.ButtonStyle</item>
+    </style>
+
+    <style name="ToolbarTheme.Black" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="actionMenuTextColor">@android:color/black</item>
+        <item name="android:textSize">14sp</item>
+        <!--菜单样式-->
+        <item name="actionMenuTextAppearance">@style/ToolbarMenuTextSize</item>
+        <!-- toolbar上面的Button整体样式 -->
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Navigation.ButtonStyle.Black</item>
+        <item name="actionOverflowButtonStyle">@style/Toolbar.Overflow.ButtonStyle</item>
+    </style>
+
+    <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+</resources>
