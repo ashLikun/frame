@@ -1,4 +1,6 @@
-package com.hbung.httprequest;
+package com.hbung.http.request;
+
+import com.hbung.http.OkHttpUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,8 +23,6 @@ import okhttp3.Response;
 public class RequestCall {
     private Request request;
     private Call call;
-
-
     private RequestParam requestParam;
     private long readTimeOut;
     private long writeTimeOut;
@@ -44,7 +44,7 @@ public class RequestCall {
     public Call buildCall() {
         request = generateRequest();//获得请求实体
         //如果超时时间大于0,就重新构建OkHttpClient
-        if (readTimeOut > 0 || writeTimeOut > 0 || connTimeOut > 0) {
+        if (isNewBuilder()) {
             readTimeOut = readTimeOut > 0 ? readTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
             writeTimeOut = writeTimeOut > 0 ? writeTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
             connTimeOut = connTimeOut > 0 ? connTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
@@ -63,15 +63,18 @@ public class RequestCall {
         return call;
     }
 
+    //是否创建新的OkHttpClient
+    private boolean isNewBuilder() {
+        return readTimeOut > 0 || writeTimeOut > 0 || connTimeOut > 0
+                || (interceptors != null && !interceptors.isEmpty())
+                || (networkInterceptors != null && !networkInterceptors.isEmpty());
+    }
+
     //构造请求
     private Request generateRequest() {
         return requestParam.generateRequest();
     }
 
-
-    public Call getCall() {
-        return call;
-    }
 
     public Request getRequest() {
         return request;
@@ -83,9 +86,9 @@ public class RequestCall {
     }
 
     //异步
-    public void execute(Callback callback) {
-        buildCall();
-        execute(this, callback);
+    public Call enqueue() {
+        return buildCall();
+
     }
 
     //同步
@@ -94,17 +97,9 @@ public class RequestCall {
         return call.execute();
     }
 
-    protected void execute(RequestCall call, Callback callback) {
-        if (callback != null) {
-            callback.onStart();
-        }
-    }
 
-    public void cancel() {
-        if (call != null) {
-            call.cancel();
-        }
-    }
+
+
 
     public final static class Builder {
         private RequestParam requestParam;
@@ -115,6 +110,9 @@ public class RequestCall {
         List<Interceptor> networkInterceptors;
 
 
+        public Builder(RequestParam requestParam) {
+            this.requestParam = requestParam;
+        }
 
         public Builder requestParam(RequestParam requestParam) {
             this.requestParam = requestParam;

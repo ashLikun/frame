@@ -1,4 +1,4 @@
-package com.hbung.httprequest;
+package com.hbung.http.request;
 
 import android.net.Uri;
 
@@ -179,6 +179,13 @@ public class RequestParam {
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/3/21 10:00
+     *
+     * 方法功能：get请求构建url
+     */
+
     private String appendQueryParams(String url, Map<String, String> params) {
         if (url == null || params == null || params.isEmpty()) {
             return url;
@@ -201,7 +208,14 @@ public class RequestParam {
         return (str == null || str.length() == 0);
     }
 
-    private void addParams(MultipartBody.Builder builder) {//多表单数据
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/3/21 9:55
+     * <p>
+     * 方法功能：构建请求body    多表单数据  键值对
+     */
+    private void addParams(MultipartBody.Builder builder) {
         if (params != null && !params.isEmpty()) {
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 builder.addFormDataPart(entry.getKey(), entry.getValue());//Content-Disposition;form-data; name="aaa"
@@ -209,7 +223,13 @@ public class RequestParam {
         }
     }
 
-    private void addParams(FormBody.Builder builder) {//表单数据
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/3/21 9:55
+     * <p>
+     * 方法功能：构建请求body    表单数据  键值对
+     */
+    private void addParams(FormBody.Builder builder) {
         if (params != null && !params.isEmpty()) {
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 builder.addEncoded(entry.getKey(), entry.getValue());
@@ -217,26 +237,34 @@ public class RequestParam {
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/3/21 9:55
+     * <p>
+     * 方法功能：构建请求body    多表单  文件数据
+     */
     private void addFlieParams(MultipartBody.Builder builder) {//表单数据
         if (files != null && !files.isEmpty()) {
             for (FileInput fileInput : files) {
                 builder.addFormDataPart(fileInput.key, fileInput.filename
-                        , RequestBody.create(MediaType.parse(guessMimeType(fileInput.file.getAbsolutePath())), fileInput.file));
+                        , RequestBody.create(MediaType.parse(getMimeType(fileInput.file.getAbsolutePath())), fileInput.file));
             }
         }
     }
 
-    private String guessMimeType(String path) {
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/3/21 9:56
+     * <p>
+     * 方法功能：获取文件的mime类型  Content-type
+     */
+    private String getMimeType(String path) {
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
-        String contentTypeFor = null;
         try {
-            contentTypeFor = fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
+            return fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        if (contentTypeFor == null) {
-            contentTypeFor = "application/octet-stream";
-        }
-        return contentTypeFor;
+        return "application/octet-stream";
     }
 }

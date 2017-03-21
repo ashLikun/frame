@@ -1,4 +1,4 @@
-package com.hbung.httprequest;
+package com.hbung.http;
 
 /**
  * 作者　　: 李坤

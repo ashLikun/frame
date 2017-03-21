@@ -27,7 +27,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     testCompile 'junit:junit:4.12'
     compile project(':utils')
-    compile project(':http')
     compile project(':adapter')
     compile project(':xrecycleview')
     compile project(':stickyrecyclerview')
@@ -45,4 +44,5 @@ dependencies {
     compile project(':badgeview')
     compile project(':baseresource')
     compile project(':pathanim')
+    compile project(':okhttputils')
 }
