@@ -1,5 +1,6 @@
 package com.hbung.http.request;
 
+import com.hbung.http.Callback;
 import com.hbung.http.OkHttpUtils;
 
 import java.io.IOException;
@@ -41,8 +42,8 @@ public class RequestCall {
     }
 
 
-    public Call buildCall() {
-        request = generateRequest();//获得请求实体
+    public Call buildCall(Callback callback) {
+        request = requestParam.generateRequest(callback);//获得请求实体
         //如果超时时间大于0,就重新构建OkHttpClient
         if (isNewBuilder()) {
             readTimeOut = readTimeOut > 0 ? readTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
@@ -70,11 +71,6 @@ public class RequestCall {
                 || (networkInterceptors != null && !networkInterceptors.isEmpty());
     }
 
-    //构造请求
-    private Request generateRequest() {
-        return requestParam.generateRequest();
-    }
-
 
     public Request getRequest() {
         return request;
@@ -86,19 +82,16 @@ public class RequestCall {
     }
 
     //异步
-    public Call enqueue() {
-        return buildCall();
+    public Call enqueue(Callback callback) {
+        return buildCall(callback);
 
     }
 
     //同步
     public Response execute() throws IOException {
-        buildCall();
+        buildCall(null);
         return call.execute();
     }
-
-
-
 
 
     public final static class Builder {

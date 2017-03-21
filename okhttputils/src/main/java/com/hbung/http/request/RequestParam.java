@@ -2,6 +2,8 @@ package com.hbung.http.request;
 
 import android.net.Uri;
 
+import com.hbung.http.Callback;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.FileNameMap;
@@ -139,11 +141,11 @@ public class RequestParam {
         postContent = content;
     }
 
-    public Request generateRequest() {
+    public Request generateRequest(Callback callback) {
         Request.Builder builder = new Request.Builder();
         if (!isEmpty(method))
             method = "GET";
-        RequestBody requestBody = buildRequestBody();
+        RequestBody requestBody = buildRequestBody(callback);
         Headers.Builder header = new Headers.Builder();
         if (isHavaHeader()) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -157,32 +159,38 @@ public class RequestParam {
                 .build();
     }
 
-    public RequestBody buildRequestBody() {
+    public RequestBody buildRequestBody(Callback callback) {
+        RequestBody body = null;
         if (method.equals("GET")) {
             //get请求把参数放在url里面, 没有请求实体
             url = appendQueryParams(url, params);
-            return null;
+            body = null;
         } else if (!isEmpty(postContent)) {//只提交content
-            return RequestBody.create(MediaType.parse("text/plain;charset=utf-8"), postContent);
+            body = RequestBody.create(MediaType.parse("text/plain;charset=utf-8"), postContent);
         } else {
 
             if (isHavafiles()) {//存在文件用MultipartBody
                 MultipartBody.Builder builder = new MultipartBody.Builder();
                 addParams(builder);
                 addFlieParams(builder);
-                return builder.build();
+                body = builder.build();
             } else {//不存在文件用 FormBody
                 FormBody.Builder builder = new FormBody.Builder();
                 addParams(builder);
-                return builder.build();
+                body = builder.build();
             }
         }
+        //是否添加进度回调
+        if (body != null && callback != null && callback instanceof ProgressCallBack) {
+            body = new ProgressRequestBody(body,(ProgressCallBack)callback);
+        }
+        return body;
     }
 
     /**
      * 作者　　: 李坤
      * 创建时间: 2017/3/21 10:00
-     *
+     * <p>
      * 方法功能：get请求构建url
      */
 
