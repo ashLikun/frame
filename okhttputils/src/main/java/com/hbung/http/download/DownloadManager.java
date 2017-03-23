@@ -65,13 +65,14 @@ public class DownloadManager {
             synchronized (DownloadManager.class) {
                 if (manager == null) {
                     //DEFAULT_MILLISECONDS == 20s
-                    OkHttpClient client = OkHttpUtils.getInstance().getOkHttpClient()
+                    OkHttpClient.Builder client = OkHttpUtils.getInstance().getOkHttpClient()
                             .newBuilder()
                             .readTimeout(DEFAULT_MILLISECONDS * 30, TimeUnit.MILLISECONDS)
                             .writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
-                            .connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
-                            .build();
-                    manager = new DownloadManager(client);
+                            .connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
+                    client.interceptors().clear();
+                    client.networkInterceptors().clear();
+                    manager = new DownloadManager(client.build());
                 }
             }
         }

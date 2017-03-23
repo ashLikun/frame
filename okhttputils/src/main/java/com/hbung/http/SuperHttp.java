@@ -1,6 +1,7 @@
 package com.hbung.http;
 
 import com.hbung.http.request.RequestCall;
+import com.hbung.http.request.RequestParam;
 
 import java.io.IOException;
 
@@ -22,6 +23,11 @@ public interface SuperHttp {
     <T> ExecuteCall execute(RequestCall requestCall, Callback<T> callback);
 
     //同步执行
-    Response execute(RequestCall requestCall) throws IOException;
+    Response execute(RequestCall requestCall) throws IOException; //异步回调
+
+    <T> ExecuteCall execute(RequestParam requestParam, Callback<T> callback);
+
+    //同步执行
+    Response execute(RequestParam requestParam) throws IOException;
 
 }

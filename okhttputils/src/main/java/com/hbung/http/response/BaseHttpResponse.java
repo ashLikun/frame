@@ -14,9 +14,10 @@ public class BaseHttpResponse {
 
     public transient String json;
     public transient int httpcode;
-    @SerializedName("code")
+
+    @SerializedName("Result")
     public int code;
-    @SerializedName("msg")
+    @SerializedName("Msg")
     public String msg;
 
 

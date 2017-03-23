@@ -26,7 +26,8 @@ import okhttp3.RequestBody;
  * 创建时间:2016/10/14　15:03
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍： 请求参数
+ * 功能介绍： 请求参数封装
+ * 注意：一定要调用请求方法指定请求的方法，默认时get
  */
 
 public class RequestParam {
@@ -131,7 +132,7 @@ public class RequestParam {
     }
 
     public void addParamFile(String key, List<String> filePaths) {
-        if (files == null || files.isEmpty()) return;
+        if (filePaths == null || filePaths.isEmpty()) return;
         for (String f : filePaths) {
             addParamFile(key, f);
         }
@@ -143,7 +144,7 @@ public class RequestParam {
 
     public Request generateRequest(Callback callback) {
         Request.Builder builder = new Request.Builder();
-        if (!isEmpty(method))
+        if (isEmpty(method))
             method = "GET";
         RequestBody requestBody = buildRequestBody(callback);
         Headers.Builder header = new Headers.Builder();
@@ -171,6 +172,7 @@ public class RequestParam {
 
             if (isHavafiles()) {//存在文件用MultipartBody
                 MultipartBody.Builder builder = new MultipartBody.Builder();
+                builder.setType(MultipartBody.FORM);
                 addParams(builder);
                 addFlieParams(builder);
                 body = builder.build();
@@ -182,7 +184,7 @@ public class RequestParam {
         }
         //是否添加进度回调
         if (body != null && callback != null && callback instanceof ProgressCallBack) {
-            body = new ProgressRequestBody(body,(ProgressCallBack)callback);
+            body = new ProgressRequestBody(body, (ProgressCallBack) callback);
         }
         return body;
     }
