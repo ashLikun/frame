@@ -3,10 +3,10 @@
 /local.properties
 .idea
 .DS_Store
-/gradlew
 /gradlew.bat
 /local.properties
 /local.properties
 /build
 /captures
 .externalNativeBuild
+
