@@ -5,7 +5,6 @@
 .DS_Store
 /gradlew.bat
 /local.properties
-/local.properties
 /build
 /captures
 .externalNativeBuild
