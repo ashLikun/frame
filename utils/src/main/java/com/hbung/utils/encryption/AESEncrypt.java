@@ -25,11 +25,23 @@ public class AESEncrypt {
     }
 
     public static AESEncrypt getInstance() {
-        if (instance == null)
-            instance = new AESEncrypt();
+        if (instance == null) {
+            synchronized (AESEncrypt.class) {
+                if (instance == null) {
+                    instance = new AESEncrypt();
+                }
+            }
+        }
         return instance;
     }
 
+    public void setsKey(String sKey) {
+        this.sKey = sKey;
+    }
+
+    public void setIvParameter(String ivParameter) {
+        this.ivParameter = ivParameter;
+    }
 
     // 加密
     public String encrypt(String sSrc) throws Exception {

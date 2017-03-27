@@ -21,8 +21,13 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
 /**
- * Created by Administrator on 2016/7/4.
+ * 作者　　: 李坤
+ * 创建时间: 16:41 Administrator
+ * 邮箱　　：496546144@qq.com
+ *
+ * 功能介绍：RSA算法   支付宝用的就是RSA   公钥加密，私钥解密
  */
+
 public class RSAUtils {
     /**
      * // 加密

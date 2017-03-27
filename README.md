@@ -1,11 +1,11 @@
-# Frame
+# **Frame**
 项目的基本框架
 
 
-## 1.用法
+### 1.用法
 使用前，对于Android Studio的用户，可以选择添加:
-```java
-	compile 'com.github.ashLikun.frame:adapter:1.0.3'
+    
+	compile 'com.github.ashLikun.frame:adapter:1.0.3'//万能适配器
 	compile 'com.github.ashLikun.frame:xrecycleview:1.0.3'
 	compile 'com.github.ashLikun.frame:stickyrecyclerview:1.0.3'
 	compile 'com.github.ashLikun.frame:flatbutton:1.0.3'
@@ -25,5 +25,6 @@
 	compile 'com.github.ashLikun.frame:okhttputils:1.0.3'
 	compile 'com.github.ashLikun.frame:http:1.0.3'
 	compile 'com.github.ashLikun.frame:utils:1.0.3'
+	compile 'com.github.ashLikun.frame:glideutils:1.0.3'
 
 

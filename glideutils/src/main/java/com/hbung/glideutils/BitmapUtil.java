@@ -1,4 +1,4 @@
-package com.hbung.utils.bitmap;
+package com.hbung.glideutils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,7 +16,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 
 import java.io.File;
-import java.io.InputStream;
 
 public class BitmapUtil {
 
@@ -76,16 +75,16 @@ public class BitmapUtil {
     /***
      * 图片的缩放方
      */
-    public static Bitmap zoomImage(Bitmap bgimage, double newWidth,
-                                   double newHeight) {
+    public static Bitmap zoomImage(Bitmap bgimage, float newWidth,
+                                   float newHeight) {
         // 获取这个图片的宽和高
         float width = bgimage.getWidth();
         float height = bgimage.getHeight();
         // 创建操作图片用的matrix对象
         Matrix matrix = new Matrix();
         // 计算宽高缩放�?
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
+        float scaleWidth = newWidth / width;
+        float scaleHeight = newHeight / height;
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
@@ -150,48 +149,6 @@ public class BitmapUtil {
             }
         }
         return null;
-    }
-
-    private static int computeSampleSize(BitmapFactory.Options options,
-                                         int minSideLength, int maxNumOfPixels) {
-        int initialSize = computeInitialSampleSize(options, minSideLength,
-                maxNumOfPixels);
-
-        int roundedSize;
-        if (initialSize <= 8) {
-            roundedSize = 1;
-            while (roundedSize < initialSize) {
-                roundedSize <<= 1;
-            }
-        } else {
-            roundedSize = (initialSize + 7) / 8 * 8;
-        }
-
-        return roundedSize;
-    }
-
-    private static int computeInitialSampleSize(BitmapFactory.Options options,
-                                                int minSideLength, int maxNumOfPixels) {
-        double w = options.outWidth;
-        double h = options.outHeight;
-
-        int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math
-                .sqrt(w * h / maxNumOfPixels));
-        int upperBound = (minSideLength == -1) ? 128 : (int) Math.min(
-                Math.floor(w / minSideLength), Math.floor(h / minSideLength));
-
-        if (upperBound < lowerBound) {
-            // return the larger one when there is no overlapping zone.
-            return lowerBound;
-        }
-
-        if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
-            return 1;
-        } else if (minSideLength == -1) {
-            return lowerBound;
-        } else {
-            return upperBound;
-        }
     }
 
     /**
@@ -273,21 +230,9 @@ public class BitmapUtil {
         }
     }
 
-    /*
-     * 获取资源图片(res)
-     */
-    public static Bitmap decodeResource(Context context, int resourseId) {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Config.ARGB_8888;
-        opt.inPurgeable = true;
-        opt.inInputShareable = true; // inPurgeable设置为true，否则被忽略
-        // 获取资源图片
-        InputStream is = context.getResources().openRawResource(resourseId);
-        return BitmapFactory.decodeStream(is, null, opt); // decodeStream直接调用JNI>>nativeDecodeAsset()来完成decode，无�?再使用java层的createBitmap，从而节省了java层的空间
-    }
 
     /**
-     * TODO<图片圆角处理>
+     * 图片圆角处理
      *
      * @param srcBitmap 源图片的bitmap
      * @param ret       圆角的度数
@@ -332,4 +277,49 @@ public class BitmapUtil {
             b = null;
         }
     }
+
+    //计算inSampleSize
+    public static int computeSampleSize(BitmapFactory.Options options,
+                                        int minSideLength, int maxNumOfPixels) {
+        int initialSize = computeInitialSampleSize(options, minSideLength,
+                maxNumOfPixels);
+
+        int roundedSize;
+        if (initialSize <= 8) {
+            roundedSize = 1;
+            while (roundedSize < initialSize) {
+                roundedSize <<= 1;
+            }
+        } else {
+            roundedSize = (initialSize + 7) / 8 * 8;
+        }
+
+        return roundedSize;
+    }
+
+    private static int computeInitialSampleSize(BitmapFactory.Options options,
+                                                int minSideLength, int maxNumOfPixels) {
+        double w = options.outWidth;
+        double h = options.outHeight;
+
+        int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math
+                .sqrt(w * h / maxNumOfPixels));
+        int upperBound = (minSideLength == -1) ? 128 : (int) Math.min(
+                Math.floor(w / minSideLength), Math.floor(h / minSideLength));
+
+        if (upperBound < lowerBound) {
+            // return the larger one when there is no overlapping zone.
+            return lowerBound;
+        }
+
+        if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
+            return 1;
+        } else if (minSideLength == -1) {
+            return lowerBound;
+        } else {
+            return upperBound;
+        }
+    }
+
+
 }

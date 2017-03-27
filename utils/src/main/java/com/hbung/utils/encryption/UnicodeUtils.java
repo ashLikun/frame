@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * 创建时间:2016/10/12　14:03
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：Unicode编码
  */
 
 public class UnicodeUtils {

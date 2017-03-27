@@ -1,14 +1,16 @@
 package com.hbung.utils.encryption;
 
-import com.hbung.utils.R;
-
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Administrator on 2016/7/4.
+ * 作者　　: 李坤
+ * 创建时间: 2017/3/27 16:40
+ *
+ * 方法功能：Md5加密  不可逆算法
  */
+
 public class Md5Utils {
     public static String getMD5(String info) {
         try {

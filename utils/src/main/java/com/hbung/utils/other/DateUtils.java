@@ -27,11 +27,6 @@ import java.util.regex.Pattern;
  */
 @SuppressLint("SimpleDateFormat")
 public abstract class DateUtils {
-
-
-    private static final int[] DAY_OF_MONTH = new int[]{31, 28, 31, 30, 31,
-            30, 31, 31, 30, 31, 30, 31};
-
     /**
      * 按照指定格式把时间转换成字符串，格式的写法类似yyyy-MM-dd HH:mm:ss.SSS
      *
@@ -130,13 +125,58 @@ public abstract class DateUtils {
         return calender;
     }
 
+    /**
+     * 根据日期对象来获取日期中的时间(HH:mm:ss).
+     *
+     * @param calender 日期对象
+     * @return 时间字符串, 格式为: HH:mm:ss
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String getTimeHHSS(Calendar calender) {
+        return getFormatTime(calender, "HH:mm:ss");
+    }
+
+    /**
+     * 根据日期对象来获取日期中的时间(HH:mm:ss).
+     *
+     * @param calender 日期对象
+     * @return 时间字符串, 格式为: HH:mm:ss
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String getTime(Calendar calender) {
+        return getFormatTime(calender, "yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
+     * 根据日期对象来获取日期中的时间(HH:mm:ss).
+     *
+     * @param calender 日期对象
+     * @return 时间字符串, 格式为: HH:mm:ss
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String getTimeYYMMDD(Calendar calender) {
+        return getFormatTime(calender, "yyyy-MM-dd");
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/3/27 17:28
+     * <p>
+     * 方法功能 Calendar格式成字符串
+     */
     public static String getFormatTime(Calendar calendar, String format) {
         if (calendar == null) return null;
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         return sdf.format(calendar.getTime());
     }
 
-    public static Calendar getParseTime(String calendar, String format) {
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/3/27 17:28
+     * <p>
+     * 方法功能 字符串格式成Calendar
+     */
+    public static Calendar getFormatTime(String calendar, String format) {
         if (calendar == null) return null;
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         try {
@@ -251,45 +291,6 @@ public abstract class DateUtils {
 
 
     /**
-     * 根据某星期几的英文名称来获取该星期几的中文数. <br>
-     * e.g. <li>monday -> 一</li> <li>sunday -> 日</li>
-     *
-     * @param englishWeekName 星期的英文名称
-     * @return 星期的中文数
-     */
-    public static String getChineseWeekNumber(String englishWeekName) {
-        if ("monday".equalsIgnoreCase(englishWeekName)) {
-            return "一";
-        }
-
-        if ("tuesday".equalsIgnoreCase(englishWeekName)) {
-            return "二";
-        }
-
-        if ("wednesday".equalsIgnoreCase(englishWeekName)) {
-            return "三";
-        }
-
-        if ("thursday".equalsIgnoreCase(englishWeekName)) {
-            return "四";
-        }
-
-        if ("friday".equalsIgnoreCase(englishWeekName)) {
-            return "五";
-        }
-
-        if ("saturday".equalsIgnoreCase(englishWeekName)) {
-            return "六";
-        }
-
-        if ("sunday".equalsIgnoreCase(englishWeekName)) {
-            return "日";
-        }
-
-        return null;
-    }
-
-    /**
      * 根据指定的年, 月, 日等参数获取日期对象.
      *
      * @param year  年
@@ -336,30 +337,6 @@ public abstract class DateUtils {
         return cal;
     }
 
-    /**
-     * 取得某个日期是星期几，星期日是1，依此类推
-     *
-     * @param calender 日期
-     * @return 星期几
-     */
-    public static int getDayOfWeek(Calendar calender) {
-        return calender.get(Calendar.DAY_OF_WEEK);
-    }
-
-
-    /**
-     * 取得一个月最多的天数
-     *
-     * @param year  年份
-     * @param month 月份，0表示1月，依此类推
-     * @return 最多的天数
-     */
-    public static int getMaxDayOfMonth(int year, int month) {
-        if (month == 1 && isLeapYear(year)) {
-            return 29;
-        }
-        return DAY_OF_MONTH[month];
-    }
 
     /**
      * 得到指定日期的下一天
@@ -369,18 +346,6 @@ public abstract class DateUtils {
      */
     public static Calendar getNextDay(Calendar calender) {
         return addDay(calender, 1);
-    }
-
-
-    /**
-     * 根据日期对象来获取日期中的时间(HH:mm:ss).
-     *
-     * @param calender 日期对象
-     * @return 时间字符串, 格式为: HH:mm:ss
-     */
-    @SuppressLint("SimpleDateFormat")
-    public static String getTimeHHSS(Calendar calender) {
-        return getFormatTime(calender, "HH:mm:ss");
     }
 
 
@@ -413,20 +378,8 @@ public abstract class DateUtils {
      * @return 日期
      */
     public static Calendar stringToTime(String str) {
-        return stringToTime(str, "yyyy-MM-dd HH:mm:ss");
+        return getFormatTime(str, "yyyy-MM-dd HH:mm:ss");
     }
-
-    /**
-     * 按照指定的格式把字符串转换成时间，格式的写法类似yyyy-MM-dd HH:mm:ss.SSS
-     *
-     * @param str     字符串
-     * @param pattern 格式
-     * @return 时间
-     */
-    public static Calendar stringToTime(String str, String pattern) {
-        return getParseTime(str, pattern);
-    }
-
 
     /**
      * 取得一年中的第几周。
@@ -466,7 +419,7 @@ public abstract class DateUtils {
         if (TextUtils.isEmpty(str)) {
             return "";
         }
-        return getFormatTime(stringToTime(str, "yyyy-MM-dd"), "yyyy-MM-dd");
+        return getFormatTime(getFormatTime(str, "yyyy-MM-dd"), "yyyy-MM-dd");
     }
 
     /**
@@ -476,7 +429,7 @@ public abstract class DateUtils {
      * @return 返回日期String
      */
     public static String string2String(String str, String pattern) {
-        return getFormatTime(stringToTime(str, pattern), pattern);
+        return getFormatTime(getFormatTime(str, pattern), pattern);
     }
 
 
@@ -538,8 +491,6 @@ public abstract class DateUtils {
      */
     public static String getTime(String text) {
         try {
-
-
             // 1.把传过来的Date 中的数字取出来。2.然后设置时间格式。3.把一个long 数值转换成日字符串
             long time_long = dateToLong(text);
 
