@@ -19,7 +19,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.hbung.utils.bitmap.BitmapUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -40,14 +39,7 @@ import static com.hbung.utils.Utils.myApp;
  */
 
 public class FileUtils {
-    /**
-     * 获取视频文件的一帧
-     */
-    public static Bitmap getVideoFrame(String path, int wDp, int hDp) {
-        MediaMetadataRetriever media = new MediaMetadataRetriever();
-        media.setDataSource(path);
-        return BitmapUtil.zoomImage(media.getFrameAtTime(), DimensUtils.dip2px(myApp, wDp), DimensUtils.dip2px(myApp, hDp));
-    }
+
 
     /**
      * 获取照片选择的文件路径

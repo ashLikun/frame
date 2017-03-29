@@ -5,6 +5,7 @@
  */
 package com.hbung.utils.other;
 
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 /**
@@ -127,52 +128,7 @@ public abstract class Validators {
         return isRegexMatch(str, REGEX_PHONE_NUMBER);
     }
 
-    /**
-     * 是否是合法的日期字符串
-     *
-     * @param str 日期字符串
-     * @return 是true，否则false
-     */
-    public static boolean isDate(String str) {
-        if (isEmpty(str) || str.length() > 10) {
-            return false;
-        }
 
-        String[] items = str.split("-");
-
-        if (items.length != 3) {
-            return false;
-        }
-
-        if (!isNumber(items[0], 1900, 9999) || !isNumber(items[1], 1, 12)) {
-            return false;
-        }
-
-        int year = Integer.parseInt(items[0]);
-        int month = Integer.parseInt(items[1]);
-
-        return isNumber(items[2], 1, DateUtils.getMaxDayOfMonth(year, month - 1));
-    }
-
-    /**
-     * 是否是合法的日期时间字符串
-     *
-     * @param str 日期时间字符串
-     * @return 是true，否则false
-     */
-    public static boolean isDateTime(String str) {
-        if (isEmpty(str) || str.length() > 20) {
-            return false;
-        }
-
-        String[] items = str.split(" ");
-
-        if (items.length != 2) {
-            return false;
-        }
-
-        return isDate(items[0]) && isTime(items[1]);
-    }
 
     /**
      * 判断字符串是否是合法的电子邮箱地址.

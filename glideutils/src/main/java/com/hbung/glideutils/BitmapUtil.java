@@ -14,11 +14,25 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.media.MediaMetadataRetriever;
 
 import java.io.File;
 
+import static com.hbung.glideutils.GlideUtils.myApp;
+
 public class BitmapUtil {
 
+    /**
+     * 获取视频文件的一帧
+     */
+    public static Bitmap getVideoFrame(String path, int wDp, int hDp) {
+        final float scale = myApp.getResources().getDisplayMetrics().density;
+        wDp = (int) (wDp * scale + 0.5f);
+        hDp = (int) (hDp * scale + 0.5f);
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+        media.setDataSource(path);
+        return BitmapUtil.zoomImage(media.getFrameAtTime(), wDp, hDp);
+    }
 
     /*
      * 从资源中获取Bitmap   按照指定的宽高缩放

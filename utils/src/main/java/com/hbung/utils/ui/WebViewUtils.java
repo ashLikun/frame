@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.hbung.utils.encryption.EncodingUtils;
+import com.hbung.utils.encryption.UnicodeUtils;
 import com.hbung.utils.other.StringUtils;
 
 import java.util.regex.Matcher;
@@ -28,7 +28,7 @@ public class WebViewUtils {
         if (content == null) {
             content = "";
         }
-        content = EncodingUtils.unicode2String(content);
+        content = UnicodeUtils.unicode2String(content);
         // 配置webview数据源
         StringBuilder data = new StringBuilder();
         data.append("<style type=\"text/css\">img{WIDTH:100% !important;HEIGHT:auto !important;}");
