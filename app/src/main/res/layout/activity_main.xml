@@ -10,8 +10,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="utils.hbung.com.utils.MainActivity">
 
-    <utils.hbung.com.utils.MulitImageTagView
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+    <com.hbung.wheelview3d.LoopView
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="wrap_content"
+        android:id="@+id/loopView"
+        ></com.hbung.wheelview3d.LoopView>
 
 </RelativeLayout>

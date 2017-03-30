@@ -25,7 +25,7 @@ final class MessageHandler extends Handler {
             this.loopview.invalidate();
         while (true) {
             if (paramMessage.what == 2000)
-                LoopView.smoothScroll(loopview);
+                loopview.smoothScroll();
             else if (paramMessage.what == 3000)
                 this.loopview.itemSelected();
             super.handleMessage(paramMessage);

@@ -4,9 +4,6 @@
 
 package com.hbung.wheelview3d;
 
-// Referenced classes of package com.qingchifan.view:
-//            LoopView, LoopListener
-
 final class LoopRunnable implements Runnable {
 
     final LoopView loopView;
@@ -22,8 +19,8 @@ final class LoopRunnable implements Runnable {
         LoopListener listener = loopView.loopListener;
         int selectedItem = LoopView.getSelectedItem(loopView);
         loopView.setFinalSelectedItem(selectedItem);
-        if (selectedItem >= 0 && selectedItem < loopView.arrayList.size() && listener != null) {
-            listener.onItemSelect(selectedItem, loopView.arrayList.get(selectedItem));
+        if (selectedItem >= 0 && selectedItem < loopView.getItemCount() && listener != null) {
+            listener.onItemSelect(selectedItem, loopView.getItemData(selectedItem));
         }
     }
 }

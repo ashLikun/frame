@@ -6,9 +6,6 @@ package com.hbung.wheelview3d;
 
 import java.util.TimerTask;
 
-// Referenced classes of package com.qingchifan.view:
-//            LoopView
-
 final class LoopTimerTask extends TimerTask {
 
     float a;
@@ -42,14 +39,14 @@ final class LoopTimerTask extends TimerTask {
         }
         int i = (int) ((a * 10F) / 1000F);
         LoopView loopview = loopView;
-        loopview.totalScrollY = loopview.totalScrollY - i;
-        if (!loopView.isLoop) {
-            float itemHeight = loopView.lineSpacingMultiplier * loopView.maxTextHeight;
-            if (loopView.totalScrollY <= (int) ((float) (-loopView.initPosition) * itemHeight)) {
+        loopview.setTotalScrollY(loopview.getTotalScrollY() - i);
+        if (!loopView.isLoop()) {
+            float itemHeight = loopView.getLineSpacingMultiplier() * loopView.getTextHeight();
+            if (loopView.getTotalScrollY() <= (int) ((float) (-loopView.getInitPosition()) * itemHeight)) {
                 a = 40F;
-                loopView.totalScrollY = (int) ((float) (-loopView.initPosition) * itemHeight);
-            } else if (loopView.totalScrollY >= (int) ((float) (loopView.arrayList.size() - 1 - loopView.initPosition) * itemHeight)) {
-                loopView.totalScrollY = (int) ((float) (loopView.arrayList.size() - 1 - loopView.initPosition) * itemHeight);
+                loopView.setTotalScrollY((int) ((float) (-loopView.getInitPosition()) * itemHeight));
+            } else if (loopView.getTotalScrollY() >= (int) ((float) (loopView.getItemCount() - 1 - loopView.getInitPosition()) * itemHeight)) {
+                loopView.setTotalScrollY((int) ((float) (loopView.getItemCount() - 1 - loopView.getInitPosition()) * itemHeight));
                 a = -40F;
             }
         }

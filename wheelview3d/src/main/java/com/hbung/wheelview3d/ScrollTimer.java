@@ -6,25 +6,29 @@ package com.hbung.wheelview3d;
 
 import java.util.TimerTask;
 
-final class MTimer extends TimerTask {
+final class ScrollTimer extends TimerTask {
 
     int realTotalOffset;
     int realOffset;
     int offset;
     final LoopView loopView;
 
-    MTimer(LoopView loopview, int offset) {
+    ScrollTimer(LoopView loopview,int offset) {
         super();
         this.loopView = loopview;
         this.offset = offset;
         realTotalOffset = Integer.MAX_VALUE;
-        realOffset = 0;
+
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     @Override
     public final void run() {
         if (realTotalOffset == Integer.MAX_VALUE) {
-            float itemHeight = loopView.lineSpacingMultiplier * loopView.maxTextHeight;
+            float itemHeight = loopView.getLineSpacingMultiplier() * loopView.getTextHeight();
             offset = (int) ((offset + itemHeight) % itemHeight);
             if ((float) offset > itemHeight / 2.0F) {
                 realTotalOffset = (int) (itemHeight - (float) offset);
@@ -46,7 +50,7 @@ final class MTimer extends TimerTask {
             loopView.handler.sendEmptyMessage(3000);
             return;
         } else {
-            loopView.totalScrollY = loopView.totalScrollY + realOffset;
+            loopView.setTotalScrollY(loopView.getTotalScrollY() + realOffset);
             loopView.handler.sendEmptyMessage(1000);
             realTotalOffset = realTotalOffset - realOffset;
             return;
