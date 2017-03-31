@@ -5,6 +5,6 @@
 package com.hbung.wheelview3d;
 
 
-public interface LoopListener {
-    void onItemSelect(int item, LoopViewData data);
+public interface LoopListener<T> {
+    void onItemSelect(int item, T data);
 }

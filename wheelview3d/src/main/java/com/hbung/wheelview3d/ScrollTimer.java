@@ -13,7 +13,7 @@ final class ScrollTimer extends TimerTask {
     int offset;
     final LoopView loopView;
 
-    ScrollTimer(LoopView loopview,int offset) {
+    ScrollTimer(LoopView loopview, int offset) {
         super();
         this.loopView = loopview;
         this.offset = offset;
@@ -28,14 +28,15 @@ final class ScrollTimer extends TimerTask {
     @Override
     public final void run() {
         if (realTotalOffset == Integer.MAX_VALUE) {
-            float itemHeight = loopView.getLineSpacingMultiplier() * loopView.getTextHeight();
-            offset = (int) ((offset + itemHeight) % itemHeight);
-            if ((float) offset > itemHeight / 2.0F) {
-                realTotalOffset = (int) (itemHeight - (float) offset);
-            } else {
+            float itemHeight = loopView.getItemHeight();
+            offset = (int) ((offset + itemHeight) % itemHeight);//滚动超过item的大小部分
+            if ((float) offset > itemHeight / 2.0F) {//如果超过Item高度的一半，滚动到下一个Item去
+                realTotalOffset = (int) (itemHeight - offset);
+            } else {//其他情况滚动到上一个Item去
                 realTotalOffset = -offset;
             }
         }
+        //取实际滑动的10分之一  来进行实际的滚动
         realOffset = (int) ((float) realTotalOffset * 0.1F);
 
         if (realOffset == 0) {
@@ -45,13 +46,14 @@ final class ScrollTimer extends TimerTask {
                 realOffset = 1;
             }
         }
-        if (Math.abs(realTotalOffset) <= 0) {
+        //如果偏移量在-1 到 1  之间说明停止了
+        if (Math.abs(realTotalOffset) <= 1) {
             loopView.cancelFuture();
-            loopView.handler.sendEmptyMessage(3000);
+            loopView.handler.sendEmptyMessage(MessageHandler.WHAT_ITEM_SELECTED);
             return;
         } else {
             loopView.setTotalScrollY(loopView.getTotalScrollY() + realOffset);
-            loopView.handler.sendEmptyMessage(1000);
+            loopView.handler.sendEmptyMessage(MessageHandler.WHAT_INVALIDATE_LOOP_VIEW);
             realTotalOffset = realTotalOffset - realOffset;
             return;
         }

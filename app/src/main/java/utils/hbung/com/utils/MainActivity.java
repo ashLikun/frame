@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.hbung.wheelview3d.LoopListener;
 import com.hbung.wheelview3d.LoopView;
-import com.hbung.wheelview3d.LoopViewData;
+import com.hbung.wheelview3d.adapter.LoopViewData;
+import com.hbung.wheelview3d.adapter.SimpleLoopAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +26,21 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 20; i++) {
             listDatas.add(new LoopViewData(i, "我是第" + i));
         }
-        loopView.setArrayList(listDatas);
-        loopView.setListener(new LoopListener() {
+        loopView.setAdapter(new SimpleLoopAdapter<LoopViewData>(listDatas) {
+            @Override
+            public String getShowText(int position) {
+                return getItem(position).getTitle();
+            }
+        });
+        loopView.setListener(new LoopListener<LoopViewData>() {
             @Override
             public void onItemSelect(int item, LoopViewData data) {
                 Log.e("onItemSelect", data.getTitle());
             }
         });
+        loopView.setSelectTextColor(0xffff0000);
+        loopView.setLineWidth(3);
+        loopView.setLineColor(0xffff0000);
+        loopView.setShowItemCount(9);
     }
 }

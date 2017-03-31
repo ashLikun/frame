@@ -10,7 +10,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.List;
+import com.hbung.wheelview3d.adapter.BaseLoopAdapter;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -18,7 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class LoopView extends View {
-    private int scrollDelay = 20;
+    BaseLoopAdapter adapter;
+    private int scrollDelay = 10;
     // Timer mTimer;
     ScheduledExecutorService mExecutor = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> mFuture;//可控制任务，通过线程池的方法执行一个任务后会返回Future对象
@@ -26,18 +28,19 @@ public class LoopView extends View {
     protected LoopListener loopListener;
     private GestureDetector gestureDetector;
     private int selectedItem;
-    private int finalSelectedItem = 0;
     private GestureDetector.SimpleOnGestureListener simpleOnGestureListener;
     private Paint mPaint;  //全局画笔
-    private List<LoopViewData> arrayList;
-    private int textSize;
+
     private int maxTextWidth;
     private int maxTextHeight;
-    private int colorGray;
-    private int colorBlack;
-    private int colorGrayLight;
-    private float lineSpacingMultiplier;//行间距
-    private float lineWidth;
+
+    private int textSize;//文字大小
+    private int noSelectTextColor = 0xffafafaf;//未选中的文字颜色
+    private int selectTextColor = 0xff313131;//选中的文字颜色
+    private int lineColor = 0xffc5c5c5;//线的颜色
+    private float lineWidth;//线的大小px
+    private float lineSpacingMultiplier = 2.5f;//行间距
+
     private boolean isLoop = true;
     private int firstLineY;//第一条线的Y
     private int secondLineY;//第二条线的Y
@@ -48,6 +51,7 @@ public class LoopView extends View {
     private int radius;//圆半径
     private float previousY = 0;//上一次y坐标
     private int totalScrollY = 0;//总滑动y长度
+    private float itemHeight;//每行的高度
 
     public LoopView(Context context) {
         super(context);
@@ -65,10 +69,6 @@ public class LoopView extends View {
     }
 
     private void initLoopView(Context context) {
-        colorGray = 0xffafafaf;
-        colorBlack = 0xff313131;
-        colorGrayLight = 0xffc5c5c5;
-        lineSpacingMultiplier = 2.5F;
         lineWidth = dip2px(context, 1f);
         simpleOnGestureListener = new LoopViewGestureListener(this);
         handler = new MessageHandler(this);
@@ -83,52 +83,30 @@ public class LoopView extends View {
         gestureDetector.setIsLongpressEnabled(false);
     }
 
-    static int getSelectedItem(LoopView loopview) {
-        return loopview.selectedItem;
+
+    public final void setListener(LoopListener LoopListener) {
+        loopListener = LoopListener;
     }
 
-
-    private void initData() {
-        if (arrayList == null) {
-            return;
-        }
-        measureTextWidthHeight();
-        halfCircumference = (int) (maxTextHeight * lineSpacingMultiplier * (showItemCount - 1));
-        radius = (int) (halfCircumference / Math.PI);
-        firstLineY = (int) ((radius * 2 - lineSpacingMultiplier * maxTextHeight) / 2.0F);
-        secondLineY = (int) ((radius * 2 + lineSpacingMultiplier * maxTextHeight) / 2.0F);
-        if (initPosition == -1) {
-            if (isLoop) {
-                initPosition = (arrayList.size() + 1) / 2;
-            } else {
-                initPosition = 0;
-            }
-        }
-        preCurrentIndex = initPosition;
+    public final void setAdapter(BaseLoopAdapter adapter) {
+        this.adapter = adapter;
+        measure();
+        invalidate();
     }
 
-    //测量文字大小
-    private void measureTextWidthHeight() {
-        switchPaintToSelectText();
-        Rect rect = new Rect();
-        for (int i = 0; i < arrayList.size(); i++) {
-            String s1 = arrayList.get(i).getTitle();
-            mPaint.getTextBounds(s1, 0, s1.length(), rect);
-            int textWidth = rect.width();
-            if (textWidth > maxTextWidth) {
-                maxTextWidth = textWidth;
-            }
-            mPaint.getTextBounds("\u661F\u671F", 0, 2, rect); // 星期
-            int textHeight = rect.height();
-            if (textHeight > maxTextHeight) {
-                maxTextHeight = textHeight;
-            }
-        }
+    public final int getSelectedItem() {
+        return selectedItem;
     }
 
+    //手势识别回调
+    protected final void smoothScroll(float velocityY) {
+        cancelFuture();
+        mFuture = mExecutor.scheduleWithFixedDelay(new LoopTimerTask(this, velocityY), 0, scrollDelay * 2, TimeUnit.MILLISECONDS);
+    }
 
+    //实现回弹  固定某个item在最中间
     protected void smoothScroll() {
-        int offset = (int) (totalScrollY % (lineSpacingMultiplier * maxTextHeight));
+        int offset = (int) (totalScrollY % itemHeight);
         cancelFuture();
         mFuture = mExecutor.scheduleWithFixedDelay(new ScrollTimer(this, offset), 0, scrollDelay, TimeUnit.MILLISECONDS);
     }
@@ -141,62 +119,6 @@ public class LoopView extends View {
         }
     }
 
-    public final void setNotLoop() {
-        isLoop = false;
-    }
-
-    public final void setTextSize(float size) {
-        if (size > 0.0F) {
-            textSize = (int) (getContext().getResources().getDisplayMetrics().density * size);
-        }
-    }
-
-    public final void setInitPosition(int initPosition) {
-        this.initPosition = initPosition;
-        finalSelectedItem = initPosition;
-
-        totalScrollY = 0;
-    }
-
-    public void setFinalSelectedItem(int finalSelectedItem) {
-        this.finalSelectedItem = finalSelectedItem;
-    }
-
-    public int getFinalSelectedItem() {
-        return finalSelectedItem;
-    }
-
-    public final void setListener(LoopListener LoopListener) {
-        loopListener = LoopListener;
-    }
-
-    public final void setArrayList(List arraylist) {
-        this.arrayList = arraylist;
-        initData();
-        invalidate();
-    }
-
-    public List<LoopViewData> getArrayList() {
-        return arrayList;
-    }
-
-    public final int getSelectedItem() {
-        return finalSelectedItem;
-    }
-
-    public LoopViewData getSelectedItemData() {
-        if (finalSelectedItem >= 0 && finalSelectedItem < arrayList.size()) {
-            return arrayList.get(finalSelectedItem);
-        }
-        return null;
-    }
-
-    protected final void smoothScroll(float velocityY) {
-        cancelFuture();
-        mFuture = mExecutor.scheduleWithFixedDelay(new LoopTimerTask(this, velocityY), 0, scrollDelay, TimeUnit.MILLISECONDS);
-    }
-
-
     protected final void itemSelected() {
         postDelayed(new LoopRunnable(this), 200L);
     }
@@ -204,7 +126,7 @@ public class LoopView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if (arrayList == null) {
+        if (adapter == null) {
             super.onDraw(canvas);
             return;
         }
@@ -221,14 +143,13 @@ public class LoopView extends View {
     }
 
     private void drawText(Canvas canvas) {
-        LoopViewData showDatas[] = getShowLoopData();
+        Integer showDatas[] = getShowLoopData();
         int startX = getMeasuredWidth() / 2;//开始绘制的x坐标
         //滑动 超过item的大小
-        int itemHeightOffset = (int) (totalScrollY % (lineSpacingMultiplier * maxTextHeight));
+        int itemHeightOffset = (int) (totalScrollY % itemHeight);
         int index = 0;
         while (index < showItemCount) {
             canvas.save();
-            float itemHeight = maxTextHeight * lineSpacingMultiplier;
             // 弧长 L = itemHeight * index - itemHeightOffset
             // 求弧度 α = L / r  (弧长/半径) [0,π]
             double radian = ((itemHeight * index - itemHeightOffset)) / radius;
@@ -238,6 +159,7 @@ public class LoopView extends View {
             if (degrees >= 90F || degrees <= -90F) {
                 canvas.restore();
             } else {
+                String showText = showDatas[index] < 0 ? "" : adapter.getShowText(showDatas[index]);
                 //根据弧度计算平移y的大小
                 int translateY = (int) (radius - Math.cos(radian) * radius - (Math.sin(radian) * maxTextHeight / 2D));
                 //根据translateY来更改canvas坐标系原点，然后缩放画布，使得文字高度进行缩放，形成弧形3d视觉差
@@ -249,13 +171,13 @@ public class LoopView extends View {
                     //画第一条线以上的选中的item，其实是未选择画笔画的
                     canvas.clipRect(0, 0, getMeasuredWidth(), firstLineY - translateY);
                     switchPaintToNoSelectText();
-                    canvas.drawText(showDatas[index].getTitle(), startX, maxTextHeight, mPaint);
+                    canvas.drawText(showText, startX, maxTextHeight, mPaint);
                     canvas.restore();
                     canvas.save();
                     //画第一条线以下的选中文字
                     canvas.clipRect(0, firstLineY - translateY, getMeasuredWidth(), (int) (itemHeight));
                     switchPaintToSelectText();
-                    canvas.drawText(showDatas[index].getTitle(), startX, maxTextHeight, mPaint);
+                    canvas.drawText(showText, startX, maxTextHeight, mPaint);
                     canvas.restore();
                 }
                 //画第二条线顶部和底部的选中文字
@@ -264,26 +186,26 @@ public class LoopView extends View {
                     //画第二条线以上的选中的item
                     canvas.clipRect(0, 0, getMeasuredWidth(), secondLineY - translateY);
                     switchPaintToSelectText();
-                    canvas.drawText(showDatas[index].getTitle(), startX, maxTextHeight, mPaint);
+                    canvas.drawText(showText, startX, maxTextHeight, mPaint);
                     canvas.restore();
                     canvas.save();
                     //画第一条线以下的选中文字  其实是未选择画笔画的
                     canvas.clipRect(0, secondLineY - translateY, getMeasuredWidth(), (int) (itemHeight));
                     switchPaintToNoSelectText();
-                    canvas.drawText(showDatas[index].getTitle(), startX, maxTextHeight, mPaint);
+                    canvas.drawText(showText, startX, maxTextHeight, mPaint);
                     canvas.restore();
                 }
                 //画中间选中的文字
                 else if (translateY >= firstLineY && maxTextHeight + translateY <= secondLineY) {
                     canvas.clipRect(0, 0, getMeasuredWidth(), (int) (itemHeight));
                     switchPaintToSelectText();
-                    canvas.drawText(showDatas[index].getTitle(), startX, maxTextHeight, mPaint);
-                    selectedItem = arrayList.indexOf(showDatas[index]);
+                    canvas.drawText(showText, startX, maxTextHeight, mPaint);
+                    selectedItem = showDatas[index];
                 } else {
                     //没有选中的文本
                     canvas.clipRect(0, 0, getMeasuredWidth(), (int) (itemHeight));
                     switchPaintToNoSelectText();
-                    canvas.drawText(showDatas[index].getTitle(), startX, maxTextHeight, mPaint);
+                    canvas.drawText(showText, startX, maxTextHeight, mPaint);
                 }
                 canvas.restore();
             }
@@ -297,8 +219,8 @@ public class LoopView extends View {
             preCurrentIndex = 0;
         } else {
             //跟滚动流畅度有关，总滑动距离与每个item高度取余，即并不是一格格的滚动，每个item不一定滚到对应Rect里的，这个item对应格子的偏移值
-            int change = (int) (totalScrollY / (lineSpacingMultiplier * maxTextHeight));
-            preCurrentIndex = initPosition + change % arrayList.size();
+            int change = (int) (totalScrollY / itemHeight);
+            preCurrentIndex = initPosition + change % getItemCount();
         }
         //preCurrentIndex 边界限制
         if (!isLoop) {
@@ -315,8 +237,8 @@ public class LoopView extends View {
     }
 
     //更具preCurrentIndex值计算应该显示的item
-    private LoopViewData[] getShowLoopData() {
-        LoopViewData[] visibles = new LoopViewData[showItemCount];
+    private Integer[] getShowLoopData() {
+        Integer[] visibles = new Integer[showItemCount];
         // 设置数组中每个元素的值
         int counter = 0;
         while (counter < showItemCount) {
@@ -330,13 +252,13 @@ public class LoopView extends View {
                     index = index + getItemCount() * (Math.abs(index) / getItemCount() + 1);
                 }
                 index = index % getItemCount();
-                visibles[counter] = getItemData(index);
+                visibles[counter] = index;
             } else if (index < 0) {
-                visibles[counter] = new LoopViewData(-1, "");
+                visibles[counter] = -1;
             } else if (index > getItemCount() - 1) {
-                visibles[counter] = new LoopViewData(-1, "");
+                visibles[counter] = -1;
             } else {
-                visibles[counter] = getItemData(index);
+                visibles[counter] = index;
             }
             counter++;
         }
@@ -346,21 +268,21 @@ public class LoopView extends View {
 
     //设置画笔为绘制选中文本
     private void switchPaintToSelectText() {
-        mPaint.setColor(colorBlack);
+        mPaint.setColor(selectTextColor);
         mPaint.setTextScaleX(1.05F);
         mPaint.setTextSize(textSize);
     }
 
     //设置画笔为未选中文本
     private void switchPaintToNoSelectText() {
-        mPaint.setColor(colorGray);
+        mPaint.setColor(noSelectTextColor);
         mPaint.setTextScaleX(1F);
         mPaint.setTextSize(textSize);
     }
 
     //设置画笔为绘制线
     private void switchPaintToLine() {
-        mPaint.setColor(colorGrayLight);
+        mPaint.setColor(lineColor);
         mPaint.setTextScaleX(1F);
         mPaint.setTextSize(textSize);
         mPaint.setStrokeWidth(lineWidth);
@@ -371,7 +293,48 @@ public class LoopView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //l=C/PI   园直径
         int measuredHeight = (int) ((halfCircumference * 2) / Math.PI);
+        measure();
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), measuredHeight);
+    }
+
+    //测量
+    private void measure() {
+        if (adapter == null) {
+            return;
+        }
+        measureTextWidthHeight();
+        halfCircumference = (int) (itemHeight * (showItemCount - 1));
+        radius = (int) (halfCircumference / Math.PI);
+        firstLineY = (int) ((radius * 2 - itemHeight) / 2.0F);
+        secondLineY = (int) ((radius * 2 + itemHeight) / 2.0F);
+        if (initPosition == -1) {
+            if (isLoop) {
+                initPosition = (getItemCount() + 1) / 2;
+            } else {
+                initPosition = 0;
+            }
+        }
+        preCurrentIndex = initPosition;
+    }
+
+    //测量文字大小
+    private void measureTextWidthHeight() {
+        switchPaintToSelectText();
+        Rect rect = new Rect();
+        for (int i = 0; i < getItemCount(); i++) {
+            String s1 = adapter.getShowText(i);
+            mPaint.getTextBounds(s1, 0, s1.length(), rect);
+            int textWidth = rect.width();
+            if (textWidth > maxTextWidth) {
+                maxTextWidth = textWidth;
+            }
+            mPaint.getTextBounds("\u661F\u671F", 0, 2, rect); // 星期
+            int textHeight = rect.height();
+            if (textHeight > maxTextHeight) {
+                maxTextHeight = textHeight;
+            }
+        }
+        itemHeight = lineSpacingMultiplier * maxTextHeight;
     }
 
     @Override
@@ -385,11 +348,15 @@ public class LoopView extends View {
                 float dy = previousY - motionevent.getRawY();
                 previousY = motionevent.getRawY();//更新上一次坐标
                 totalScrollY = (int) ((float) totalScrollY + dy);
+                // 边界处理。
                 if (!isLoop) {
-                    int initPositionCircleLength = (int) (initPosition * (lineSpacingMultiplier * maxTextHeight));
-                    int initPositionStartY = -1 * initPositionCircleLength;
-                    if (totalScrollY < initPositionStartY) {
-                        totalScrollY = initPositionStartY;
+                    int top = (int) (-initPosition * itemHeight);
+                    if (totalScrollY < top) {
+                        totalScrollY = top;
+                    }
+                    int bottom = (int) ((getItemCount() - 1 - initPosition) * itemHeight);
+                    if (totalScrollY >= bottom) {
+                        totalScrollY = bottom;
                     }
                 }
                 break;
@@ -400,15 +367,7 @@ public class LoopView extends View {
                 }
                 return true;
         }
-
-        if (!isLoop) {
-            int circleLength = (int) ((float) (arrayList.size() - 1 - initPosition) * (lineSpacingMultiplier * maxTextHeight));
-            if (totalScrollY >= circleLength) {
-                totalScrollY = circleLength;
-            }
-        }
         invalidate();
-
         if (!gestureDetector.onTouchEvent(motionevent) && motionevent.getAction() == MotionEvent.ACTION_UP) {
             smoothScroll();
         }
@@ -420,18 +379,6 @@ public class LoopView extends View {
         return (int) (dipValue * scale + 0.5f);
     }
 
-    public float getLineSpacingMultiplier() {
-        return lineSpacingMultiplier;
-    }
-
-    public int getTextWidth() {
-        return maxTextWidth;
-    }
-
-    public int getTextHeight() {
-        return maxTextHeight;
-    }
-
     protected int getTotalScrollY() {
         return totalScrollY;
     }
@@ -441,19 +388,78 @@ public class LoopView extends View {
     }
 
 
-    public boolean isLoop() {
-        return isLoop;
-    }
-
     protected int getInitPosition() {
         return initPosition;
     }
 
-    public int getItemCount() {
-        return arrayList == null ? 0 : arrayList.size();
+
+    protected float getItemHeight() {
+        return itemHeight;
     }
 
-    public LoopViewData getItemData(int item) {
-        return arrayList.get(item);
+    protected Object getItemData(int item) {
+        return adapter.getItem(item);
+    }
+
+
+    public boolean isLoop() {
+        return isLoop;
+    }
+
+    public int getItemCount() {
+        return adapter == null ? 0 : adapter.getItemCount();
+    }
+
+    //设置不无限循环
+    public final void setNotLoop() {
+        isLoop = false;
+    }
+
+    //文字大小  sp
+    public final void setTextSize(float size) {
+        if (size > 0.0F) {
+            textSize = (int) (getContext().getResources().getDisplayMetrics().density * size);
+        }
+    }
+
+    public final void setInitPosition(int initPosition) {
+        this.initPosition = initPosition;
+        totalScrollY = 0;
+    }
+
+
+    //未选择文字颜色
+    public void setNoSelectTextColor(int noSelectTextColor) {
+        this.noSelectTextColor = noSelectTextColor;
+        invalidate();
+    }
+
+    //选择文字颜色
+    public void setSelectTextColor(int selectTextColor) {
+        this.selectTextColor = selectTextColor;
+        invalidate();
+    }
+
+    //线的颜色
+    public void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
+        invalidate();
+    }
+
+    //线的大小 dp
+    public void setLineWidth(float lineWidthDp) {
+        this.lineWidth = dip2px(getContext(), lineWidth);
+        invalidate();
+    }
+
+    //行间距
+    public void setLineSpacingMultiplier(float lineSpacingMultiplier) {
+        this.lineSpacingMultiplier = lineSpacingMultiplier;
+        invalidate();
+    }
+
+    public void setShowItemCount(int showItemCount) {
+        this.showItemCount = showItemCount;
+        invalidate();
     }
 }

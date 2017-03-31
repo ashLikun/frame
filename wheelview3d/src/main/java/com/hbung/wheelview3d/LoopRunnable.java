@@ -17,8 +17,7 @@ final class LoopRunnable implements Runnable {
     @Override
     public final void run() {
         LoopListener listener = loopView.loopListener;
-        int selectedItem = LoopView.getSelectedItem(loopView);
-        loopView.setFinalSelectedItem(selectedItem);
+        int selectedItem = loopView.getSelectedItem();
         if (selectedItem >= 0 && selectedItem < loopView.getItemCount() && listener != null) {
             listener.onItemSelect(selectedItem, loopView.getItemData(selectedItem));
         }
