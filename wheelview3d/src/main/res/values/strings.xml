@@ -1,0 +1,5 @@
+<resources>
+    <string name="pickerview_negative">取消</string>
+    <string name="pickerview_positive">确定</string>
+
+</resources>
