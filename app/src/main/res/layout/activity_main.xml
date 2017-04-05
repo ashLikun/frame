@@ -11,9 +11,18 @@
     tools:context="utils.hbung.com.utils.MainActivity">
 
     <com.hbung.wheelview3d.LoopView
-        android:layout_width="@dimen/dp_200"
-        android:layout_height="wrap_content"
         android:id="@+id/loopView"
-        ></com.hbung.wheelview3d.LoopView>
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="wrap_content"></com.hbung.wheelview3d.LoopView>
 
+    <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/flatButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loopView"
+        android:layout_marginTop="@dimen/dp_20"
+        android:padding="@dimen/dp_10"
+        android:text="chang"
+        app:strokeColor="@color/blue"
+        app:strokeWidth="@dimen/dp_1"></com.hbung.flatbutton.FlatButton>
 </RelativeLayout>

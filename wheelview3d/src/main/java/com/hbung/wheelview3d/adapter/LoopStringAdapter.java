@@ -10,7 +10,7 @@ import java.util.List;
  * 功能介绍：
  */
 
-public class LoopStringAdapter implements BaseLoopAdapter<String> {
+public class LoopStringAdapter extends BaseLoopAdapter<String> {
     List<String> listDatas;
 
     public LoopStringAdapter(List<String> listDatas) {

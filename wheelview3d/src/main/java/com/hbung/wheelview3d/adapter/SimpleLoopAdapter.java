@@ -10,7 +10,7 @@ import java.util.List;
  * 功能介绍：
  */
 
-public abstract class SimpleLoopAdapter<T> implements BaseLoopAdapter<T> {
+public abstract class SimpleLoopAdapter<T> extends BaseLoopAdapter<T> {
     List<T> listDatas;
 
     public SimpleLoopAdapter(List<T> listDatas) {

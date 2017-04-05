@@ -11,14 +11,18 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.hbung.wheelview3d.adapter.BaseLoopAdapter;
+import com.hbung.wheelview3d.adapter.ILoopShowData;
+import com.hbung.wheelview3d.adapter.LoopDataObserver;
+import com.hbung.wheelview3d.adapter.LoopShowDataAdapter;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 
-public class LoopView extends View {
+public class LoopView extends View implements LoopDataObserver {
     BaseLoopAdapter adapter;
     private int scrollDelay = 10;
     // Timer mTimer;
@@ -88,8 +92,26 @@ public class LoopView extends View {
         loopListener = LoopListener;
     }
 
+    //设配器模式的数据源
     public final void setAdapter(BaseLoopAdapter adapter) {
         this.adapter = adapter;
+        adapter.registerDataSetObserver(this);
+        measure();
+        invalidate();
+    }
+
+    //设置数据源  数据继承ILoopShowData
+    public final void setILoopShowData(List<ILoopShowData> list) {
+        this.adapter = new LoopShowDataAdapter(list);
+        adapter.registerDataSetObserver(this);
+        measure();
+        invalidate();
+    }
+
+    //被观察者数据变化
+    @Override
+    public void onChanged() {
+        cleanScrollY();
         measure();
         invalidate();
     }
@@ -288,6 +310,9 @@ public class LoopView extends View {
         mPaint.setStrokeWidth(lineWidth);
     }
 
+    public void cleanScrollY() {
+        totalScrollY = 0;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -296,6 +321,7 @@ public class LoopView extends View {
         measure();
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), measuredHeight);
     }
+
 
     //测量
     private void measure() {
@@ -411,8 +437,11 @@ public class LoopView extends View {
     }
 
     //设置不无限循环
-    public final void setNotLoop() {
-        isLoop = false;
+    public final void setIsLoop(boolean isLoop) {
+        if (this.isLoop != isLoop) {
+            this.isLoop = isLoop;
+            invalidate();
+        }
     }
 
     //文字大小  sp
@@ -424,7 +453,8 @@ public class LoopView extends View {
 
     public final void setInitPosition(int initPosition) {
         this.initPosition = initPosition;
-        totalScrollY = 0;
+        cleanScrollY();
+        invalidate();
     }
 
 
@@ -462,4 +492,6 @@ public class LoopView extends View {
         this.showItemCount = showItemCount;
         invalidate();
     }
+
+
 }

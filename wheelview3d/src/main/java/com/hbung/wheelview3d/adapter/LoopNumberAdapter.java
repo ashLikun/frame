@@ -1,5 +1,6 @@
 package com.hbung.wheelview3d.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,11 +11,18 @@ import java.util.List;
  * 功能介绍：
  */
 
-public class LoopNumberAdapter implements BaseLoopAdapter<Integer> {
+public class LoopNumberAdapter extends BaseLoopAdapter<Integer> {
     List<Integer> listDatas;
 
     public LoopNumberAdapter(List<Integer> listDatas) {
         this.listDatas = listDatas;
+    }
+
+    public LoopNumberAdapter(int start, int end) {
+        listDatas = new ArrayList<>();
+        for (int i = start; i <= end; i++) {
+            listDatas.add(i);
+        }
     }
 
     @Override

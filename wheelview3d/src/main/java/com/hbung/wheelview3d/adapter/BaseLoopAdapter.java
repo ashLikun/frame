@@ -8,10 +8,24 @@ package com.hbung.wheelview3d.adapter;
  * 功能介绍：
  */
 
-public interface BaseLoopAdapter<T> {
-    public int getItemCount();
+public abstract class BaseLoopAdapter<T> {
+    private final LoopDataObservable loopDataObservable = new LoopDataObservable();
 
-    public T getItem(int position);
+    public abstract int getItemCount();
 
-    public String getShowText(int position);
+    public abstract T getItem(int position);
+
+    public abstract String getShowText(int position);
+
+    public void registerDataSetObserver(LoopDataObserver observer) {
+        loopDataObservable.registerObserver(observer);
+    }
+
+    public void unregisterDataSetObserver(LoopDataObserver observer) {
+        loopDataObservable.unregisterObserver(observer);
+    }
+
+    public void notifyDataSetChanged() {
+        loopDataObservable.notifyChanged();
+    }
 }
