@@ -2,12 +2,13 @@ package com.hbung.wheelview3d.view;
 
 import android.view.View;
 
-import com.hbung.wheelview3d.LoopListener;
+import com.hbung.wheelview3d.listener.LoopListener;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.R;
 import com.hbung.wheelview3d.adapter.BaseLoopAdapter;
 import com.hbung.wheelview3d.adapter.ILoopShowData;
 import com.hbung.wheelview3d.adapter.LoopShowDataAdapter;
+import com.hbung.wheelview3d.listener.OnItemSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +56,13 @@ public class LoopOptions {
         options2 = (LoopView) pickeroptions.findViewById(R.id.options2);
         options3 = (LoopView) pickeroptions.findViewById(R.id.options3);
         changVisibility();
+        setOneDatas();
+        setTwoDatas();
+        setThreeDatas();
         options1.setAdapter(options1Adapter);
         options2.setAdapter(options2Adapter);
         options3.setAdapter(options3Adapter);
-        setOneDatas();
-        setTwoDatas(options1.getSelectedItem());
-        setThreeDatas(options2.getSelectedItem());
+
         setListener();
     }
 
@@ -69,16 +71,16 @@ public class LoopOptions {
             options1.setListener(new LoopListener() {
                 @Override
                 public void onItemSelect(int item, Object data) {
-                    setTwoDatas(item);
+                    setTwoDatas();
                     if (!options2Datas.isEmpty()) {
-                        setThreeDatas(options2.getSelectedItem());
+                        setThreeDatas();
                     }
                 }
             });
             options2.setListener(new LoopListener() {
                 @Override
                 public void onItemSelect(int item, Object data) {
-                    setThreeDatas(item);
+                    setThreeDatas();
                 }
             });
         } else {
@@ -93,27 +95,36 @@ public class LoopOptions {
         if (onItemSelectListener != null) {
             List<ILoopShowData> datas = onItemSelectListener.getOneData();
             if (datas != null) {
+                options1Datas.clear();
                 options1Datas.addAll(datas);
+                options1Adapter.notifyDataSetChanged();
             }
         }
     }
 
     //设置第二列数据源
-    private void setTwoDatas(int onePosition) {
+    private void setTwoDatas() {
+        int onePosition = options1.getSelectedItem();
         if (onItemSelectListener != null && options1Datas.size() > onePosition) {
             List<ILoopShowData> datas = onItemSelectListener.getTowData(onePosition, options1Datas.get(onePosition));
             if (datas != null) {
+                options2Datas.clear();
                 options2Datas.addAll(datas);
+                options2Adapter.notifyDataSetChanged();
             }
         }
     }
 
     //设置第三列数据源
-    private void setThreeDatas(int twoPosition) {
-        if (onItemSelectListener != null && options2Datas.size() > twoPosition) {
-            List<ILoopShowData> datas = onItemSelectListener.getThreeData(twoPosition, options2Datas.get(twoPosition));
+    private void setThreeDatas() {
+        int onePosition = options1.getSelectedItem();
+        int twoPosition = options2.getSelectedItem();
+        if (onItemSelectListener != null && options2Datas.size() > twoPosition && options1Datas.size() > onePosition) {
+            List<ILoopShowData> datas = onItemSelectListener.getThreeData(twoPosition, options1Datas.get(onePosition), options2Datas.get(twoPosition));
             if (datas != null) {
+                options3Datas.clear();
                 options3Datas.addAll(datas);
+                options3Adapter.notifyDataSetChanged();
             }
         }
     }
@@ -145,15 +156,45 @@ public class LoopOptions {
         options3.setIsLoop(loop);
     }
 
-    public static abstract class OnItemSelectListener<T extends ILoopShowData> {
-        public abstract List<T> getOneData();
-
-        public List<T> getTowData(int onePosition, T oneItemData) {
-            return null;
-        }
-
-        public List<T> getThreeData(int twoPosition, T towItemData) {
-            return null;
+    public void setTextSize(float size) {
+        if (size > 0) {
+            options1.setTextSize(size);
+            options2.setTextSize(size);
+            options3.setTextSize(size);
         }
     }
+
+    public void setLineSpacingMultiplier(float size) {
+        if (size > 0) {
+            options1.setLineSpacingMultiplier(size);
+            options2.setLineSpacingMultiplier(size);
+            options3.setLineSpacingMultiplier(size);
+        }
+    }
+
+    public void setDividerColor(int dividerColor) {
+        if (dividerColor > 0) {
+            options1.setDividerColor(dividerColor);
+            options2.setDividerColor(dividerColor);
+            options3.setDividerColor(dividerColor);
+        }
+    }
+
+    public void setSelectTextColor(int selectTextColor) {
+        if (selectTextColor > 0) {
+            options1.setSelectTextColor(selectTextColor);
+            options2.setSelectTextColor(selectTextColor);
+            options3.setSelectTextColor(selectTextColor);
+        }
+    }
+
+    public void setNoSelectTextColor(int noSelectTextColor) {
+        if (noSelectTextColor > 0) {
+            options1.setNoSelectTextColor(noSelectTextColor);
+            options2.setNoSelectTextColor(noSelectTextColor);
+            options3.setNoSelectTextColor(noSelectTextColor);
+        }
+    }
+
+
 }

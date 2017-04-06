@@ -9,10 +9,11 @@
         android:id="@+id/negativeButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/pickerview_topbar_padding"
+        android:paddingRight="@dimen/pickerview_topbar_padding"
         android:text="@string/pickerview_negative"
+        android:textColor="@color/pickerview_topbar_button_negative"
         android:textSize="@dimen/pickerview_topbar_btn_textsize" />
 
     <TextView
@@ -31,9 +32,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@android:color/transparent"
-        android:gravity="right|center_vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/pickerview_topbar_padding"
         android:paddingRight="@dimen/pickerview_topbar_padding"
         android:text="@string/pickerview_positive"
+        android:textColor="@color/pickerview_topbar_button_positive"
         android:textSize="@dimen/pickerview_topbar_btn_textsize" />
 </RelativeLayout>

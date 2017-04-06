@@ -14,6 +14,7 @@ import com.hbung.wheelview3d.adapter.BaseLoopAdapter;
 import com.hbung.wheelview3d.adapter.ILoopShowData;
 import com.hbung.wheelview3d.adapter.LoopDataObserver;
 import com.hbung.wheelview3d.adapter.LoopShowDataAdapter;
+import com.hbung.wheelview3d.listener.LoopListener;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -39,9 +40,9 @@ public class LoopView extends View implements LoopDataObserver {
     private int maxTextHeight;
 
     private int textSize;//文字大小
-    private int noSelectTextColor = 0xffafafaf;//未选中的文字颜色
-    private int selectTextColor = 0xff313131;//选中的文字颜色
-    private int lineColor = 0xffc5c5c5;//线的颜色
+    private int noSelectTextColor = getResources().getColor(R.color.loopview_noselect_textColor);//未选中的文字颜色
+    private int selectTextColor = getResources().getColor(R.color.loopview_select_textColor);//选中的文字颜色
+    private int dividerColor = getResources().getColor(R.color.loopview_dividerColor);//线的颜色
     private float lineWidth;//线的大小px
     private float lineSpacingMultiplier = 2.5f;//行间距
 
@@ -92,6 +93,10 @@ public class LoopView extends View implements LoopDataObserver {
         loopListener = LoopListener;
     }
 
+    public final LoopListener getLoopListener() {
+        return loopListener;
+    }
+
     //设配器模式的数据源
     public final void setAdapter(BaseLoopAdapter adapter) {
         this.adapter = adapter;
@@ -102,10 +107,7 @@ public class LoopView extends View implements LoopDataObserver {
 
     //设置数据源  数据继承ILoopShowData
     public final void setILoopShowData(List<ILoopShowData> list) {
-        this.adapter = new LoopShowDataAdapter(list);
-        adapter.registerDataSetObserver(this);
-        measure();
-        invalidate();
+        setAdapter(new LoopShowDataAdapter(list));
     }
 
     //被观察者数据变化
@@ -304,7 +306,7 @@ public class LoopView extends View implements LoopDataObserver {
 
     //设置画笔为绘制线
     private void switchPaintToLine() {
-        mPaint.setColor(lineColor);
+        mPaint.setColor(dividerColor);
         mPaint.setTextScaleX(1F);
         mPaint.setTextSize(textSize);
         mPaint.setStrokeWidth(lineWidth);
@@ -340,7 +342,7 @@ public class LoopView extends View implements LoopDataObserver {
                 initPosition = 0;
             }
         }
-        preCurrentIndex = initPosition;
+        selectedItem = preCurrentIndex = initPosition;
     }
 
     //测量文字大小
@@ -448,6 +450,7 @@ public class LoopView extends View implements LoopDataObserver {
     public final void setTextSize(float size) {
         if (size > 0.0F) {
             textSize = (int) (getContext().getResources().getDisplayMetrics().density * size);
+            invalidate();
         }
     }
 
@@ -471,8 +474,8 @@ public class LoopView extends View implements LoopDataObserver {
     }
 
     //线的颜色
-    public void setLineColor(int lineColor) {
-        this.lineColor = lineColor;
+    public void setDividerColor(int dividerColor) {
+        this.dividerColor = dividerColor;
         invalidate();
     }
 

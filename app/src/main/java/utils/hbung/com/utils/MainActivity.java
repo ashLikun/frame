@@ -5,13 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.hbung.wheelview3d.LoopListener;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.hbung.wheelview3d.adapter.SimpleLoopAdapter;
+import com.hbung.wheelview3d.listener.LoopListener;
+import com.hbung.wheelview3d.listener.OnItemSelectListener;
+import com.hbung.wheelview3d.view.DialogOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import utils.hbung.com.utils.datebean.CityData;
+import utils.hbung.com.utils.datebean.QuyuData;
+import utils.hbung.com.utils.datebean.ShenData;
 
 public class MainActivity extends AppCompatActivity {
     LoopView loopView;
@@ -43,26 +49,74 @@ public class MainActivity extends AppCompatActivity {
         });
         loopView.setSelectTextColor(0xffff0000);
         loopView.setLineWidth(3);
-        loopView.setLineColor(0xffff0000);
+        loopView.setDividerColor(0xffff0000);
         loopView.setShowItemCount(9);
 
         findViewById(R.id.flatButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listDatas.clear();
-                if (chang) {
-                    for (int i = 0; i < 40; i++) {
-                        listDatas.add(new LoopViewData(i, "新的第" + i));
-                    }
-                } else {
-                    for (int i = 0; i < 40; i++) {
-                        listDatas.add(new LoopViewData(i, "新的新的第" + i));
-                    }
-                }
-                adapter.notifyDataSetChanged();
-                chang = !chang;
+//                listDatas.clear();
+//                if (chang) {
+//                    for (int i = 0; i < 40; i++) {
+//                        listDatas.add(new LoopViewData(i, "新的第" + i));
+//                    }
+//                } else {
+//                    for (int i = 0; i < 40; i++) {
+//                        listDatas.add(new LoopViewData(i, "新的新的第" + i));
+//                    }
+//                }
+//                adapter.notifyDataSetChanged();
+//                chang = !chang;
+                showDialog();
             }
         });
 
+    }
+
+    private void showDialog() {
+        DialogOptions dialogOptions = new DialogOptions.Builder(this)
+                .setOnItemSelectListener(new OnItemSelectListener<ShenData, CityData, QuyuData>() {
+
+                    @Override
+                    public List<ShenData> getOneData() {
+                        return getShenData();
+                    }
+
+                    @Override
+                    public List<CityData> getTowData(int onePosition, ShenData oneItemData) {
+                        return getCity(oneItemData);
+                    }
+
+                    @Override
+                    public List<QuyuData> getThreeData(int twoPosition, ShenData oneItemData, CityData towItemData) {
+                        return getQuyu(towItemData);
+                    }
+                })
+                .builder();
+        dialogOptions.show();
+    }
+
+    private List<ShenData> getShenData() {
+        List<ShenData> datas = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            datas.add(new ShenData(i, "省" + i));
+        }
+        return datas;
+    }
+
+    private List<CityData> getCity(ShenData shenData) {
+        List<CityData> datas = new ArrayList<>();
+        for (int i = 0; i < 20 + shenData.getId(); i++) {
+            datas.add(new CityData(i, "省" + shenData.getId() + "的 市" + i));
+        }
+        return datas;
+    }
+
+    private List<QuyuData> getQuyu(CityData cityData) {
+        List<QuyuData> datas = new ArrayList<>();
+        for (int i = 0; i < 30 + cityData.getId(); i++) {
+            datas.add(new QuyuData(i, "市" + cityData.getId() + "的 区" + i));
+        }
+        return datas;
     }
 }

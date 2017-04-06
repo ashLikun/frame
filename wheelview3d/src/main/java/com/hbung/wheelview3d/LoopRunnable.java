@@ -4,6 +4,8 @@
 
 package com.hbung.wheelview3d;
 
+import com.hbung.wheelview3d.listener.LoopListener;
+
 final class LoopRunnable implements Runnable {
 
     final LoopView loopView;

@@ -2,4 +2,9 @@
 <resources>
     <color name="pickerview_topbar_bg">#f5f5f5</color>
     <color name="pickerview_topbar_title">#000000</color>
+    <color name="pickerview_topbar_button_negative">#ff000000</color>
+    <color name="pickerview_topbar_button_positive">#ff000000</color>
+    <color name="loopview_select_textColor">#ff313131</color>
+    <color name="loopview_noselect_textColor">#ffafafaf</color>
+    <color name="loopview_dividerColor">#ffc5c5c5</color>
 </resources>

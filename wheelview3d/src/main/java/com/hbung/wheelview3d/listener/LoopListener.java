@@ -2,7 +2,7 @@
 // Jad home page: http://www.geocities.com/kpdus/jad.html
 // Decompiler options: braces fieldsfirst space lnc 
 
-package com.hbung.wheelview3d;
+package com.hbung.wheelview3d.listener;
 
 
 public interface LoopListener<T> {

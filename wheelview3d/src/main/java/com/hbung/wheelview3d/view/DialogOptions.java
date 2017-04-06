@@ -10,6 +10,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hbung.wheelview3d.R;
+import com.hbung.wheelview3d.listener.OnItemSelectListener;
 
 /**
  * 作者　　: 李坤
@@ -39,23 +41,54 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
     private int animResId = 0;
     private int layoutId = 0;
     private int topbarLayoutId = 0;
-
-
+    OnItemSelectListener onItemSelectListener;
     private String negativeText;
-    private int negativeTextSize;
+    private float negativeTextSize;
+    private String positiveText;
+    private float positiveTextSize;
+    private float loopTextSize;//滚轮文字大小
+    private float titleSize;//标题文字大小
+    private String titleText;//标题文字
 
-    public DialogOptions(Context context) {
-        this(context, R.style.Dialog_Option);
+    private int noSelectTextColor; //分割线以外的文字颜色
+    private int selectTextColor; //分割线之间的文字颜色
+    private int dividerColor; //分割线的颜色
+    // 条目间距倍数 默认2.5F
+    private float lineSpacingMultiplier;
+    //是否可以取消
+    private boolean isCancelable;
+    //是否联动
+    private boolean isLinkage;
+    private boolean isLoop;
+    //对话框对齐方式
+    private int gravity;
+
+    private DialogOptions(Builder builder) {
+        super(builder.context, builder.themeResId);
+        this.animResId = builder.animResId;
+        this.layoutId = builder.layoutId;
+        this.topbarLayoutId = builder.topbarLayoutId;
+        this.onItemSelectListener = builder.onItemSelectListener;
+        this.negativeText = builder.negativeText;
+        this.negativeTextSize = builder.negativeTextSize;
+        this.positiveText = builder.positiveText;
+        this.positiveTextSize = builder.positiveTextSize;
+        this.loopTextSize = builder.loopTextSize;
+        this.titleSize = builder.titleSize;
+        this.titleText = builder.titleText;
+        this.noSelectTextColor = builder.noSelectTextColor;
+        this.selectTextColor = builder.selectTextColor;
+        this.dividerColor = builder.dividerColor;
+        this.lineSpacingMultiplier = builder.lineSpacingMultiplier;
+        this.isCancelable = builder.isCancelable;
+        this.isLinkage = builder.isLinkage;
+        this.isLoop = builder.isLoop;
+        this.gravity = builder.gravity;
+        init(builder.context);
     }
 
-    public DialogOptions(Context context, int themeResId) {
-        super(context, themeResId);
-        if (themeResId == R.style.Dialog_Option) {
-            animResId = R.style.pickerview_dialogAnim;
-        }
-        init(context);
-    }
 
+    //onCreate  之前的初始化
     private void init(Context context) {
         if (animResId != 0) {
             getWindow().setWindowAnimations(animResId);
@@ -72,8 +105,16 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
                 rootView.addView(topBar, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
         }
-        loopOptions = new LoopOptions(rootView.findViewById(R.id.pickeroptions));
+        loopOptions = new LoopOptions(rootView.findViewById(R.id.pickeroptions), onItemSelectListener);
         setContentView(rootView);
+        setCancelable(isCancelable);
+        loopOptions.setLoop(isLoop);
+        loopOptions.setTextSize(loopTextSize);
+        loopOptions.setLinkage(isLinkage);
+        loopOptions.setLineSpacingMultiplier(lineSpacingMultiplier);
+        loopOptions.setDividerColor(dividerColor);
+        loopOptions.setNoSelectTextColor(dividerColor);
+        loopOptions.setSelectTextColor(dividerColor);
     }
 
     @Override
@@ -82,10 +123,29 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         initView();
     }
 
+    //初始化view
     private void initView() {
+        getWindow().setGravity(gravity);
+
         negativeButton = (Button) findViewById(R.id.negativeButton);
         positiveButton = (Button) findViewById(R.id.positiveButton);
         titleTextView = (TextView) findViewById(R.id.titleTv);
+
+        if (negativeText != null && negativeText.length() > 0)
+            negativeButton.setText(negativeText);
+        if (negativeTextSize > 0)
+            negativeButton.setTextSize(negativeTextSize);
+        negativeButton.setBackgroundDrawable(createRipple(0x00000000, 0xff999999));
+        if (positiveText != null && positiveText.length() > 0)
+            positiveButton.setText(positiveText);
+        if (positiveTextSize > 0)
+            positiveButton.setTextSize(positiveTextSize);
+        positiveButton.setBackgroundDrawable(createRipple(0x00000000, 0xff999999));
+
+        if (titleText != null && titleText.length() > 0)
+            titleTextView.setText(titleText);
+        if (titleSize > 0)
+            titleTextView.setTextSize(titleSize);
 
         negativeButton.setOnClickListener(this);
         positiveButton.setOnClickListener(this);
@@ -95,13 +155,150 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.negativeButton) {
-
+            dismiss();
         } else if (v.getId() == R.id.positiveButton) {
 
         }
     }
 
     public static class Builder {
+        Context context;
+        int themeResId = R.style.Dialog_Option;
+        //动画属性ID
+        private int animResId = 0;
+        private int layoutId = 0;
+        private int topbarLayoutId = 0;
+        OnItemSelectListener onItemSelectListener;
+        private String negativeText;
+        private float negativeTextSize;
+        private String positiveText;
+        private float positiveTextSize;
+        private float loopTextSize;//滚轮文字大小
+        private float titleSize;//标题文字大小
+        private String titleText;//标题文字
+
+        private int noSelectTextColor; //分割线以外的文字颜色
+        private int selectTextColor; //分割线之间的文字颜色
+        private int dividerColor; //分割线的颜色
+        // 条目间距倍数 默认2.5F
+        private float lineSpacingMultiplier = 2.5F;
+        //是否可以取消
+        private boolean isCancelable = true;
+        //是否联动
+        private boolean isLinkage = true;
+        private boolean isLoop = true;
+        private int gravity = Gravity.BOTTOM;
+
+        public Builder(Context context) {
+            this.context = context;
+        }
+
+        public Builder setThemeResId(int themeResId) {
+            this.themeResId = themeResId;
+            return this;
+        }
+
+        public Builder setAnimResId(int animResId) {
+            this.animResId = animResId;
+            return this;
+        }
+
+        public Builder setLayoutId(int layoutId) {
+            this.layoutId = layoutId;
+            return this;
+        }
+
+        public Builder setTopbarLayoutId(int topbarLayoutId) {
+            this.topbarLayoutId = topbarLayoutId;
+            return this;
+        }
+
+        public Builder setOnItemSelectListener(OnItemSelectListener onItemSelectListener) {
+            this.onItemSelectListener = onItemSelectListener;
+            return this;
+        }
+
+        public Builder setNegativeText(String negativeText) {
+            this.negativeText = negativeText;
+            return this;
+        }
+
+        public Builder setNegativeTextSize(float negativeTextSize) {
+            this.negativeTextSize = negativeTextSize;
+            return this;
+        }
+
+        public Builder setPositiveText(String positiveText) {
+            this.positiveText = positiveText;
+            return this;
+        }
+
+        public Builder setPositiveTextSize(float positiveTextSize) {
+            this.positiveTextSize = positiveTextSize;
+            return this;
+        }
+
+        public Builder setLoopTextSize(float loopTextSize) {
+            this.loopTextSize = loopTextSize;
+            return this;
+        }
+
+        public Builder setTitleSize(float titleSize) {
+            this.titleSize = titleSize;
+            return this;
+        }
+
+        public Builder setTitleText(String titleText) {
+            this.titleText = titleText;
+            return this;
+        }
+
+        public Builder setNoSelectTextColor(int noSelectTextColor) {
+            this.noSelectTextColor = noSelectTextColor;
+            return this;
+        }
+
+        public Builder setSelectTextColor(int selectTextColor) {
+            this.selectTextColor = selectTextColor;
+            return this;
+        }
+
+        public Builder setDividerColor(int dividerColor) {
+            this.dividerColor = dividerColor;
+            return this;
+        }
+
+        public Builder setLineSpacingMultiplier(float lineSpacingMultiplier) {
+            this.lineSpacingMultiplier = lineSpacingMultiplier;
+            return this;
+        }
+
+        public Builder setCancelable(boolean cancelable) {
+            isCancelable = cancelable;
+            return this;
+        }
+
+        public Builder setLinkage(boolean linkage) {
+            isLinkage = linkage;
+            return this;
+        }
+
+        public Builder setLoop(boolean loop) {
+            this.isLoop = loop;
+            return this;
+        }
+
+        public Builder setGravity(int gravity) {
+            this.gravity = gravity;
+            return this;
+        }
+
+        public DialogOptions builder() {
+            if (themeResId == R.style.Dialog_Option) {
+                animResId = R.style.pickerview_dialogAnim;
+            }
+            return new DialogOptions(this);
+        }
 
     }
 
@@ -112,10 +309,10 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
      * <p>
      * 方法功能：ripple
      */
-    public Drawable createRipple(Context c, int normal, int pressed) {
+    public Drawable createRipple(int normal, int pressed) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{c.getResources().getColor(pressed)});
-            ColorDrawable content = new ColorDrawable(c.getResources().getColor(normal));
+            ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{pressed});
+            ColorDrawable content = new ColorDrawable(normal);
             RippleDrawable ripple = new RippleDrawable(colorList, content.getAlpha() == 0 ? null : content, content.getAlpha() == 0 ? new ColorDrawable(Color.WHITE) : null);
             return ripple;
         } else {
