@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_number_progress_dialog"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="加载中"
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/text_xxxm" />
+
+    <com.hbung.numberprogressbar.NumberProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:progress_current="20"
+        app:progress_max="100"
+        app:progress_reached_bar_height="2dp"
+        app:progress_reached_color="@color/main_color"
+        app:progress_text_color="@color/main_color"
+        app:progress_text_offset="2dp"
+        app:progress_text_size="@dimen/text_h"
+        app:progress_unreached_bar_height="2dp"
+        app:progress_unreached_color="@color/gray" />
+
+</LinearLayout>

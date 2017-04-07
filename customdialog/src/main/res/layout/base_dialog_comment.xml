@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/dp_5"
+    android:visibility="visible">
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/editText_comment"
+        android:layout_weight="1"
+        app:counterEnabled="true"
+        app:counterMaxLength="100">
+
+        <EditText
+            android:id="@+id/esotericName"
+            style="@style/editText_comment"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="说点什么吧..." />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <com.hbung.flatbutton.FlatButton
+        android:id="@+id/item_issuer_comment_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_5"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_5"
+        android:text="发送"
+        android:textSize="@dimen/text_xxxm"
+        app:colorPressed="@color/gray_ee"
+        app:colorPressedText="@color/gray_text"
+        app:cornerRadius="@dimen/dp_4"
+        app:strokeColor="@color/main_color"
+        app:strokeWidth="@dimen/dp_1" />
+
+</LinearLayout>
+
