@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 public class BaseHttpResponse {
 
-
     public transient String json;
 
     @SerializedName("code")

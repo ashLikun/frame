@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.hbung.utils.ui.ToastUtils;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.hbung.wheelview3d.adapter.SimpleLoopAdapter;
 import com.hbung.wheelview3d.listener.LoopListener;
 import com.hbung.wheelview3d.listener.OnItemSelectListener;
+import com.hbung.wheelview3d.listener.OnPositiveClickListener;
 import com.hbung.wheelview3d.view.DialogOptions;
+import com.hbung.wheelview3d.view.LoopOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDialog() {
         DialogOptions dialogOptions = new DialogOptions.Builder(this)
-                .setOnItemSelectListener(new OnItemSelectListener<ShenData, CityData, QuyuData>() {
+                .onItemSelectListener(new OnItemSelectListener<ShenData, CityData, QuyuData>() {
 
                     @Override
                     public List<ShenData> getOneData() {
@@ -86,12 +89,21 @@ public class MainActivity extends AppCompatActivity {
                     public List<CityData> getTowData(int onePosition, ShenData oneItemData) {
                         return getCity(oneItemData);
                     }
-
+//
+//                    @Override
+//                    public List<QuyuData> getThreeData(int twoPosition, ShenData oneItemData, CityData towItemData) {
+//                        return getQuyu(towItemData);
+//                    }
+                })
+                .onPositiveClickListener(new OnPositiveClickListener<ShenData, CityData, QuyuData>() {
                     @Override
-                    public List<QuyuData> getThreeData(int twoPosition, ShenData oneItemData, CityData towItemData) {
-                        return getQuyu(towItemData);
+                    public void onPositive(ShenData oneData, CityData twoData, QuyuData threadData) {
+                        ToastUtils.show(MainActivity.this, oneData.getShowText() + "   " + twoData != null ? twoData.getShowText() : ""
+                                + "    " + threadData != null ? threadData.getShowText() : "", 1);
                     }
                 })
+                .mode(LoopOptions.Mode.TWO)
+                .loop(false)
                 .builder();
         dialogOptions.show();
     }

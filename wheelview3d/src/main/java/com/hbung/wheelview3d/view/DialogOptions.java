@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.hbung.wheelview3d.R;
 import com.hbung.wheelview3d.listener.OnItemSelectListener;
+import com.hbung.wheelview3d.listener.OnPositiveClickListener;
 
 /**
  * 作者　　: 李坤
@@ -42,6 +43,7 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
     private int layoutId = 0;
     private int topbarLayoutId = 0;
     OnItemSelectListener onItemSelectListener;
+    OnPositiveClickListener onPositiveClickListener;
     private String negativeText;
     private float negativeTextSize;
     private String positiveText;
@@ -69,6 +71,7 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         this.layoutId = builder.layoutId;
         this.topbarLayoutId = builder.topbarLayoutId;
         this.onItemSelectListener = builder.onItemSelectListener;
+        this.onPositiveClickListener = builder.onPositiveClickListener;
         this.negativeText = builder.negativeText;
         this.negativeTextSize = builder.negativeTextSize;
         this.positiveText = builder.positiveText;
@@ -84,21 +87,21 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         this.isLinkage = builder.isLinkage;
         this.isLoop = builder.isLoop;
         this.gravity = builder.gravity;
-        init(builder.context);
+        init(builder);
     }
 
 
     //onCreate  之前的初始化
-    private void init(Context context) {
+    private void init(Builder builder) {
         if (animResId != 0) {
             getWindow().setWindowAnimations(animResId);
         }
         if (layoutId == 0) {
             layoutId = R.layout.pickerview_options;
         }
-        rootView = (ViewGroup) LayoutInflater.from(context).inflate(layoutId, null);
+        rootView = (ViewGroup) LayoutInflater.from(builder.context).inflate(layoutId, null);
         if (topbarLayoutId > 0) {
-            View topBar = LayoutInflater.from(context).inflate(topbarLayoutId, null);
+            View topBar = LayoutInflater.from(builder.context).inflate(topbarLayoutId, null);
             if (topBar != null) {
                 rootView.removeViewAt(0);
                 //加入rootView
@@ -115,6 +118,8 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         loopOptions.setDividerColor(dividerColor);
         loopOptions.setNoSelectTextColor(dividerColor);
         loopOptions.setSelectTextColor(dividerColor);
+        loopOptions.setMode(builder.mode);
+        loopOptions.setInitPosition(builder.initPosition);
     }
 
     @Override
@@ -157,7 +162,10 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         if (v.getId() == R.id.negativeButton) {
             dismiss();
         } else if (v.getId() == R.id.positiveButton) {
-
+            if (onPositiveClickListener != null) {
+                onPositiveClickListener.onPositive(loopOptions.getOneData(), loopOptions.getTwoData(), loopOptions.getThreeData());
+            }
+            dismiss();
         }
     }
 
@@ -169,6 +177,7 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         private int layoutId = 0;
         private int topbarLayoutId = 0;
         OnItemSelectListener onItemSelectListener;
+        OnPositiveClickListener onPositiveClickListener;
         private String negativeText;
         private float negativeTextSize;
         private String positiveText;
@@ -188,108 +197,125 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         private boolean isLinkage = true;
         private boolean isLoop = true;
         private int gravity = Gravity.BOTTOM;
+        private LoopOptions.Mode mode = LoopOptions.Mode.THREE;
+        private int initPosition = 0;
 
         public Builder(Context context) {
             this.context = context;
         }
 
-        public Builder setThemeResId(int themeResId) {
+        public Builder themeResId(int themeResId) {
             this.themeResId = themeResId;
             return this;
         }
 
-        public Builder setAnimResId(int animResId) {
+        public Builder animResId(int animResId) {
             this.animResId = animResId;
             return this;
         }
 
-        public Builder setLayoutId(int layoutId) {
+        public Builder layoutId(int layoutId) {
             this.layoutId = layoutId;
             return this;
         }
 
-        public Builder setTopbarLayoutId(int topbarLayoutId) {
+        public Builder topbarLayoutId(int topbarLayoutId) {
             this.topbarLayoutId = topbarLayoutId;
             return this;
         }
 
-        public Builder setOnItemSelectListener(OnItemSelectListener onItemSelectListener) {
+        public Builder onItemSelectListener(OnItemSelectListener onItemSelectListener) {
             this.onItemSelectListener = onItemSelectListener;
             return this;
         }
 
-        public Builder setNegativeText(String negativeText) {
+        public Builder onPositiveClickListener(OnPositiveClickListener onPositiveClickListener) {
+            this.onPositiveClickListener = onPositiveClickListener;
+            return this;
+        }
+
+        public Builder negativeText(String negativeText) {
             this.negativeText = negativeText;
             return this;
         }
 
-        public Builder setNegativeTextSize(float negativeTextSize) {
+        public Builder negativeTextSize(float negativeTextSize) {
             this.negativeTextSize = negativeTextSize;
             return this;
         }
 
-        public Builder setPositiveText(String positiveText) {
+        public Builder positiveText(String positiveText) {
             this.positiveText = positiveText;
             return this;
         }
 
-        public Builder setPositiveTextSize(float positiveTextSize) {
+        public Builder positiveTextSize(float positiveTextSize) {
             this.positiveTextSize = positiveTextSize;
             return this;
         }
 
-        public Builder setLoopTextSize(float loopTextSize) {
+        public Builder loopTextSize(float loopTextSize) {
             this.loopTextSize = loopTextSize;
             return this;
         }
 
-        public Builder setTitleSize(float titleSize) {
+        public Builder titleSize(float titleSize) {
             this.titleSize = titleSize;
             return this;
         }
 
-        public Builder setTitleText(String titleText) {
+        public Builder titleText(String titleText) {
             this.titleText = titleText;
             return this;
         }
 
-        public Builder setNoSelectTextColor(int noSelectTextColor) {
+        public Builder noSelectTextColor(int noSelectTextColor) {
             this.noSelectTextColor = noSelectTextColor;
             return this;
         }
 
-        public Builder setSelectTextColor(int selectTextColor) {
+        public Builder selectTextColor(int selectTextColor) {
             this.selectTextColor = selectTextColor;
             return this;
         }
 
-        public Builder setDividerColor(int dividerColor) {
+        public Builder dividerColor(int dividerColor) {
             this.dividerColor = dividerColor;
             return this;
         }
 
-        public Builder setLineSpacingMultiplier(float lineSpacingMultiplier) {
+        public Builder lineSpacingMultiplier(float lineSpacingMultiplier) {
             this.lineSpacingMultiplier = lineSpacingMultiplier;
             return this;
         }
 
-        public Builder setCancelable(boolean cancelable) {
+        public Builder cancelable(boolean cancelable) {
             isCancelable = cancelable;
             return this;
         }
 
-        public Builder setLinkage(boolean linkage) {
+        public Builder linkage(boolean linkage) {
             isLinkage = linkage;
             return this;
         }
 
-        public Builder setLoop(boolean loop) {
+        public Builder loop(boolean loop) {
             this.isLoop = loop;
             return this;
         }
 
-        public Builder setGravity(int gravity) {
+        public Builder gravity(int gravity) {
             this.gravity = gravity;
+            return this;
+        }
+
+        public Builder mode(LoopOptions.Mode mode) {
+            this.mode = mode;
+            return this;
+        }
+
+        public Builder initPosition(int initPosition) {
+            this.initPosition = initPosition;
             return this;
         }
 

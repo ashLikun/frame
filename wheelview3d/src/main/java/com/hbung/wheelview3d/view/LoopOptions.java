@@ -1,5 +1,6 @@
 package com.hbung.wheelview3d.view;
 
+import android.graphics.SweepGradient;
 import android.view.View;
 
 import com.hbung.wheelview3d.listener.LoopListener;
@@ -55,12 +56,14 @@ public class LoopOptions {
         options1 = (LoopView) pickeroptions.findViewById(R.id.options1);
         options2 = (LoopView) pickeroptions.findViewById(R.id.options2);
         options3 = (LoopView) pickeroptions.findViewById(R.id.options3);
-        changVisibility();
+        options1.setInitPosition(0);
+        options2.setInitPosition(0);
+        options3.setInitPosition(0);
         setOneDatas();
-        setTwoDatas();
-        setThreeDatas();
         options1.setAdapter(options1Adapter);
+        setTwoDatas();
         options2.setAdapter(options2Adapter);
+        setThreeDatas();
         options3.setAdapter(options3Adapter);
 
         setListener();
@@ -105,8 +108,14 @@ public class LoopOptions {
     //设置第二列数据源
     private void setTwoDatas() {
         int onePosition = options1.getSelectedItem();
-        if (onItemSelectListener != null && options1Datas.size() > onePosition) {
-            List<ILoopShowData> datas = onItemSelectListener.getTowData(onePosition, options1Datas.get(onePosition));
+        if (onItemSelectListener != null) {
+            List<ILoopShowData> datas = null;
+            if (isLinkage) {
+                if (options1Datas.size() > onePosition)
+                    datas = onItemSelectListener.getTowData(onePosition, options1Datas.get(onePosition));
+            } else {
+                datas = onItemSelectListener.getTowData(onePosition, options1Datas.size() > onePosition ? options1Datas.get(onePosition) : null);
+            }
             if (datas != null) {
                 options2Datas.clear();
                 options2Datas.addAll(datas);
@@ -115,18 +124,50 @@ public class LoopOptions {
         }
     }
 
+
     //设置第三列数据源
     private void setThreeDatas() {
         int onePosition = options1.getSelectedItem();
         int twoPosition = options2.getSelectedItem();
-        if (onItemSelectListener != null && options2Datas.size() > twoPosition && options1Datas.size() > onePosition) {
-            List<ILoopShowData> datas = onItemSelectListener.getThreeData(twoPosition, options1Datas.get(onePosition), options2Datas.get(twoPosition));
+        if (onItemSelectListener != null) {
+            List<ILoopShowData> datas = null;
+            if (isLinkage) {
+                if (options2Datas.size() > twoPosition && options1Datas.size() > onePosition)
+                    datas = onItemSelectListener.getThreeData(onePosition, options1Datas.get(onePosition), options2Datas.get(twoPosition));
+            } else {
+                datas = onItemSelectListener.getThreeData(onePosition, options1Datas.size() > onePosition ? options1Datas.get(onePosition) : null,
+                        options2Datas.size() > twoPosition ? options2Datas.get(twoPosition) : null);
+            }
             if (datas != null) {
                 options3Datas.clear();
                 options3Datas.addAll(datas);
                 options3Adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    public <T extends ILoopShowData> T getOneData() {
+        int onePosition = options1.getSelectedItem();
+        if (options1Datas.size() > onePosition) {
+            return (T) options1Datas.get(onePosition);
+        }
+        return null;
+    }
+
+    public <T extends ILoopShowData> T getTwoData() {
+        int twoPosition = options2.getSelectedItem();
+        if (options2Datas.size() > twoPosition) {
+            return (T) options2Datas.get(twoPosition);
+        }
+        return null;
+    }
+
+    public <T extends ILoopShowData> T getThreeData() {
+        int threePosition = options3.getSelectedItem();
+        if (options3Datas.size() > threePosition) {
+            return (T) options3Datas.get(threePosition);
+        }
+        return null;
     }
 
     public void changVisibility() {
@@ -143,6 +184,11 @@ public class LoopOptions {
             options2.setVisibility(View.VISIBLE);
             options3.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+        changVisibility();
     }
 
     public void setLinkage(boolean linkage) {
@@ -193,6 +239,14 @@ public class LoopOptions {
             options1.setNoSelectTextColor(noSelectTextColor);
             options2.setNoSelectTextColor(noSelectTextColor);
             options3.setNoSelectTextColor(noSelectTextColor);
+        }
+    }
+
+    public void setInitPosition(int initPosition) {
+        if (initPosition > 0) {
+            options1.setInitPosition(initPosition);
+            options2.setInitPosition(initPosition);
+            options3.setInitPosition(initPosition);
         }
     }
 
