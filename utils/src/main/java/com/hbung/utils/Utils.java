@@ -12,23 +12,12 @@ import android.app.Application;
 
 public class Utils {
     public static boolean isDebug;
-    public static String customTagPrefix;
     public static String BASE_URL;
     public static Application myApp;
 
-    public static void init(Application context) {
+    public static void init(Application context, boolean isDebug, String BASE_URL) {
         myApp = context;
-    }
-
-    public static void setIsDebug(boolean isDebug) {
         Utils.isDebug = isDebug;
-    }
-
-    public static void setCustomTagPrefix(String customTagPrefix) {
-        Utils.customTagPrefix = customTagPrefix;
-    }
-
-    public static void setBaseUrl(String baseUrl) {
-        BASE_URL = baseUrl;
+        Utils.BASE_URL = BASE_URL;
     }
 }

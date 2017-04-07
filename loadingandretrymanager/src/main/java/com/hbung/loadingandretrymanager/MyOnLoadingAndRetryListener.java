@@ -10,8 +10,13 @@ import com.hbung.flatbutton.FlatButton;
 
 
 /**
- * Created by Administrator on 2016/7/28.
+ * 作者　　: 李坤
+ * 创建时间: 17:08 Administrator
+ * 邮箱　　：496546144@qq.com
+ *
+ * 功能介绍：
  */
+
 
 public class MyOnLoadingAndRetryListener extends OnLoadingAndRetryListener {
     private Context context;

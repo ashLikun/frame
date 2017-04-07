@@ -10,8 +10,14 @@ import android.widget.FrameLayout;
 
 
 /**
- * Created by zhy on 15/8/26.
+ * 作者　　: 李坤
+ * 创建时间: 17:06 Administrator
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：
+ *
  */
+
 public class LoadingAndRetryLayout extends FrameLayout {
     private View mLoadingView;
     private View mRetryView;

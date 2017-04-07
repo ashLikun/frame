@@ -1,14 +1,13 @@
 package com.hbung.wheelview3d.view;
 
-import android.graphics.SweepGradient;
 import android.view.View;
 
-import com.hbung.wheelview3d.listener.LoopListener;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.R;
 import com.hbung.wheelview3d.adapter.BaseLoopAdapter;
 import com.hbung.wheelview3d.adapter.ILoopShowData;
 import com.hbung.wheelview3d.adapter.LoopShowDataAdapter;
+import com.hbung.wheelview3d.listener.LoopListener;
 import com.hbung.wheelview3d.listener.OnItemSelectListener;
 
 import java.util.ArrayList;

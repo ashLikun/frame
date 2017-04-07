@@ -7,8 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by zhy on 15/8/27.
+ * 作者　　: 李坤
+ * 创建时间: 17:07 Administrator
+ * 邮箱　　：496546144@qq.com
+ *
+ * 功能介绍：初始化
+ * LoadingAndRetryManager.BASE_EMPTY_LAYOUT_ID = R.layout.base_load_empty;
+ * LoadingAndRetryManager.BASE_RETRY_LAYOUT_ID = R.layout.base_load_retry;
+ * LoadingAndRetryManager.BASE_LOADING_LAYOUT_ID = R.layout.base_load_loading;
  */
+
 public class LoadingAndRetryManager {
     public static final int NO_LAYOUT_ID = 0;
     public static int BASE_LOADING_LAYOUT_ID = R.layout.base_load_loading;

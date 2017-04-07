@@ -1,8 +1,13 @@
 package com.hbung.loadingandretrymanager;
 
 /**
- * Created by Administrator on 2016/4/12.
+ * 作者　　: 李坤
+ * 创建时间: 17:07 Administrator
+ * 邮箱　　：496546144@qq.com
+ *
+ * 功能介绍：布局切换时的内容数据
  */
+
 public class ContextData {
     //标识
     private int flag;
