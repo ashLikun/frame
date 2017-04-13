@@ -17,14 +17,14 @@ import android.view.View;
  */
 
 
-public class SuperSwipeRefreshLayout extends SwipeRefreshLayout {
+public class SuperSwipeRefreshLayout extends SwipeRefreshLayout implements RefreshLayout, SwipeRefreshLayout.OnRefreshListener {
 
-    OnRefreshListener mListener;
+    RefreshLayout.OnRefreshListener mListener;
     View view = null;
     boolean isMOVE = false;
 
     public SuperSwipeRefreshLayout(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public SuperSwipeRefreshLayout(Context context, AttributeSet attrs) {
@@ -63,6 +63,7 @@ public class SuperSwipeRefreshLayout extends SwipeRefreshLayout {
         });
     }
 
+
     @Override
     public void setRefreshing(final boolean refreshing) {
         postDelayed(new Runnable() {
@@ -78,8 +79,25 @@ public class SuperSwipeRefreshLayout extends SwipeRefreshLayout {
     }
 
     @Override
-    public void setOnRefreshListener(OnRefreshListener listener) {
+    public void setOnRefreshListener(RefreshLayout.OnRefreshListener listener) {
         this.mListener = listener;
-        super.setOnRefreshListener(listener);
+        super.setOnRefreshListener(this);
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/4/12 0012 16:29
+     * <p>
+     * 方法功能：调用上面的之定义监听
+     */
+    @Deprecated
+    @Override
+    public void setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener listener) {
+        new Exception("调用上面的之定义监听setOnRefreshListener(RefreshLayout.OnRefreshListener listener)");
+    }
+
+    @Override
+    public void onRefresh() {
+        if (mListener != null) mListener.onRefresh();
     }
 }

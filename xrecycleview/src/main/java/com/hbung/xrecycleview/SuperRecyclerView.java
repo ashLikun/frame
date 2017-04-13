@@ -2,7 +2,6 @@ package com.hbung.xrecycleview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -11,10 +10,15 @@ import android.widget.RelativeLayout;
 import java.util.Collection;
 
 /**
- * Created by Administrator on 2016/4/28.
+ * 作者　　: 李坤
+ * 创建时间: 16:32 Administrator
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：带有下拉刷新和自动分页的RecyclerView
  */
+
 public class SuperRecyclerView extends RelativeLayout {
-    public SwipeRefreshLayout swipeView;
+    public RefreshLayout refreshLayout;
     RecyclerViewAutoLoadding recyclerView;
 
     public SuperRecyclerView(Context context) {
@@ -35,18 +39,18 @@ public class SuperRecyclerView extends RelativeLayout {
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.base_swipe_recycle, this, true);
-        swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        refreshLayout = (RefreshLayout) findViewById(R.id.swipe);
         recyclerView = (RecyclerViewAutoLoadding) findViewById(R.id.list_swipe_target);
         /**
          * 设置集合view的刷新view
          */
-        recyclerView.setSwipeRefreshLayout(swipeView);
-        setColorSchemeResources(swipeView);
+        recyclerView.setRefreshLayout(refreshLayout);
+        setColorSchemeResources(refreshLayout);
     }
 
-    public void setColorSchemeResources(SwipeRefreshLayout swipeRefreshLayout) {
+    public void setColorSchemeResources(RefreshLayout refreshLayout) {
         TypedArray array = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.SwipeRefreshLayout_Color1, R.attr.SwipeRefreshLayout_Color2, R.attr.SwipeRefreshLayout_Color3, R.attr.SwipeRefreshLayout_Color4});
-        swipeRefreshLayout.setColorSchemeColors(array.getColor(0, 0xff0000), array.getColor(1, 0xff0000), array.getColor(2, 0xff0000), array.getColor(3, 0xff0000));
+        refreshLayout.setColorSchemeColors(array.getColor(0, 0xff0000), array.getColor(1, 0xff0000), array.getColor(2, 0xff0000), array.getColor(3, 0xff0000));
         array.recycle();
     }
 
@@ -65,9 +69,9 @@ public class SuperRecyclerView extends RelativeLayout {
      *
      * @param listener
      */
-    public void setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener listener) {
-        if (swipeView != null) {
-            swipeView.setOnRefreshListener(listener);
+    public void setOnRefreshListener(RefreshLayout.OnRefreshListener listener) {
+        if (refreshLayout != null) {
+            refreshLayout.setOnRefreshListener(listener);
         }
     }
 
@@ -94,10 +98,9 @@ public class SuperRecyclerView extends RelativeLayout {
     }
 
 
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return swipeView;
+    public RefreshLayout getRefreshLayout() {
+        return refreshLayout;
     }
-
 
     public ConfigChang getConfigChang() {
         if (recyclerView instanceof ConfigChang) {
@@ -113,7 +116,7 @@ public class SuperRecyclerView extends RelativeLayout {
      * @return
      */
     public void setRefreshing(boolean refreshing) {
-        swipeView.setRefreshing(refreshing);
+        refreshLayout.setRefreshing(refreshing);
     }
 
 
@@ -126,7 +129,24 @@ public class SuperRecyclerView extends RelativeLayout {
         return recyclerView.getStatusChangListener();
     }
 
-    public interface ListSwipeViewListener extends SwipeRefreshLayout.OnRefreshListener, OnLoaddingListener {
+    public void addItemDecoration(RecyclerView.ItemDecoration decor) {
+        recyclerView.addItemDecoration(decor);
+    }
+
+    public void setLayoutManager(RecyclerView.LayoutManager layout) {
+        recyclerView.setLayoutManager(layout);
+    }
+
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 16:46 Administrator
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 功能介绍：下拉和加载更多的集合借口
+     */
+
+    public interface ListSwipeViewListener extends RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
     }
 

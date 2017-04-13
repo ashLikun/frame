@@ -7,14 +7,14 @@ import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
 /**
  * Created by Administrator on 2016/3/14.
  */
 public class FooterView extends RelativeLayout {
-    private CircleProgressBar progressBar;
+    private MaterialProgressBar progressBar;
     private TextView textView;
     private Context context;
     private LoadState state = LoadState.Init;
@@ -36,7 +36,7 @@ public class FooterView extends RelativeLayout {
         this.context = context;
         LayoutInflater.from(context).inflate( R.layout.base_autoloadding_footer, this);
         textView = (TextView) findViewById(R.id.tvLoadMore);
-        progressBar = (CircleProgressBar) findViewById(R.id.progressbar);
+        progressBar = (MaterialProgressBar) findViewById(R.id.progressbar);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.hbung.xrecycleview;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AbsListView;
@@ -19,7 +18,7 @@ public class ListViewForAutoLoad extends ListView implements BaseSwipeInterface,
     private OnLoaddingListener onLoaddingListener;
     private FooterView footerView;
     private ArrayList<OnScrollListener> scrollListeners = new ArrayList<>();
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private RefreshLayout refreshLayout;
     private OnItemClickListener itemClickListener;
 
     public ListViewForAutoLoad(Context context) {
@@ -75,10 +74,10 @@ public class ListViewForAutoLoad extends ListView implements BaseSwipeInterface,
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             int lastItemIndex = getLastVisiblePosition(); // 获取当前屏幕最后Item的ID
-            if ((swipeRefreshLayout == null || !swipeRefreshLayout.isRefreshing()) &&
+            if ((refreshLayout == null || !refreshLayout.isRefreshing()) &&
                     totalItemCount - getFooterViewsCount() - getHeaderViewsCount() > 0) {
                 if (lastItemIndex + 1 >= totalItemCount) {// 达到数据的最后一条记录
-                    if (footerView.isLoadMoreEnabled() && totalItemCount > 1 && footerView.getStates() != LoadState.Loadding && footerView.getStates() != LoadState.NoData && onLoaddingListener != null) {//可以加载
+                    if (footerView.isLoadMoreEnabled() && getItemCount(totalItemCount) > 0 && footerView.getStates() != LoadState.Loadding && footerView.getStates() != LoadState.NoData && onLoaddingListener != null) {//可以加载
                         setState(LoadState.Loadding);
                         onLoaddingListener.onLoadding();
                     }
@@ -92,8 +91,23 @@ public class ListViewForAutoLoad extends ListView implements BaseSwipeInterface,
         }
     }
 
-    public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
-        this.swipeRefreshLayout = swipeRefreshLayout;
+    private int getItemCount(int totalItemCount) {
+        return totalItemCount - getFooterViewsCount() - getHeaderViewsCount();
+    }
+
+    public RefreshLayout getRefreshLayout() {
+        return refreshLayout;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/4/12 0012 16:14
+     * <p>
+     * 方法功能：设置刷新布局，必须设置要不然无法加载更多
+     */
+
+    public void setRefreshLayout(RefreshLayout refreshLayout) {
+        this.refreshLayout = refreshLayout;
     }
 
     public void setDataSize() {

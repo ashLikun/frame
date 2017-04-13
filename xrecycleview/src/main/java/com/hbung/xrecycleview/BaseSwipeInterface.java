@@ -1,13 +1,13 @@
 package com.hbung.xrecycleview;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-
 /**
  * Created by Administrator on 2016/8/8.
  */
 
 public interface BaseSwipeInterface {
-    void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout);
+    void setRefreshLayout(RefreshLayout refreshLayout);
+
+    public RefreshLayout getRefreshLayout();
 
     void setOnLoaddingListener(OnLoaddingListener swipeRefreshLayout);
 

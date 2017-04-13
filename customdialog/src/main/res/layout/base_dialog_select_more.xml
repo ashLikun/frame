@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
         <TextView
@@ -19,29 +19,29 @@
             android:gravity="center_horizontal"
             android:padding="15dp"
             android:text="**"
-            android:textColor="@color/main_color"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_xxm" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/gray" />
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/dialog_select_item2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:padding="15dp"
             android:gravity="center"
+            android:padding="15dp"
             android:text="**"
-            android:textColor="@color/main_color"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_xxm" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/gray" />
+            android:background="@android:color/darker_gray" />
 
 
         <TextView
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:padding="15dp"
             android:text="取消"
-            android:textColor="@color/red"
+            android:textColor="#ffff0000"
             android:textSize="@dimen/text_xxm" />
 
     </LinearLayout>

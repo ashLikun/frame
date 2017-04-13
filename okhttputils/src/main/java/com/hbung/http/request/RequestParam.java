@@ -3,6 +3,7 @@ package com.hbung.http.request;
 import android.net.Uri;
 
 import com.hbung.http.Callback;
+import com.hbung.json.GsonHelper;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -138,6 +139,21 @@ public class RequestParam {
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/4/12 0012 17:22
+     * <p>
+     * 方法功能：把键值对转换成json放到content里面,最后调用
+     * 注意：在这个方法调用以后添加的参数将无效
+     */
+
+    public void toJson() {
+        if (params != null && !params.isEmpty()) {
+            postContent = GsonHelper.getGson().toJson(params);
+            params.clear();
+        }
+    }
+
     public void setContent(String content) {
         postContent = content;
     }
@@ -159,6 +175,16 @@ public class RequestParam {
                 .method(method, requestBody)
                 .build();
     }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/4/12 0012 17:31
+     * <p>
+     * 方法功能：构建请求body
+     * postContent ->text/plain;charset=utf-8
+     * 不存在文件application/x-www-form-urlencoded
+     * 存在文件 multipart/form-data
+     */
 
     public RequestBody buildRequestBody(Callback callback) {
         RequestBody body = null;

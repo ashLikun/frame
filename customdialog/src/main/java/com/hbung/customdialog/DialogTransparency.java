@@ -9,7 +9,6 @@ import android.view.WindowManager;
 
 import com.hbung.utils.ui.ScreenInfoUtils;
 
-import butterknife.ButterKnife;
 
 /**
  * 透明对话框
@@ -32,9 +31,6 @@ public class DialogTransparency extends Dialog {
     private void init() {
         View view = new View(context);
         setContentView(view);
-        ButterKnife.bind(this, getWindow().getDecorView().findViewById(view.getId()));
-
-
     }
 
     @Override

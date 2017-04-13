@@ -37,6 +37,7 @@ public class DialogProgress extends Dialog {
     }
 
     private void initView() {
+
         setContentView(UiUtils.getInflaterView(context, R.layout.base_dialog_progress));
         setCancelable(false);
         progressBar = (NumberProgressBar) findViewById(R.id.progressBar);

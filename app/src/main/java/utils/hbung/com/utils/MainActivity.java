@@ -2,133 +2,90 @@ package utils.hbung.com.utils;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
 
-import com.hbung.utils.ui.ToastUtils;
+import com.hbung.adapter.ViewHolder;
+import com.hbung.adapter.recyclerview.CommonAdapter;
+import com.hbung.loadingandretrymanager.ContextData;
+import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
+import com.hbung.loadingandretrymanager.MyOnLoadingAndRetryListener;
+import com.hbung.utils.Utils;
+import com.hbung.utils.ui.divider.HorizontalDividerItemDecoration;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
-import com.hbung.wheelview3d.adapter.SimpleLoopAdapter;
-import com.hbung.wheelview3d.listener.LoopListener;
-import com.hbung.wheelview3d.listener.OnItemSelectListener;
-import com.hbung.wheelview3d.listener.OnPositiveClickListener;
-import com.hbung.wheelview3d.view.DialogOptions;
-import com.hbung.wheelview3d.view.LoopOptions;
+import com.hbung.xrecycleview.OnLoaddingListener;
+import com.hbung.xrecycleview.RefreshLayout;
+import com.hbung.xrecycleview.SuperRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.hbung.com.utils.datebean.CityData;
-import utils.hbung.com.utils.datebean.QuyuData;
-import utils.hbung.com.utils.datebean.ShenData;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
     LoopView loopView;
     List<LoopViewData> listDatas = new ArrayList<>();
-    SimpleLoopAdapter adapter;
+    CommonAdapter adapter;
     boolean chang = true;
+    LoadingAndRetryManager manager;
+    private SuperRecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loopView = (LoopView) findViewById(R.id.loopView);
+        Utils.myApp = getApplication();
 
-        for (int i = 0; i < 20; i++) {
-            listDatas.add(new LoopViewData(i, "我是第" + i));
-        }
+        manager = LoadingAndRetryManager.getLoadingAndRetryManager(findViewById(R.id.swipe),
+                new MyOnLoadingAndRetryListener(this, null));
 
-        loopView.setAdapter(adapter = new SimpleLoopAdapter<LoopViewData>(listDatas) {
+        recyclerView = (SuperRecyclerView) findViewById(R.id.recycleView);
+        recyclerView.setOnRefreshListener(this);
+        recyclerView.setOnLoaddingListener(this);
+        recyclerView.setAdapter(adapter = new CommonAdapter<LoopViewData>(this, R.layout.item_list, listDatas) {
             @Override
-            public String getShowText(int position) {
-                return getItem(position).getTitle();
+            public void convert(ViewHolder holder, LoopViewData o) {
+                holder.setText(R.id.text, o.getShowText());
             }
         });
-        loopView.setListener(new LoopListener<LoopViewData>() {
-            @Override
-            public void onItemSelect(int item, LoopViewData data) {
-                Log.e("onItemSelect", data.getTitle());
-            }
-        });
-        loopView.setSelectTextColor(0xffff0000);
-        loopView.setLineWidth(3);
-        loopView.setDividerColor(0xffff0000);
-        loopView.setShowItemCount(9);
-
-        findViewById(R.id.flatButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                listDatas.clear();
-//                if (chang) {
-//                    for (int i = 0; i < 40; i++) {
-//                        listDatas.add(new LoopViewData(i, "新的第" + i));
-//                    }
-//                } else {
-//                    for (int i = 0; i < 40; i++) {
-//                        listDatas.add(new LoopViewData(i, "新的新的第" + i));
-//                    }
-//                }
-//                adapter.notifyDataSetChanged();
-//                chang = !chang;
-                showDialog();
-            }
-        });
-
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setRefreshing(true);
     }
 
     private void showDialog() {
-        DialogOptions dialogOptions = new DialogOptions.Builder(this)
-                .onItemSelectListener(new OnItemSelectListener<ShenData, CityData, QuyuData>() {
-
-                    @Override
-                    public List<ShenData> getOneData() {
-                        return getShenData();
-                    }
-
-                    @Override
-                    public List<CityData> getTowData(int onePosition, ShenData oneItemData) {
-                        return getCity(oneItemData);
-                    }
-//
-//                    @Override
-//                    public List<QuyuData> getThreeData(int twoPosition, ShenData oneItemData, CityData towItemData) {
-//                        return getQuyu(towItemData);
-//                    }
-                })
-                .onPositiveClickListener(new OnPositiveClickListener<ShenData, CityData, QuyuData>() {
-                    @Override
-                    public void onPositive(ShenData oneData, CityData twoData, QuyuData threadData) {
-                        ToastUtils.show(MainActivity.this, oneData.getShowText() + "   " + twoData != null ? twoData.getShowText() : ""
-                                + "    " + threadData != null ? threadData.getShowText() : "", 1);
-                    }
-                })
-                .mode(LoopOptions.Mode.TWO)
-                .loop(false)
-                .builder();
-        dialogOptions.show();
+        manager.showLoading(new ContextData("是是是是是是"));
     }
 
-    private List<ShenData> getShenData() {
-        List<ShenData> datas = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            datas.add(new ShenData(i, "省" + i));
+    private List<LoopViewData> getShenData() {
+        List<LoopViewData> datas = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            datas.add(new LoopViewData(i, "省" + i));
         }
         return datas;
     }
 
-    private List<CityData> getCity(ShenData shenData) {
-        List<CityData> datas = new ArrayList<>();
-        for (int i = 0; i < 20 + shenData.getId(); i++) {
-            datas.add(new CityData(i, "省" + shenData.getId() + "的 市" + i));
-        }
-        return datas;
+
+    @Override
+    public void onRefresh() {
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listDatas.clear();
+                listDatas.addAll(getShenData());
+                adapter.notifyDataSetChanged();
+                recyclerView.setRefreshing(false);
+            }
+        }, 3000);
     }
 
-    private List<QuyuData> getQuyu(CityData cityData) {
-        List<QuyuData> datas = new ArrayList<>();
-        for (int i = 0; i < 30 + cityData.getId(); i++) {
-            datas.add(new QuyuData(i, "市" + cityData.getId() + "的 区" + i));
-        }
-        return datas;
+    @Override
+    public void onLoadding() {
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listDatas.addAll(getShenData());
+                adapter.notifyDataSetChanged();
+                recyclerView.getRecyclerView().complete();
+            }
+        }, 5000);
     }
 }

@@ -18,7 +18,7 @@ import static android.R.attr.mode;
  * Created by Administrator on 2016/4/28.
  */
 public class SuperSwipeMenuListView extends RelativeLayout {
-    public SwipeRefreshLayout swipeView;
+    public RefreshLayout refreshLayout;
     SwipeMenuListView swipeMenuListView;
 
     public SuperSwipeMenuListView(Context context) {
@@ -49,12 +49,12 @@ public class SuperSwipeMenuListView extends RelativeLayout {
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.base_swipe_recycle, this, true);
-        swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        refreshLayout = (RefreshLayout) findViewById(R.id.swipe);
         swipeMenuListView = (SwipeMenuListView) findViewById(R.id.list_swipe_target);
         /**
          * 设置集合view的刷新view
          */
-        swipeMenuListView.setSwipeRefreshLayout(swipeView);
+        swipeMenuListView.setRefreshLayout(refreshLayout);
     }
 
 
@@ -83,9 +83,9 @@ public class SuperSwipeMenuListView extends RelativeLayout {
      *
      * @param listener
      */
-    public void setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener listener) {
-        if (swipeView != null) {
-            swipeView.setOnRefreshListener(listener);
+    public void setOnRefreshListener(RefreshLayout.OnRefreshListener listener) {
+        if (refreshLayout != null) {
+            refreshLayout.setOnRefreshListener(listener);
         }
     }
 
@@ -125,10 +125,9 @@ public class SuperSwipeMenuListView extends RelativeLayout {
         return swipeMenuListView;
     }
 
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return swipeView;
+    public RefreshLayout getRefreshLayout() {
+        return refreshLayout;
     }
-
 
     public ConfigChang getConfigChang() {
         if (swipeMenuListView instanceof ConfigChang) {
@@ -144,7 +143,7 @@ public class SuperSwipeMenuListView extends RelativeLayout {
      * @return
      */
     public void setRefreshing(boolean refreshing) {
-        swipeView.setRefreshing(refreshing);
+        refreshLayout.setRefreshing(refreshing);
     }
 
     /**

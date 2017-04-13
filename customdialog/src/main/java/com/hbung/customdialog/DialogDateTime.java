@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -23,37 +24,28 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.hanbang.baseproject.code.base.view.activity.BaseActivity;
-import com.hbung.utils.other.DateUtils;
-import com.hbung.utils.ui.UiUtils;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 作者　　: 李坤
  * 创建时间: 2017/1/6 11:46
- *
+ * <p>
  * 方法功能：时间选择对话框
  */
 
-public class DialogDateTime extends DialogFragment {
-
+public class DialogDateTime extends DialogFragment implements View.OnClickListener {
     public static int MAX_YEAR = 3;
     public static int MIN_YEAR = -3;
-    private BaseActivity context;
-
-    @BindView(R.id.tabLayout)
+    private FragmentActivity activity;
     TabLayout tabLayout;
     private CharSequence title;
-    @BindView(R.id.title)
     TextView titleTv;
-    @BindView(R.id.viewpager)
     ViewPager viewpager;
     private OnClickCallback onClickCallback;
     private DateTimeAdapter adapter;
@@ -64,6 +56,7 @@ public class DialogDateTime extends DialogFragment {
     private Calendar initCalendar = null;
 
     private MODE mode = MODE.DATE_Y_M_D_H_M;
+
 
     public enum MODE {
         DATE_Y_M_D, DATE_Y_M_D_H_M
@@ -82,9 +75,9 @@ public class DialogDateTime extends DialogFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public DialogDateTime(BaseActivity context, MODE mode) {
+    public DialogDateTime(FragmentActivity context, MODE mode) {
         this.mode = mode;
-        this.context = context;
+        this.activity = context;
     }
 
 
@@ -97,7 +90,7 @@ public class DialogDateTime extends DialogFragment {
         Context contextThemeWrapper = new ContextThemeWrapper(
                 getActivity(),
                 android.R.style.Theme_Holo_Light);
-        View view = UiUtils.getInflaterView(contextThemeWrapper, R.layout.base_dialog_date_time);
+        View view = ((LayoutInflater) contextThemeWrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.base_dialog_date_time, null);
         initView(view);
 
         return view;
@@ -146,9 +139,14 @@ public class DialogDateTime extends DialogFragment {
 
 
     private void initView(View view) {
+        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        titleTv = (TextView) view.findViewById(R.id.title);
+        viewpager = (ViewPager) view.findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        view.findViewById(R.id.quxiao).setOnClickListener(this);
+        view.findViewById(R.id.confirm).setOnClickListener(this);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        ButterKnife.bind(this, view);
         titleTv.setText(title);
         listTitle.add("日期");
         listTitle.add("时间");
@@ -177,12 +175,10 @@ public class DialogDateTime extends DialogFragment {
     /**
      * 点击事件
      */
-    @OnClick(value = R.id.quxiao)
     public void quxiaoOnClick(View view) {
         dismiss();
     }
 
-    @OnClick(value = R.id.confirm)
     public void quedingOnClick(View view) {
         if (onClickCallback != null) {
             onClickCallback.onComplete(DialogDateTime.this,
@@ -191,6 +187,14 @@ public class DialogDateTime extends DialogFragment {
         dismiss();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.quxiao) {
+            quxiaoOnClick(v);
+        } else if (v.getId() == R.id.quxiao) {
+            quedingOnClick(v);
+        }
+    }
 
     private class DateTimeAdapter extends FragmentPagerAdapter {
         private List<DateTimeFragment> listFragment;                         //fragment列表
@@ -405,21 +409,21 @@ public class DialogDateTime extends DialogFragment {
             if (TextUtils.isEmpty(endTime) || endTime.length() < 10) {
                 calendarMax.add(Calendar.YEAR, MAX_YEAR);
             } else {
-                calendarMax = DateUtils.stringToTime(endTime);
+                calendarMax = stringToTime(endTime);
             }
             if (!TextUtils.isEmpty(startTime) && startTime.length() >= 10) {
-                calendarMin = DateUtils.stringToTime(startTime);
+                calendarMin = stringToTime(startTime);
             }
             calendarMin.add(Calendar.YEAR, MIN_YEAR);
         } else {
             if (!TextUtils.isEmpty(endTime) && endTime.length() >= 10) {
-                calendarMax = DateUtils.stringToTime(endTime);
+                calendarMax = stringToTime(endTime);
             }
             calendarMax.add(Calendar.YEAR, MAX_YEAR);
             if (TextUtils.isEmpty(startTime) || startTime.length() < 10) {
                 calendarMin.add(Calendar.YEAR, MIN_YEAR);
             } else {
-                calendarMin = DateUtils.stringToTime(startTime);
+                calendarMin = stringToTime(startTime);
             }
         }
 
@@ -451,8 +455,20 @@ public class DialogDateTime extends DialogFragment {
     }
 
     public void show() {
-        show(context.getSupportFragmentManager(), "");
+        show(activity.getSupportFragmentManager(), "");
     }
 
+    private Calendar stringToTime(String calendar) {
+        if (calendar == null) return null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        try {
+            Calendar c = Calendar.getInstance();
+            c.setTime(sdf.parse(calendar));
+            return c;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 

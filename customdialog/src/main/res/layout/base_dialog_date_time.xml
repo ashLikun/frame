@@ -12,23 +12,23 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_main_color_top_circle"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/dp_15"
         android:paddingBottom="@dimen/dp_15"
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_15"
         android:text="**"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/text_h" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_color"
-        app:tabIndicatorColor="@color/gray_66"
+        android:background="@color/colorPrimary"
+        app:tabIndicatorColor="#ff666666"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/gray_66"
-        app:tabTextColor="@color/white" />
+        app:tabSelectedTextColor="#ff666666"
+        app:tabTextColor="@android:color/white" />
 
 
     <android.support.v4.view.ViewPager
@@ -41,7 +41,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray" />
+        android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,13 +56,13 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="取消"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/text_h" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/gray" />
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/confirm"
@@ -72,7 +72,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="确定"
-            android:textColor="@color/main_color"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_h" />
     </LinearLayout>
 

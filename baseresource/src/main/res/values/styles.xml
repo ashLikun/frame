@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <attr name="SwipeRefreshLayout_Color1" format="color"></attr>
+    <attr name="SwipeRefreshLayout_Color2" format="color"></attr>
+    <attr name="SwipeRefreshLayout_Color3" format="color"></attr>
+    <attr name="SwipeRefreshLayout_Color4" format="color"></attr>
     <!-- ****************************************主题 开始************************************Theme.AppCompat.Light.NoActionBar**-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
@@ -59,35 +62,12 @@
         <!--<item name="android:windowExitAnimation">@anim/activity_colse_exit</item>-->
     </style>
 
-    <style name="PhotoBrowseAnimation">
-        <item name="android:activityOpenEnterAnimation">@anim/dialog_anim_scale_enter</item>
-        <item name="android:activityOpenExitAnimation">@null</item>
-        <item name="android:activityCloseEnterAnimation">@null</item>
-        <item name="android:activityCloseExitAnimation">@anim/dialog_anim_scale_exit</item>
-    </style>
-
 
     <style name="AnimationPreview">
         <item name="android:windowEnterAnimation">@anim/popupwindow_animation_in</item>
         <item name="android:windowExitAnimation">@anim/popupwindow_animation_out</item>
     </style>
 
-
-    //=========================================================================SwitchButton======================================================================
-
-
-    //=========================================================================EditText======================================================================
-    <!--EditText 评论-->
-    <style name="editText_comment">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/text_xxm</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
-        <item name="android:textColor">@color/gray_66</item>
-    </style>
-
-
-    //=========================================================================TextInputLayout======================================================================
 
     <style name="TextInputLayout.CounterText.White">
         <item name="android:textColor">@color/white</item>

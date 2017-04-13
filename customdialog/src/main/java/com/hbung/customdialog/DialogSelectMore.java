@@ -11,10 +11,6 @@ import android.widget.TextView;
 
 import com.hbung.utils.ui.ScreenInfoUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 作者　　: 李坤
  * 创建时间: 2016/9/19 16:28
@@ -23,12 +19,9 @@ import butterknife.OnClick;
  */
 
 
-public class DialogSelectMore extends Dialog {
-    @BindView(R.id.dialog_select_item1)
+public class DialogSelectMore extends Dialog implements View.OnClickListener {
     TextView tv_item1;
-    @BindView(R.id.dialog_select_item2)
     TextView tv_item2;
-    @BindView(R.id.dialog_select_cancel)
     TextView cancel;
 
     private String item1;
@@ -52,9 +45,12 @@ public class DialogSelectMore extends Dialog {
 
     private void init() {
         setContentView(R.layout.base_dialog_select_more);
-        ButterKnife.bind(this, getWindow().getDecorView().findViewById(R.id.dialog_select_root));
-
-
+        tv_item1 = (TextView) findViewById(R.id.dialog_select_item1);
+        tv_item2 = (TextView) findViewById(R.id.dialog_select_item2);
+        cancel = (TextView) findViewById(R.id.dialog_select_cancel);
+        tv_item1.setOnClickListener(this);
+        tv_item2.setOnClickListener(this);
+        cancel.setOnClickListener(this);
     }
 
     @Override
@@ -76,22 +72,16 @@ public class DialogSelectMore extends Dialog {
     }
 
 
-    @OnClick({R.id.dialog_select_item1, R.id.dialog_select_item2, R.id.dialog_select_cancel})
     public void onClick(View view) {
 
         if (clickCallback != null) {
-            switch (view.getId()) {
-                case R.id.dialog_select_item1:
-                    clickCallback.onClick(1);
-                    break;
-                case R.id.dialog_select_item2:
-                    clickCallback.onClick(2);
-                    break;
-                case R.id.dialog_select_cancel:
-                    clickCallback.onClick(0);
-                    break;
+            if (view.getId() == R.id.dialog_select_item1) {
+                clickCallback.onClick(1);
+            } else if (view.getId() == R.id.dialog_select_item2) {
+                clickCallback.onClick(2);
+            } else if (view.getId() == R.id.dialog_select_cancel) {
+                clickCallback.onClick(0);
             }
-
         }
     }
 

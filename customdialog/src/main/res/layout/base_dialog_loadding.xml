@@ -3,30 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp">
 
+    <!--<com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar-->
+    <!--android:id="@+id/circleProgressBar"-->
+    <!--android:layout_width="46dp"-->
+    <!--android:layout_height="46dp"-->
+    <!--app:mlpb_enable_circle_background="false"-->
+    <!--app:mlpb_inner_radius="20dp"-->
+    <!--app:mlpb_progress="50"-->
+    <!--app:mlpb_progress_color="@color/main_color"-->
+    <!--app:mlpb_progress_stoke_width="5dp"-->
+    <!--app:mlpb_progress_text_visibility="invisible" />-->
 
-    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/circleProgressBar"
         android:layout_width="46dp"
         android:layout_height="46dp"
-        app:mlpb_enable_circle_background="false"
-        app:mlpb_inner_radius="20dp"
-        app:mlpb_progress="50"
-        app:mlpb_progress_color="@color/main_color"
-        app:mlpb_progress_stoke_width="5dp"
-        app:mlpb_progress_text_visibility="invisible" />
+        android:layout_alignParentBottom="true"
+        android:indeterminate="true"
+        android:tint="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_3"
+        android:layout_marginTop="3dp"
         android:text="  载入中..."
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/text_xxm" />
 
 </LinearLayout>

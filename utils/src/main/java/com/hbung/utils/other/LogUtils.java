@@ -3,7 +3,6 @@ package com.hbung.utils.other;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static com.hbung.utils.Utils.customTagPrefix;
 import static com.hbung.utils.Utils.isDebug;
 
 
@@ -50,7 +49,6 @@ public class LogUtils {
         String callerClazzName = caller.getClassName();
         callerClazzName = callerClazzName.substring(callerClazzName.lastIndexOf(".") + 1);
         tag = String.format(tag, callerClazzName, caller.getMethodName(), caller.getLineNumber());
-        tag = TextUtils.isEmpty(customTagPrefix) ? tag : customTagPrefix + ":" + tag;
         return tag;
     }
 

@@ -20,7 +20,8 @@ android {
 
 dependencies {
     compile rootProject.ext.designVersion
-    compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
+    //compile 'com.afollestad.material-dialogs:core:0.9.4.3'
+    compile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
     compile project(':adapter')
 }
 

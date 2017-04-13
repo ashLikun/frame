@@ -6,16 +6,13 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/circleProgressBar"
         android:layout_width="46dp"
         android:layout_height="46dp"
-        app:mlpb_enable_circle_background="false"
-        app:mlpb_inner_radius="20dp"
-        app:mlpb_progress="50"
-        app:mlpb_progress_color="?colorPrimary"
-        app:mlpb_progress_stoke_width="5dp"
-        app:mlpb_progress_text_visibility="invisible" />
+        android:layout_alignParentBottom="true"
+        android:indeterminate="true" />
 
     <TextView
         android:id="@+id/content"

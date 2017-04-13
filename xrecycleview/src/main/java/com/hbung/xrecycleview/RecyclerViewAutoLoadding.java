@@ -1,7 +1,6 @@
 package com.hbung.xrecycleview;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -9,13 +8,17 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by Administrator on 2016/3/22.
+ * 作者　　: 李坤
+ * 创建时间: 2017/4/12 0012 16:15
+ * <p>
+ * 方法功能：自动加载更多的RecyclerView ,setRefreshLayout必须设置要不然无法加载更多
  */
+
 public class RecyclerViewAutoLoadding extends RecyclerViewWithHeaderAndFooter implements BaseSwipeInterface,
         StatusChangListener, ConfigChang {
 
     public PagingHelp pagingHelp;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private RefreshLayout refreshLayout;
 
     private OnLoaddingListener onLoaddingListener;
 
@@ -24,7 +27,7 @@ public class RecyclerViewAutoLoadding extends RecyclerViewWithHeaderAndFooter im
         super.setAdapter(adapter);
         try {
             adapter.registerAdapterDataObserver(mDataObserver);
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
 
         }
 
@@ -78,7 +81,7 @@ public class RecyclerViewAutoLoadding extends RecyclerViewWithHeaderAndFooter im
     public void onScrolled(int dx, int dy) {
         super.onScrolled(dx, dy);
 
-        if ((swipeRefreshLayout == null || !swipeRefreshLayout.isRefreshing()) && getState() != null && isLoadMoreEnabled() && getState() != LoadState.Loadding && getState() != LoadState.NoData) {
+        if ((refreshLayout == null || !refreshLayout.isRefreshing()) && getState() != null && isLoadMoreEnabled() && getState() != LoadState.Loadding && getState() != LoadState.NoData) {
             LayoutManager layoutManager = getLayoutManager();
             int lastVisibleItemPosition;
             if (layoutManager instanceof GridLayoutManager) {
@@ -90,7 +93,7 @@ public class RecyclerViewAutoLoadding extends RecyclerViewWithHeaderAndFooter im
             } else {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
-            if (layoutManager.getChildCount() > 0
+            if (getItemCount(layoutManager) > 0 && layoutManager.getChildCount() > 0
                     && lastVisibleItemPosition >= layoutManager.getItemCount() - 1 && layoutManager.getItemCount() >= layoutManager.getChildCount()) {
                 setState(LoadState.Loadding);
                 onLoaddingListener.onLoadding();
@@ -98,12 +101,23 @@ public class RecyclerViewAutoLoadding extends RecyclerViewWithHeaderAndFooter im
         }
     }
 
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return swipeRefreshLayout;
+    private int getItemCount(LayoutManager layoutManager) {
+        return layoutManager.getItemCount() - getHeaderViewSize() - getFootViewSize();
     }
 
-    public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
-        this.swipeRefreshLayout = swipeRefreshLayout;
+    public RefreshLayout getRefreshLayout() {
+        return refreshLayout;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/4/12 0012 16:14
+     * <p>
+     * 方法功能：设置刷新布局，必须设置要不然无法加载更多
+     */
+
+    public void setRefreshLayout(RefreshLayout refreshLayout) {
+        this.refreshLayout = refreshLayout;
     }
 
     private int findMax(int[] lastPositions) {

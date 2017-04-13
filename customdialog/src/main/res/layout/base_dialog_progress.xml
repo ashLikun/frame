@@ -18,8 +18,8 @@
         android:gravity="center"
         android:maxLines="2"
         android:text="加载中"
-        android:textColor="@color/main_color"
-        android:textSize="@dimen/text_xxxm" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_xxm" />
 
     <com.hbung.numberprogressbar.NumberProgressBar
         android:id="@+id/progressBar"
@@ -29,11 +29,11 @@
         app:progress_current="20"
         app:progress_max="100"
         app:progress_reached_bar_height="2dp"
-        app:progress_reached_color="@color/main_color"
-        app:progress_text_color="@color/main_color"
+        app:progress_reached_color="@color/colorPrimary"
+        app:progress_text_color="@color/colorPrimary"
         app:progress_text_offset="2dp"
         app:progress_text_size="@dimen/text_h"
         app:progress_unreached_bar_height="2dp"
-        app:progress_unreached_color="@color/gray" />
+        app:progress_unreached_color="@android:color/darker_gray" />
 
 </LinearLayout>

@@ -49,7 +49,7 @@
     <style name="Dialog.Translucent" parent="Dialog">
         <item name="android:windowFullscreen">true</item><!--全屏-->
         <item name="android:backgroundDimEnabled">false</item><!--背景为亮的-->
-        <item name="android:windowBackground">@color/translucent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     //=========================================================================上面是基础属性======================================================================
