@@ -16,7 +16,7 @@ import com.hbung.loadingandretrymanager.MyOnLoadingAndRetryListener;
 import com.hbung.stickyrecyclerview.StickyHeadersBuilder;
 import com.hbung.utils.Utils;
 import com.hbung.utils.ui.ToastUtils;
-import com.hbung.utils.ui.divider.HorizontalDividerItemDecoration;
+import com.hbung.xrecycleview.divider.HorizontalDividerItemDecoration;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.hbung.xrecycleview.OnLoaddingListener;

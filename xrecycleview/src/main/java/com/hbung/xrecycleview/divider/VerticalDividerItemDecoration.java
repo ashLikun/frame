@@ -1,4 +1,4 @@
-package com.hbung.utils.ui.divider;
+package com.hbung.xrecycleview.divider;
 
 import android.content.Context;
 import android.graphics.Rect;
