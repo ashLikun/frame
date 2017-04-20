@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout>
 
-    <TextView
-        android:id="@+id/text"
+    <data>
+
+        <variable
+            name="data"
+            type="com.hbung.wheelview3d.adapter.LoopViewData"></variable>
+
+        <import
+            alias="aaaa"
+            type="com.hbung.wheelview3d.adapter.LoopViewData"></import>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="aaaaa" />
-</LinearLayout>
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_60">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{data.showText}" />
+    </LinearLayout>
+</layout>

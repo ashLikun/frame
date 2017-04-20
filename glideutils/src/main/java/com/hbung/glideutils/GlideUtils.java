@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -44,6 +45,15 @@ public class GlideUtils {
 
     public static void show(ImageView view, String path, GlideOptions picassoOptions) {
         DrawableTypeRequest drawableTypeRequest = getRequestCreator(view.getContext(), path);
+        show(drawableTypeRequest, view, picassoOptions);
+    }
+
+    public static void show(Fragment fragment, ImageView view, String path, GlideOptions picassoOptions) {
+        DrawableTypeRequest drawableTypeRequest = getRequestCreator(fragment, path);
+        show(drawableTypeRequest, view, picassoOptions);
+    }
+
+    private static void show(DrawableTypeRequest drawableTypeRequest, ImageView view, GlideOptions picassoOptions) {
         if (picassoOptions.getError() > 0) {
             drawableTypeRequest.error(picassoOptions.getError());
         }
@@ -67,7 +77,11 @@ public class GlideUtils {
     public static DrawableTypeRequest<String> getRequestCreator(Context context, String path) {
         Activity a = getActivity(context);
         if (a != null) {
-            return Glide.with(a).load(getHttpFileUrl(path));
+            if (a instanceof FragmentActivity) {
+                return Glide.with((FragmentActivity) a).load(getHttpFileUrl(path));
+            } else {
+                return Glide.with(a).load(getHttpFileUrl(path));
+            }
         } else {
             return Glide.with(context).load(getHttpFileUrl(path));
         }

@@ -1,16 +1,23 @@
-package com.hbung.stickyrecyclerview;
+package com.hbung.adapter.recyclerview;
 
 import android.content.Context;
 import android.view.ViewGroup;
 
 import com.hbung.adapter.ViewHolder;
+import com.hbung.baseadapter.IStickyHeadersAdapter;
 
 import java.util.List;
 
 /**
- * Created by aurel on 24/09/14.
+ * 作者　　: 李坤
+ * 创建时间: 9:31 Administrator
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：带头部的RecyclerView的adapter
  */
-public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<ViewHolder> {
+
+public abstract class CommonHeaderAdapter<T>
+        implements IStickyHeadersAdapter<ViewHolder> {
     protected Context mContext;
     protected int mLayoutId;
     protected List<T> mDatas;

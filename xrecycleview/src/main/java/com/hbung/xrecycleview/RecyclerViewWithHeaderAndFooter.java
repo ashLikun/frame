@@ -9,13 +9,18 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hbung.adapter.recyclerview.HeaderAndFooterAdapter;
+import com.hbung.baseadapter.IHeaderAndFooter;
 
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2016/3/22.
+ * 作者　　: 李坤
+ * 创建时间: 10:12 Administrator
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：带头部与底部的RecycleView
  */
+
 public class RecyclerViewWithHeaderAndFooter extends RecyclerView {
 
     private static final int TYPE_HEADER = -4;
@@ -62,7 +67,7 @@ public class RecyclerViewWithHeaderAndFooter extends RecyclerView {
         super.setAdapter(mWrapAdapter);
         try {
             mAdapter.registerAdapterDataObserver(mDataObserver);
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
 
         }
 
@@ -97,8 +102,8 @@ public class RecyclerViewWithHeaderAndFooter extends RecyclerView {
     }
 
     private void setFooterSize() {
-        if (mAdapter instanceof HeaderAndFooterAdapter) {
-            ((HeaderAndFooterAdapter) mAdapter).setFooterSize(getFootViewSize());
+        if (mAdapter instanceof IHeaderAndFooter) {
+            ((IHeaderAndFooter) mAdapter).setFooterSize(getFootViewSize());
         }
         if (mWrapAdapter != null) {
             mWrapAdapter.setFooterSize(getFootViewSize());
@@ -106,13 +111,14 @@ public class RecyclerViewWithHeaderAndFooter extends RecyclerView {
     }
 
     private void setHeaderSize() {
-        if (mAdapter instanceof HeaderAndFooterAdapter) {
-            ((HeaderAndFooterAdapter) mAdapter).setHeaderSize(getHeaderViewSize());
+        if (mAdapter instanceof IHeaderAndFooter) {
+            ((IHeaderAndFooter) mAdapter).setHeaderSize(getHeaderViewSize());
         }
         if (mWrapAdapter != null) {
             mWrapAdapter.setHeaderSize(getHeaderViewSize());
         }
     }
+
 
     public void scrollToPositionWithOffset(int postion) {
         LayoutManager layoutManager = getLayoutManager();
@@ -196,9 +202,12 @@ public class RecyclerViewWithHeaderAndFooter extends RecyclerView {
     };
 
 
-    private class WrapAdapter extends HeaderAndFooterAdapter {
+    private class WrapAdapter extends RecyclerView.Adapter<ViewHolder>
+            implements IHeaderAndFooter {
         private int headerPosition = 0;
         private int footerPosition = 0;
+        private int headerSize;
+        private int footerSize;
 
         public WrapAdapter() {
         }
@@ -357,6 +366,22 @@ public class RecyclerViewWithHeaderAndFooter extends RecyclerView {
 
                 }
             }
+        }
+
+        public int getFooterSize() {
+            return footerSize;
+        }
+
+        public void setFooterSize(int footerSize) {
+            this.footerSize = footerSize;
+        }
+
+        public int getHeaderSize() {
+            return headerSize;
+        }
+
+        public void setHeaderSize(int headerSize) {
+            this.headerSize = headerSize;
         }
 
         private class SimpleViewHolder extends ViewHolder {

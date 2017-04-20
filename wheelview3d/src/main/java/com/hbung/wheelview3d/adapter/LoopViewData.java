@@ -35,4 +35,5 @@ public class LoopViewData implements ILoopShowData {
     public String getShowText() {
         return title;
     }
+
 }

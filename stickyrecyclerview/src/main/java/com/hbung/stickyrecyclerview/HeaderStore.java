@@ -3,7 +3,9 @@ package com.hbung.stickyrecyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hbung.adapter.recyclerview.HeaderAndFooterAdapter;
+
+import com.hbung.baseadapter.IHeaderAndFooter;
+import com.hbung.baseadapter.IStickyHeadersAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +16,7 @@ import java.util.HashMap;
 public class HeaderStore {
 
     private final RecyclerView parent;
-    private final StickyHeadersAdapter adapter;
+    private final IStickyHeadersAdapter adapter;
     private final HashMap<Long, View> headersViewByHeadersIds;
     private final HashMap<Long, Boolean> wasHeaderByItemId;
     private final ArrayList<Boolean> isHeaderByItemPosition;
@@ -25,7 +27,7 @@ public class HeaderStore {
         return isHeaderByItemPosition;
     }
 
-    public HeaderStore(RecyclerView parent, StickyHeadersAdapter adapter, boolean isSticky) {
+    public HeaderStore(RecyclerView parent, IStickyHeadersAdapter adapter, boolean isSticky) {
         this.parent = parent;
         this.adapter = adapter;
         this.isSticky = isSticky;
@@ -92,8 +94,9 @@ public class HeaderStore {
         if (parent.getAdapter() == null) {
             return;
         }
-        isHeaderByItemPosition.ensureCapacity(parent.getAdapter().getItemCount() - getRecycleViewHeadSize() - getRecycleViewFootViewSize());
-        for (int i = 0; i < parent.getAdapter().getItemCount() - getRecycleViewHeadSize() - getRecycleViewFootViewSize(); i++) {
+        int size = parent.getAdapter().getItemCount() - getRecycleViewHeadSize() - getRecycleViewFootViewSize();
+        isHeaderByItemPosition.ensureCapacity(size);
+        for (int i = 0; i < size; i++) {
             isHeaderByItemPosition.add(i == 0 || adapter.getHeaderId(i) != adapter.getHeaderId(i - 1));
         }
     }
@@ -243,15 +246,15 @@ public class HeaderStore {
     }
 
     public int getRecycleViewHeadSize() {
-        if (parent.getAdapter() instanceof HeaderAndFooterAdapter) {
-            return ((HeaderAndFooterAdapter) parent.getAdapter()).getHeaderSize();
+        if (parent.getAdapter() instanceof IHeaderAndFooter) {
+            return ((IHeaderAndFooter) parent.getAdapter()).getHeaderSize();
         }
         return 0;
     }
 
     public int getRecycleViewFootViewSize() {
-        if (parent.getAdapter() instanceof HeaderAndFooterAdapter) {
-            return ((HeaderAndFooterAdapter) parent.getAdapter()).getFooterSize();
+        if (parent.getAdapter() instanceof IHeaderAndFooter) {
+            return ((IHeaderAndFooter) parent.getAdapter()).getFooterSize();
         }
         return 0;
     }

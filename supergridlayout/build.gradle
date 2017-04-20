@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile project(':adapter')
+    compile project(':adapterDatabind')
     compile 'com.google.android:flexbox:0.1.2'
 }
 

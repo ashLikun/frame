@@ -33,12 +33,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     private Context mContext;
     private int mLayoutId;
 
-    public ViewHolder(Context context, View itemView, ViewGroup parent, int position) {
+    public ViewHolder(Context context, View itemView, int position) {
         super(itemView);
         mContext = context;
         mConvertView = itemView;
         mPosition = position;
-        mViews = new SparseArray<View>();
+        mViews = new SparseArray();
         mConvertView.setTag(itemView.getId(), this);
     }
 
@@ -73,7 +73,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
                                  ViewGroup parent, int layoutId, int position) {
         if (convertView == null) {
             View itemView = LayoutInflater.from(context).inflate(layoutId, parent, false);
-            ViewHolder holder = new ViewHolder(context, itemView, parent, position);
+            ViewHolder holder = new ViewHolder(context, itemView, position);
             holder.mLayoutId = layoutId;
             return holder;
         } else {

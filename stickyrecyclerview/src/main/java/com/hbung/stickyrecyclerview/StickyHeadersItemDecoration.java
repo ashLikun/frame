@@ -62,7 +62,7 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) child.getLayoutParams();
             RecyclerView.ViewHolder holder = parent.getChildViewHolder(child);
-            if (isHeadAndFooter(parent, holder)) {
+            if (isHeadAndFooter( holder)) {
                 continue;
             }
 
@@ -100,7 +100,7 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
 
         RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) view.getLayoutParams();
         RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
-        if (isHeadAndFooter(parent, holder)) {
+        if (isHeadAndFooter( holder)) {
             outRect.set(0, 0, 0, 0);
             return;
         }
@@ -116,8 +116,8 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public boolean isHeadAndFooter(RecyclerView parent, RecyclerView.ViewHolder holder) {
-        return holder.getItemViewType() == 0;
+    public boolean isHeadAndFooter( RecyclerView.ViewHolder holder) {
+        return holder.getItemViewType() != 0;
     }
 
     public void registerAdapterDataObserver(RecyclerView.Adapter adapter) {

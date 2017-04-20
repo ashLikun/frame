@@ -10,13 +10,17 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.WrapperListAdapter;
 
-import com.hbung.adapter.abslistview.SwipeAdapter;
+import com.hbung.baseadapter.ISwipeAdapter;
 
 
 /**
- * @author baoyz
- * @date 2014-8-24
+ * 作者　　: 李坤
+ * 创建时间: 11:29 Administrator
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：listView侧滑菜单  adapter
  */
+
 public class SwipeMenuAdapter implements WrapperListAdapter {
 
     private BaseAdapter mAdapter;
@@ -64,12 +68,11 @@ public class SwipeMenuAdapter implements WrapperListAdapter {
             layout = (SwipeMenuLayout) convertView;
             layout.closeMenu();
             layout.setPosition(position);
-            View view = mAdapter.getView(position, layout.getContentView(),
+            mAdapter.getView(position, layout.getContentView(),
                     parent);
         }
-        if (mAdapter instanceof SwipeAdapter) {
-            boolean swipEnable = (((SwipeAdapter) mAdapter).getSwipEnableByPosition(position));
-            layout.setSwipEnable(swipEnable);
+        if (mAdapter instanceof ISwipeAdapter) {
+            layout.setSwipEnable((((ISwipeAdapter) mAdapter).getSwipEnableByPosition(position)));
         }
         return layout;
     }

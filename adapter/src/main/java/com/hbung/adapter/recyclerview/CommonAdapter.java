@@ -8,18 +8,22 @@ import android.view.ViewGroup;
 import com.hbung.adapter.ViewHolder;
 import com.hbung.adapter.recyclerview.click.OnItemClickListener;
 import com.hbung.adapter.recyclerview.click.OnItemLongClickListener;
+import com.hbung.baseadapter.IHeaderAndFooter;
 
 import java.util.List;
 
 /**
  * Created by zhy on 16/4/9.
  */
-public abstract class CommonAdapter<T> extends HeaderAndFooterAdapter<ViewHolder> {
+public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder>
+        implements IHeaderAndFooter {
     protected Context mContext;
     protected int mLayoutId;
     protected List<T> mDatas;
     OnItemClickListener onItemClickListener;
     OnItemLongClickListener onItemLongClickListener;
+    private int headerSize;
+    private int footerSize;
 
     public CommonAdapter(Context context, int layoutId, List<T> datas) {
         mContext = context;
@@ -117,5 +121,21 @@ public abstract class CommonAdapter<T> extends HeaderAndFooterAdapter<ViewHolder
 
     public List<T> getDatas() {
         return mDatas;
+    }
+
+    public int getFooterSize() {
+        return footerSize;
+    }
+
+    public void setFooterSize(int footerSize) {
+        this.footerSize = footerSize;
+    }
+
+    public int getHeaderSize() {
+        return headerSize;
+    }
+
+    public void setHeaderSize(int headerSize) {
+        this.headerSize = headerSize;
     }
 }

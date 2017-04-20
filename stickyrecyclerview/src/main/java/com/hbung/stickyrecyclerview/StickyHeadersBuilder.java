@@ -2,14 +2,28 @@ package com.hbung.stickyrecyclerview;
 
 import android.support.v7.widget.RecyclerView;
 
+import com.hbung.baseadapter.IStickyHeadersAdapter;
+
 /**
- * Created by aurel on 16/10/14.
+ * 作者　　: 李坤
+ * 创建时间: 12:08 Administrator
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：利用RecyclerView的ItemDecoration绘制悬浮的头部
+ * <p>
+ * 列
+ * recyclerView.addItemDecoration(new StickyHeadersBuilder()
+ * .setRecyclerView(recyclerView.getRecyclerView())
+ * .setAdapter(adapter)
+ * .setStickyHeadersAdapter(headerAdapter, true)
+ * .build());
  */
+
 public class StickyHeadersBuilder {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private StickyHeadersAdapter headersAdapter;
+    private IStickyHeadersAdapter headersAdapter;
     private OnHeaderClickListener headerClickListener;
     private boolean overlay;
     private boolean isSticky;
@@ -26,11 +40,11 @@ public class StickyHeadersBuilder {
         return this;
     }
 
-    public StickyHeadersBuilder setStickyHeadersAdapter(StickyHeadersAdapter adapter) {
+    public StickyHeadersBuilder setStickyHeadersAdapter(IStickyHeadersAdapter adapter) {
         return setStickyHeadersAdapter(adapter, false);
     }
 
-    public StickyHeadersBuilder setStickyHeadersAdapter(StickyHeadersAdapter adapter, boolean overlay) {
+    public StickyHeadersBuilder setStickyHeadersAdapter(IStickyHeadersAdapter adapter, boolean overlay) {
         this.headersAdapter = adapter;
         this.overlay = overlay;
         return this;
