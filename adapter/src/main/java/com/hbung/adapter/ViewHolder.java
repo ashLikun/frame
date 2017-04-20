@@ -25,6 +25,13 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+/**
+ * 作者　　: 李坤
+ * 创建时间: 2017/4/20 0020 11:48a
+ * <p>
+ * 方法功能：
+ */
+
 
 public class ViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
