@@ -14,6 +14,14 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/**
+ * 作者　　: 李坤
+ * 创建时间: 2017/5/16 9:15
+ * <p>
+ * 方法功能：兼容水波纹button 和 shared
+ * colorRipple 默认为colorPressed
+ */
+
 public class FlatButton extends TextView {
     //圆角
     private float cornerRadius;
@@ -26,7 +34,7 @@ public class FlatButton extends TextView {
     private int colorPressed;
     private int colorNormal;
     private int colorPressedText;
-    private int colorNormalText;
+    private int colorRipple;
 
     public FlatButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -50,10 +58,7 @@ public class FlatButton extends TextView {
         colorPressed = attr.getColor(R.styleable.FlatButton_colorPressed, 0xffeeeeee);
         colorNormal = attr.getColor(R.styleable.FlatButton_colorNormal, Color.TRANSPARENT);
         colorPressedText = attr.getColor(R.styleable.FlatButton_colorPressedText, 0xff676767);
-        colorNormalText = attr.getColor(R.styleable.FlatButton_colorNormalText, Color.TRANSPARENT);
-        attr.recycle();
-
-
+        colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
         setBackgroundCompat(getStateListDrawable());
     }
 
@@ -65,18 +70,17 @@ public class FlatButton extends TextView {
                         createPressedDrawable());
                 drawable.addState(new int[]{android.R.attr.state_focused},
                         createPressedDrawable());
-                drawable.addState(new int[]{-android.R.attr.state_enabled},
-                        createPressedDrawable());
                 drawable.addState(new int[]{android.R.attr.state_selected},
                         createPressedDrawable());
             }
+            drawable.addState(new int[]{-android.R.attr.state_enabled},
+                    createPressedDrawable());
             drawable.addState(new int[]{}, createNormalDrawable());
             //文字的颜色
-            setTextColor(getColorStateList(Color.TRANSPARENT != colorNormalText ?
-                    colorNormalText : getCurrentTextColor(), colorPressedText));
+            setTextColor(getColorStateList(getCurrentTextColor(), colorPressedText));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{colorPressed});
-                return new RippleDrawable(colorList, drawable.getAlpha() == 0 ? null : drawable, drawable.getAlpha() == 0 ? new ColorDrawable(Color.WHITE) : null);
+                ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{colorRipple});
+                return new RippleDrawable(colorList, drawable.getAlpha() == 0 ? null : drawable, drawable.getAlpha() == 0 ? new ColorDrawable(colorRipple) : null);
             }
         } finally {
 
@@ -85,8 +89,6 @@ public class FlatButton extends TextView {
     }
 
     private LayerDrawable createNormalDrawable() {
-
-
         int deffault = Color.TRANSPARENT;
         //默认的颜色为透明，那么第一层的颜色也为透明
         if (colorNormal == deffault) {
@@ -133,7 +135,7 @@ public class FlatButton extends TextView {
     }
 
     protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
-        return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
+        return context.obtainStyledAttributes(attributeSet, attr);
     }
 
     public float getCornerRadius() {
@@ -161,8 +163,9 @@ public class FlatButton extends TextView {
         setPadding(pL, pT, pR, pB);
     }
 
-    public void setStrokeColor(int strokeColor) {
-        this.strokeColor = strokeColor;
+
+    public void setColorPressed(int colorPressed) {
+        this.colorPressed = colorPressed;
         setBackgroundCompat(getStateListDrawable());
     }
 
@@ -171,9 +174,28 @@ public class FlatButton extends TextView {
         setBackgroundCompat(getStateListDrawable());
     }
 
-    public void setColorNormalText(int colorNormalText) {
-        this.colorNormalText = colorNormalText;
+    public void setColorPressedText(int colorPressedText) {
+        this.colorPressedText = colorPressedText;
         setBackgroundCompat(getStateListDrawable());
+    }
+
+
+    public void setColorRipple(int colorRipple) {
+        this.colorRipple = colorRipple;
+        setBackgroundCompat(getStateListDrawable());
+    }
+
+    public void setCornerRadius(float cornerRadius) {
+        this.cornerRadius = cornerRadius;
+    }
+
+    public void setStrokeColor(int strokeColor) {
+        this.strokeColor = strokeColor;
+        setBackgroundCompat(getStateListDrawable());
+    }
+
+    public void setStrokeWidth(float strokeWidth) {
+        this.strokeWidth = strokeWidth;
     }
 
     /**

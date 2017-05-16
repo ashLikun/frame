@@ -2,9 +2,9 @@ package com.hbung.glideutils;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageView;
