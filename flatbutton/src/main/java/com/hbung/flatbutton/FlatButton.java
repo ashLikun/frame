@@ -32,8 +32,13 @@ public class FlatButton extends TextView {
 
     //按下颜色
     private int colorPressed;
-    private int colorNormal;
     private int colorPressedText;
+    //默认的颜色
+    private int colorNormal;
+    //不可用的颜色
+    private int colorEnable;
+    private int colorEnableText;
+    //水波纹颜色
     private int colorRipple;
 
     public FlatButton(Context context, AttributeSet attrs, int defStyle) {
@@ -59,6 +64,8 @@ public class FlatButton extends TextView {
         colorNormal = attr.getColor(R.styleable.FlatButton_colorNormal, Color.TRANSPARENT);
         colorPressedText = attr.getColor(R.styleable.FlatButton_colorPressedText, 0xff676767);
         colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
+        colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
+        colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
         setBackgroundCompat(getStateListDrawable());
     }
 
@@ -74,10 +81,10 @@ public class FlatButton extends TextView {
                         createPressedDrawable());
             }
             drawable.addState(new int[]{-android.R.attr.state_enabled},
-                    createPressedDrawable());
+                    createEnableDrawable());
             drawable.addState(new int[]{}, createNormalDrawable());
             //文字的颜色
-            setTextColor(getColorStateList(getCurrentTextColor(), colorPressedText));
+            setTextColor(getColorStateList(getCurrentTextColor(), colorEnableText, colorPressedText));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{colorRipple});
                 return new RippleDrawable(colorList, drawable.getAlpha() == 0 ? null : drawable, drawable.getAlpha() == 0 ? new ColorDrawable(colorRipple) : null);
@@ -118,6 +125,14 @@ public class FlatButton extends TextView {
         GradientDrawable drawablePressed = new GradientDrawable();
         drawablePressed.setCornerRadius(getCornerRadius());
         drawablePressed.setColor(colorPressed);
+        drawablePressed.setStroke((int) strokeWidth, strokeColor);
+        return drawablePressed;
+    }
+
+    private Drawable createEnableDrawable() {
+        GradientDrawable drawablePressed = new GradientDrawable();
+        drawablePressed.setCornerRadius(getCornerRadius());
+        drawablePressed.setColor(colorEnable);
         drawablePressed.setStroke((int) strokeWidth, strokeColor);
         return drawablePressed;
     }
@@ -209,8 +224,8 @@ public class FlatButton extends TextView {
         return (int) (dipValue * scale + 0.5f);
     }
 
-    private ColorStateList getColorStateList(int normal, int pressed) {
-        int[] colors = new int[]{pressed, pressed, normal};
+    private ColorStateList getColorStateList(int normal, int enable, int pressed) {
+        int[] colors = new int[]{pressed, enable, normal};
         int[][] states = new int[3][];
         states[0] = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};
         states[1] = new int[]{-android.R.attr.state_enabled};
