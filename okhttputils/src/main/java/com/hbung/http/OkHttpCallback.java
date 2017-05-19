@@ -1,10 +1,14 @@
 package com.hbung.http;
 
-import com.hbung.http.response.BaseHttpResponse;
+import com.google.gson.annotations.SerializedName;
+import com.hbung.http.response.HttpResponse;
+import com.hbung.http.response.HttpResult;
 import com.hbung.http.response.ResponseSimeple;
 import com.hbung.json.GsonHelper;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -106,10 +110,11 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
                     return (ResultType) json;
                 } else {
                     ResultType res = GsonHelper.getGson().fromJson(json, type);
-                    if (res instanceof BaseHttpResponse) {
-                        ((BaseHttpResponse) res).json = json;
-                        ((BaseHttpResponse) res).httpcode = response.code();
+                    if (res instanceof HttpResponse) {
+                        ((HttpResponse) res).json = json;
+                        ((HttpResponse) res).httpcode = response.code();
                     }
+
                     return res;
                 }
             }

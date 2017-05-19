@@ -32,8 +32,7 @@ import okhttp3.RequestBody;
  */
 
 public class RequestParam {
-    protected String url;//请求地址
-    private String path;//请求路径
+    protected Uri url;//请求地址
     private String method;//请求方法
     protected Map<String, String> headers;//请求头
 
@@ -41,8 +40,12 @@ public class RequestParam {
     private String postContent;//请求内容，如果设置这个参数  其他的参数将不会提交  post
     private List<FileInput> files;//上传文件
 
-    public String getPath() {
-        return path;
+    private boolean isJson = false;
+
+    public void appendPath(String path) {
+        if (url == null) new Exception("先调用url方法");
+        Uri.Builder builder = url.buildUpon();
+        builder.appendPath(path).build();
     }
 
     public void setMethod(String method) {
@@ -58,7 +61,7 @@ public class RequestParam {
     }
 
     public void url(String url) {
-        this.url = url;
+        this.url = Uri.parse(url);
     }
 
     public boolean isHavaHeader() {
@@ -71,18 +74,6 @@ public class RequestParam {
 
     public boolean isHavafiles() {
         return files != null && !files.isEmpty();
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public void addAction(String valuse) {
-        addParam("action", valuse);
-    }
-
-    public RequestParam(String action) {
-        addAction(action);
     }
 
 
@@ -151,6 +142,7 @@ public class RequestParam {
         if (params != null && !params.isEmpty()) {
             postContent = GsonHelper.getGson().toJson(params);
             params.clear();
+            isJson = true;
         }
     }
 
@@ -170,7 +162,7 @@ public class RequestParam {
             }
         }
         return builder
-                .url(url)
+                .url(url.toString())
                 .headers(header.build())
                 .method(method, requestBody)
                 .build();
@@ -193,7 +185,11 @@ public class RequestParam {
             url = appendQueryParams(url, params);
             body = null;
         } else if (!isEmpty(postContent)) {//只提交content
-            body = RequestBody.create(MediaType.parse("text/plain;charset=utf-8"), postContent);
+            if (isJson) {
+                body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), postContent);
+            } else {
+                body = RequestBody.create(MediaType.parse("text/plain;charset=utf-8"), postContent);
+            }
         } else {
 
             if (isHavafiles()) {//存在文件用MultipartBody
@@ -222,17 +218,17 @@ public class RequestParam {
      * 方法功能：get请求构建url
      */
 
-    private String appendQueryParams(String url, Map<String, String> params) {
+    private Uri appendQueryParams(Uri url, Map<String, String> params) {
         if (url == null || params == null || params.isEmpty()) {
             return url;
         }
-        Uri.Builder builder = Uri.parse(url).buildUpon();
+        Uri.Builder builder = url.buildUpon();
         if (params != null && !params.isEmpty()) {
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 builder.appendQueryParameter(entry.getKey(), entry.getValue());
             }
         }
-        return builder.build().toString();
+        return builder.build();
     }
 
     /**

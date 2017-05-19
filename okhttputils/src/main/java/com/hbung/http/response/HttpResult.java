@@ -6,11 +6,11 @@ import com.google.gson.annotations.SerializedName;
  * Created by likun
  * http返回的基本数据， 用泛型解耦，可以适用于大部分接口
  */
-public class HttpResult<T> extends BaseHttpResponse {
+public class HttpResult<T> extends HttpResponse {
 
 
     //用来模仿Data
-    @SerializedName("list")
+    @SerializedName("data")
     public T data;
 
     public T getData() {
@@ -22,13 +22,17 @@ public class HttpResult<T> extends BaseHttpResponse {
         this.data = data;
     }
 
+
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("code=" + code + "msg=" + msg);
-        if (null != data) {
-            sb.append(" subjects:" + data.toString());
-        }
-        return sb.toString();
+        return "BaseHttpResponse{" +
+                "json='" + json + '\'' +
+                ", httpcode=" + httpcode +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", success=" + success +
+                ", error=" + error +
+                '}';
     }
 }
