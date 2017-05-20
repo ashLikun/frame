@@ -3,7 +3,7 @@
 
     <style name="mainKongFlatButton">
         <item name="colorNormal">@android:color/transparent</item>
-        <item name="colorNormalText">?colorPrimary</item>
+        <item name="android:textColor">?colorPrimary</item>
         <item name="colorPressed">#ffcccccc</item>
         <item name="colorPressedText">?android:textColorPrimary</item>
         <item name="cornerRadius">6dp</item>

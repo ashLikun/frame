@@ -1,7 +1,6 @@
 package com.hbung.http;
 
 import okhttp3.Call;
-import rx.Subscriber;
 
 /**
  * 作者　　: 李坤
@@ -14,7 +13,6 @@ import rx.Subscriber;
 public class ExecuteCall {
     private Call call;
     private boolean isCompleted = false;//是否完成
-    private Subscriber subscriber;
 
 
     public void cancel() {
@@ -44,11 +42,4 @@ public class ExecuteCall {
         return call;
     }
 
-    public Subscriber getSubscriber() {
-        return subscriber;
-    }
-
-    protected void setSubscriber(Subscriber subscriber) {
-        this.subscriber = subscriber;
-    }
 }

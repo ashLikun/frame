@@ -5,7 +5,9 @@
         <attr name="colorPressed" format="color" />
         <attr name="colorNormal" format="color" />
         <attr name="colorPressedText" format="color" />
-        <attr name="colorNormalText" format="color" />
+        <attr name="colorEnable" format="color" />
+        <attr name="colorEnableText" format="color" />
+        <attr name="colorRipple" format="color" />
         <attr name="strokeColor" format="color" />
         <attr name="strokeWidth" format="dimension" />
         <attr name="cornerRadius" format="dimension" />
