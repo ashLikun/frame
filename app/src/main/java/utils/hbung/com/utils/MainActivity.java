@@ -10,18 +10,19 @@ import com.hbung.adapter.ViewHolder;
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
 import com.hbung.adapter.recyclerview.click.OnItemClickListener;
+import com.hbung.liteorm.LiteOrmUtil;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.loadingandretrymanager.MyOnLoadingAndRetryListener;
 import com.hbung.stickyrecyclerview.StickyHeadersBuilder;
 import com.hbung.utils.Utils;
 import com.hbung.utils.ui.ToastUtils;
-import com.hbung.xrecycleview.divider.HorizontalDividerItemDecoration;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.hbung.xrecycleview.OnLoaddingListener;
 import com.hbung.xrecycleview.RefreshLayout;
 import com.hbung.xrecycleview.SuperRecyclerView;
+import com.hbung.xrecycleview.divider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import utils.hbung.com.utils.databinding.HeadItemListBinding;
 import utils.hbung.com.utils.databinding.ItemListBinding;
+import utils.hbung.com.utils.datebean.LitormData;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
     LoopView loopView;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         setContentView(R.layout.activity_main);
         Utils.myApp = getApplication();
         LinkedHashMap ll = new LinkedHashMap();
+        LiteOrmUtil.getLiteOrm().save(new LitormData());
 
         manager = LoadingAndRetryManager.getLoadingAndRetryManager(findViewById(R.id.swipe),
                 new MyOnLoadingAndRetryListener(this, null));

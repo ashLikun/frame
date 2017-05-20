@@ -68,7 +68,7 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
     public void onResponse(final Call call, final Response response) throws IOException {
         if (response.isSuccessful()) {
             try {
-                ResultType resultType = handerResult(call, response);
+                ResultType resultType = handerResult(response);
                 postResponse(response, resultType);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -82,7 +82,7 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
 
     }
 
-    private ResultType handerResult(Call call, final Response response) throws IOException {
+    private ResultType handerResult(final Response response) throws IOException {
         if (callback != null) {
             Type type = getType();
             if (type == Response.class) {
