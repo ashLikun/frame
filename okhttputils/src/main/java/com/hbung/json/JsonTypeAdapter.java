@@ -1,11 +1,11 @@
 package com.hbung.json;
 
+import android.text.TextUtils;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
@@ -14,75 +14,78 @@ import java.lang.reflect.Type;
  */
 public class JsonTypeAdapter {
 
-    public static class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserializer<Integer> {
+    public static class IntegerTypeAdapter implements JsonDeserializer<Integer> {
         // json转为对象时调用,实现JsonDeserializer<>接口
         @Override
         public Integer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            if (json.getAsString() == "" || json.getAsString() == null) {
-                return 0;
+            if (json.getAsJsonPrimitive().getAsString() == null
+                    || json.getAsJsonPrimitive().getAsString() == ""
+                    || TextUtils.equals(json.getAsJsonPrimitive().getAsString().toUpperCase(), "NULL")) {
+                return GsonHelper.DEFAULT;
             } else {
                 return json.getAsJsonPrimitive().getAsInt();
             }
         }
 
-        // 对象转为Json时调用,实现JsonSerializer<>接口
-        @Override
-        public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
-            return null;
-        }
     }
 
-    public static class LongTypeAdapter implements JsonSerializer<Long>, JsonDeserializer<Long> {
+    public static class StringTypeAdapter implements JsonDeserializer<String> {
+        // json转为对象时调用,实现JsonDeserializer<>接口
+        @Override
+        public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.getAsJsonPrimitive().getAsString() == null
+                    || TextUtils.equals(json.getAsJsonPrimitive().getAsString().toUpperCase(), "NULL")) {
+                return null;
+            } else {
+                return json.getAsJsonPrimitive().getAsString();
+            }
+        }
+
+    }
+
+    public static class LongTypeAdapter implements JsonDeserializer<Long> {
         // json转为对象时调用,实现JsonDeserializer<>接口
         @Override
         public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            if (json.getAsString() == "" || json.getAsString() == null) {
-                return 0l;
+            if (json.getAsJsonPrimitive().getAsString() == null
+                    || json.getAsJsonPrimitive().getAsString() == ""
+                    || TextUtils.equals(json.getAsJsonPrimitive().getAsString().toUpperCase(), "NULL")) {
+                return Long.valueOf(GsonHelper.DEFAULT);
             } else {
-                return json.getAsLong();
+                return json.getAsJsonPrimitive().getAsLong();
             }
         }
 
-        // 对象转为Json时调用,实现JsonSerializer<>接口
-        @Override
-        public JsonElement serialize(Long src, Type typeOfSrc, JsonSerializationContext context) {
-            return null;
-        }
+
     }
 
-    public static class DoubleTypeAdapter implements JsonSerializer<Double>, JsonDeserializer<Double> {
+    public static class DoubleTypeAdapter implements JsonDeserializer<Double> {
         // json转为对象时调用,实现JsonDeserializer<>接口
         @Override
         public Double deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            if (json.getAsString() == "" || json.getAsString() == null) {
-                return 0d;
+            if (json.getAsJsonPrimitive().getAsString() == null
+                    || json.getAsJsonPrimitive().getAsString() == ""
+                    || TextUtils.equals(json.getAsJsonPrimitive().getAsString().toUpperCase(), "NULL")) {
+                return Double.valueOf(GsonHelper.DEFAULT);
             } else {
-                return json.getAsDouble();
+                return json.getAsJsonPrimitive().getAsDouble();
             }
         }
 
-        // 对象转为Json时调用,实现JsonSerializer<>接口
-        @Override
-        public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-            return null;
-        }
+
     }
 
-    public static class FloatTypeAdapter implements JsonSerializer<Float>, JsonDeserializer<Float> {
+    public static class FloatTypeAdapter implements JsonDeserializer<Float> {
         // json转为对象时调用,实现JsonDeserializer<>接口
         @Override
         public Float deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            if (json.getAsString() == "" || json.getAsString() == null) {
-                return 0f;
+            if (json.getAsJsonPrimitive().getAsString() == null
+                    || json.getAsJsonPrimitive().getAsString() == ""
+                    || TextUtils.equals(json.getAsJsonPrimitive().getAsString().toUpperCase(), "NULL")) {
+                return Float.valueOf(GsonHelper.DEFAULT);
             } else {
-                return json.getAsFloat();
+                return json.getAsJsonPrimitive().getAsFloat();
             }
-        }
-
-        // 对象转为Json时调用,实现JsonSerializer<>接口
-        @Override
-        public JsonElement serialize(Float src, Type typeOfSrc, JsonSerializationContext context) {
-            return null;
         }
     }
 

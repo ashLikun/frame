@@ -1,14 +1,9 @@
 package com.hbung.http;
 
-import com.google.gson.annotations.SerializedName;
 import com.hbung.http.response.HttpResponse;
-import com.hbung.http.response.HttpResult;
-import com.hbung.http.response.ResponseSimeple;
 import com.hbung.json.GsonHelper;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -23,7 +18,7 @@ import okhttp3.ResponseBody;
  * 创建时间:2017/3/23　14:14
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：okhttp的直接回调
  */
 
 class OkHttpCallback<ResultType> implements okhttp3.Callback {
@@ -63,7 +58,7 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
                 callback.onSuccess(resultType);
                 exc.setCompleted(true);
                 callback.onCompleted();
-                response.body().close();
+                response.close();
             }
         });
     }
@@ -93,17 +88,6 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
                 return (ResultType) response;
             } else if (type == ResponseBody.class) {
                 return (ResultType) response.body();
-            } else if (type == ResponseSimeple.class) {
-                ResponseSimeple simeple = new ResponseSimeple.Builder()
-                        .body(response.body())
-                        .code(response.code())
-                        .headers(response.headers())
-                        .message(response.message())
-                        .receivedResponseAtMillis(response.receivedResponseAtMillis())
-                        .sentRequestAtMillis(response.sentRequestAtMillis())
-                        .request(response.request())
-                        .build();
-                return (ResultType) simeple;
             } else {
                 String json = response.body().string();
                 if (type == String.class) {
@@ -113,8 +97,8 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
                     if (res instanceof HttpResponse) {
                         ((HttpResponse) res).json = json;
                         ((HttpResponse) res).httpcode = response.code();
+                        ((HttpResponse) res).response = response;
                     }
-
                     return res;
                 }
             }

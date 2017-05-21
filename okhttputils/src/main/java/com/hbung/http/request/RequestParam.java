@@ -150,7 +150,8 @@ public class RequestParam {
         postContent = content;
     }
 
-    public Request generateRequest(Callback callback) {
+    //构建一个Request
+    public Request bulidRequest(Callback callback) {
         Request.Builder builder = new Request.Builder();
         if (isEmpty(method))
             method = "GET";

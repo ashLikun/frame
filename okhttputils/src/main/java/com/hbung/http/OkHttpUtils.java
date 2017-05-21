@@ -52,37 +52,36 @@ public class OkHttpUtils implements SuperHttp {
         return mOkHttpClient;
     }
 
-
+    //异步请求
     @Override
     public <T> ExecuteCall execute(RequestCall requestCall, Callback<T> callback) {
-        Call call = requestCall.enqueue(callback);
+        Call call = requestCall.buildCall(callback);
         ExecuteCall exc = new ExecuteCall();
         exc.setCall(call);
         call.enqueue(new OkHttpCallback(mMainThread, exc, callback));
         return exc;
     }
 
+    //异步请求
     @Override
     public <T> ExecuteCall execute(RequestParam requestParam, Callback<T> callback) {
         RequestCall requestCall = new RequestCall.Builder(requestParam)
                 .build();
-        Call call = requestCall.enqueue(callback);
-        ExecuteCall exc = new ExecuteCall();
-        exc.setCall(call);
-        call.enqueue(new OkHttpCallback(mMainThread, exc, callback));
-        return exc;
+        return execute(requestCall, callback);
     }
 
+    //同步请求
     @Override
     public Response execute(RequestCall requestCall) throws IOException {
-        return requestCall.execute();
+        return requestCall.buildCall(null).execute();
     }
 
+    //同步请求
     @Override
     public Response execute(RequestParam requestParam) throws IOException {
         RequestCall requestCall = new RequestCall.Builder(requestParam)
                 .build();
-        return requestCall.execute();
+        return execute(requestCall);
     }
 
 

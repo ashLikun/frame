@@ -7,13 +7,12 @@ import okhttp3.Call;
  * 创建时间:2017/3/21　16:47
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：异步请求后返回值，用于控制请求，如果请求完成 那么call自动清空
  */
 
 public class ExecuteCall {
     private Call call;
     private boolean isCompleted = false;//是否完成
-
 
     public void cancel() {
         if (call != null) {
@@ -31,6 +30,9 @@ public class ExecuteCall {
     }
 
     protected void setCompleted(boolean completed) {
+        if (completed) {
+            call = null;
+        }
         isCompleted = completed;
     }
 

@@ -6,13 +6,18 @@ import android.view.View;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
+import com.hbung.http.response.HttpResponse;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
+import com.hbung.utils.Utils;
+import com.hbung.utils.other.LogUtils;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.hbung.xrecycleview.OnLoaddingListener;
 import com.hbung.xrecycleview.RefreshLayout;
 import com.hbung.xrecycleview.SuperRecyclerView;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.init(getApplication(),false,null);
         setContentView(R.layout.activity_main);
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +86,30 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 //                ToastUtils.showShort(MainActivity.this, " aaa " + position);
 //            }
 //        });
+        gsonTest();
+    }
+
+    private void gsonTest() {
+        String gson = "{\n" +
+                "\"key1\": {\n" +
+                "\"key1\": \"aaaaa\",\n" +
+                "\"key2\": 2,\n" +
+                "\"key3\": 0.6,\n" +
+                "\"key4\": true\n" +
+                "},\n" +
+                "\"key2\": 2,\n" +
+                "\"key3\": 0.6,\n" +
+                "\"key4\": true\n" +
+                "}";
+        HttpResponse response = new HttpResponse();
+        response.json = gson;
+        int s = 222222;
+        try {
+            s = response.getTypeToObject(Integer.class,"key1","key2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtils.e(s);
     }
 
 

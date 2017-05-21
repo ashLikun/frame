@@ -3,7 +3,6 @@ package com.hbung.http.request;
 import com.hbung.http.Callback;
 import com.hbung.http.OkHttpUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +11,6 @@ import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * 作者　　: 李坤
@@ -42,8 +40,9 @@ public class RequestCall {
     }
 
 
+    //构建一个call用于请求
     public Call buildCall(Callback callback) {
-        request = requestParam.generateRequest(callback);//获得请求实体
+        request = requestParam.bulidRequest(callback);//获得请求实体
         //如果超时时间大于0,就重新构建OkHttpClient
         if (isNewBuilder()) {
             readTimeOut = readTimeOut > 0 ? readTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
@@ -79,18 +78,6 @@ public class RequestCall {
 
     public RequestParam getRequestParam() {
         return requestParam;
-    }
-
-    //异步
-    public Call enqueue(Callback callback) {
-        return buildCall(callback);
-
-    }
-
-    //同步
-    public Response execute() throws IOException {
-        buildCall(null);
-        return call.execute();
     }
 
 
