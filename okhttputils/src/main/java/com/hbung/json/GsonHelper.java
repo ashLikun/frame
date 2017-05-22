@@ -13,11 +13,13 @@ import com.google.gson.GsonBuilder;
  */
 
 public class GsonHelper {
+    public static final int DEFAULT = -200;
 
 
     public static Gson getGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(int.class, new JsonTypeAdapter.IntegerTypeAdapter())
+                .registerTypeAdapter(String.class, new JsonTypeAdapter.StringTypeAdapter())
                 .registerTypeAdapter(long.class, new JsonTypeAdapter.LongTypeAdapter())
                 .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
                 .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())

@@ -8,7 +8,6 @@ package com.hbung.http;
  * 功能介绍：http返回值的回调接口
  * 泛型可以是
  *
- * @Link {@link com.hbung.http.response.ResponseSimeple} 对Response的简单封装
  * @Link {@link String}
  * @Link {@link okhttp3.Response}//对这个操作要在子线程
  * @Link {@link okhttp3.ResponseBody}

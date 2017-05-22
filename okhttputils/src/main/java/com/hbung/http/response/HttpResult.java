@@ -25,7 +25,7 @@ public class HttpResult<T> extends HttpResponse {
 
     @Override
     public String toString() {
-        return "BaseHttpResponse{" +
+        return "HttpResult{" +
                 "json='" + json + '\'' +
                 ", httpcode=" + httpcode +
                 ", code=" + code +

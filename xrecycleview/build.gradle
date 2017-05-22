@@ -20,9 +20,12 @@ android {
 
 dependencies {
     compile rootProject.ext.designVersion
-    //compile 'com.afollestad.material-dialogs:core:0.9.4.3'
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
     compile project(':baseadapter')
+
+    testCompile rootProject.ext.designVersion
+    testCompile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
+    testCompile project(':baseadapter')
 }
 
 apply from: '../maven.gradle'
