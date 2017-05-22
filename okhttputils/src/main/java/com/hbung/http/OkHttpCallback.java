@@ -1,14 +1,10 @@
 package com.hbung.http;
 
-import com.google.gson.annotations.SerializedName;
 import com.hbung.http.response.HttpResponse;
-import com.hbung.http.response.HttpResult;
 import com.hbung.http.response.ResponseSimeple;
 import com.hbung.json.GsonHelper;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
