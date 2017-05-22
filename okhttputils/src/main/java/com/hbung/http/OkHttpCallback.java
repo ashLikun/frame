@@ -1,10 +1,6 @@
 package com.hbung.http;
 
 import com.hbung.http.response.HttpResponse;
-<<<<<<< HEAD
-import com.hbung.http.response.ResponseSimeple;
-=======
->>>>>>> 7a09f56e147b37842448d7dace299f2521bb27fe
 import com.hbung.json.GsonHelper;
 
 import java.io.IOException;
