@@ -1,9 +1,11 @@
 package com.hbung.http.request;
 
 /**
- * Created by Administrator on 2016/8/3.
+ * 作者　　: 李坤
+ * 创建时间: 2017/5/23 10:29
+ * <p>
+ * 方法功能：进度回调
  */
-
 public interface ProgressCallBack {
 
 

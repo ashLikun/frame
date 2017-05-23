@@ -10,6 +10,13 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
+/**
+ * 作者　　: 李坤
+ * 创建时间: 10:31 admin
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：http工具类
+ */
 
 public class OkHttpUtils implements SuperHttp {
 

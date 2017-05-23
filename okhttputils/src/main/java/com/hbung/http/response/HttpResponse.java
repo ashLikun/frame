@@ -14,16 +14,18 @@ import java.util.HashMap;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2016/8/15.
+ * 作者　　: 李坤
+ * 创建时间: 10:27 admin
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：http的基本类
  */
-
 public class HttpResponse {
+    //gson不解析
     public transient Response response;
-    public static final String CACHE_ROOT = "root";//缓存的跟节点key
-
+    public transient static final String CACHE_ROOT = "root";//缓存的跟节点key
     public transient String json;
     public transient int httpcode;
-
 
     @SerializedName("code")
     public int code;
@@ -51,9 +53,13 @@ public class HttpResponse {
     }
 
     public JSONObject getJSONObject() throws JSONException {
-        JSONObject js = getCacheJsonObject(CACHE_ROOT, json);
+        Object js = getCacheJSON(CACHE_ROOT, json);
         json = null;
-        return js;
+        if (js instanceof JSONObject) {
+            return (JSONObject) js;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -89,11 +95,21 @@ public class HttpResponse {
 
     public <T> T getTypeToObject(Class<T> type, String... key) throws JSONException {
         if (json == null) return null;
-
         String resStr = json;
         if (key != null) {
-            for (String k : key) {
-                resStr = getKeyToValue(resStr, k);
+            for (int i = 0; i < key.length; i++) {
+                String rootKet = i == 0 ? CACHE_ROOT : key[i - 1];//要取得key得上一级Key
+                String currKey = key[i];//当前的key
+                Object jsonObject = getCacheJSON(rootKet, resStr);
+                if (jsonObject != null) {
+                    if (jsonObject instanceof JSONObject) {
+                        resStr = ((JSONObject) jsonObject).get(currKey).toString();
+                    } else if (jsonObject instanceof JSONArray) {//尝试用数组方式解析
+                        if (jsonObject != null && ((JSONArray) jsonObject).length() > 0) {
+                            resStr = ((JSONArray) jsonObject).getJSONObject(0).get(currKey).toString();
+                        }
+                    }
+                }
             }
         }
         if (TextUtils.isEmpty(resStr)) {
@@ -101,28 +117,6 @@ public class HttpResponse {
         }
         T t = GsonHelper.getGson().fromJson(resStr, type);
         return t;
-    }
-
-    private String getKeyToValue(String root, String key) throws JSONException {
-        if (!TextUtils.isEmpty(root)) {
-            try {
-
-                Object jsonObject = getCacheJSON(key,root);
-                if(jsonObject != null){
-                    if(jsonObject instanceof JSONObject){
-                        root = jsonObject.get(key).toString();
-                    }
-                }
-
-            } catch (JSONException e) {
-                //尝试用数组方式解析
-                JSONArray jsonArray = new JSONArray(root);
-                if (jsonArray != null && jsonArray.length() > 0) {
-                    root = jsonArray.getJSONObject(0).get(key).toString();
-                }
-            }
-        }
-        return root;
     }
 
     private Object getCacheJSON(String key, String content) throws JSONException {

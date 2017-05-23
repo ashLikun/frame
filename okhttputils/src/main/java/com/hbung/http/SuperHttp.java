@@ -22,10 +22,11 @@ public interface SuperHttp {
     //异步回调
     <T> ExecuteCall execute(RequestCall requestCall, Callback<T> callback);
 
-    //同步执行
-    Response execute(RequestCall requestCall) throws IOException; //异步回调
-
+    //异步回调
     <T> ExecuteCall execute(RequestParam requestParam, Callback<T> callback);
+
+    //同步执行
+    Response execute(RequestCall requestCall) throws IOException;
 
     //同步执行
     Response execute(RequestParam requestParam) throws IOException;
