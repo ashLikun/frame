@@ -45,7 +45,7 @@ public class RequestParam {
     public void appendPath(String path) {
         if (url == null) new Exception("先调用url方法");
         Uri.Builder builder = url.buildUpon();
-        builder.appendPath(path).build();
+        url = builder.appendPath(path).build();
     }
 
     public void setMethod(String method) {

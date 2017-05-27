@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.io.IOException;
 
 import okhttp3.Response;
 
@@ -23,9 +23,10 @@ import okhttp3.Response;
 public class HttpResponse {
     //gson不解析
     public transient Response response;
-    public transient static final String CACHE_ROOT = "root";//缓存的跟节点key
     public transient String json;
     public transient int httpcode;
+    //缓存已经实例化的JSONObject,JSONArray对象
+    private transient JSONObject cache;
 
     @SerializedName("code")
     public int code;
@@ -53,13 +54,29 @@ public class HttpResponse {
     }
 
     public JSONObject getJSONObject() throws JSONException {
-        Object js = getCacheJSON(CACHE_ROOT, json);
-        json = null;
-        if (js instanceof JSONObject) {
-            return (JSONObject) js;
-        } else {
-            return null;
+        if (cache == null) {
+            JSONObject jObj = new JSONObject(json);
+            json = null;
+            cache = jObj;
         }
+        return cache;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/5/25 11:07
+     * <p>
+     * 方法功能：设置当前类的解析json
+     */
+
+    public void setJson(String json) {
+        GsonHelper.getGson().fromJson(json, HttpResponse.class);
+    }
+
+    public void setResponse(Response response) throws IOException {
+        setJson(response.body().string());
+        this.response = response;
+        httpcode = response.code();
     }
 
     /**
@@ -89,56 +106,57 @@ public class HttpResponse {
     /**
      * 作者　　: 李坤
      * 创建时间: 2017/5/19 17:04
-     * <p>
      * 方法功能：根据key获取对象
      */
 
     public <T> T getTypeToObject(Class<T> type, String... key) throws JSONException {
-        if (json == null) return null;
-        String resStr = json;
+        Object resStr = getJSONObject();
         if (key != null) {
             for (int i = 0; i < key.length; i++) {
-                String rootKet = i == 0 ? CACHE_ROOT : key[i - 1];//要取得key得上一级Key
                 String currKey = key[i];//当前的key
-                Object jsonObject = getCacheJSON(rootKet, resStr);
-                if (jsonObject != null) {
-                    if (jsonObject instanceof JSONObject) {
-                        resStr = ((JSONObject) jsonObject).get(currKey).toString();
-                    } else if (jsonObject instanceof JSONArray) {//尝试用数组方式解析
-                        if (jsonObject != null && ((JSONArray) jsonObject).length() > 0) {
-                            resStr = ((JSONArray) jsonObject).getJSONObject(0).get(currKey).toString();
-                        }
-                    }
-                }
+                resStr = getCacheJSON(currKey, resStr);
             }
         }
-        if (TextUtils.isEmpty(resStr)) {
+        if (resStr == null) {
             return null;
         }
-        T t = GsonHelper.getGson().fromJson(resStr, type);
+        if (type.isAssignableFrom(String.class)) {
+
+        }
+        T t = GsonHelper.getGson().fromJson(resStr.toString(), type);
         return t;
     }
 
-    private Object getCacheJSON(String key, String content) throws JSONException {
-        if (TextUtils.isEmpty(key) || TextUtils.isEmpty(content)) return null;
-        if (cache == null) {
-            cache = new HashMap<>();
-        }
-        Object o = cache.get(key);
-        if (o == null) {
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/5/25 11:27
+     * <p>
+     * 方法功能：获取指定key的值
+     */
+
+    private Object getCacheJSON(String key, Object content) {
+        if (TextUtils.isEmpty(key)) return null;
+
+        if (content == null) return cache;
+
+        if (content == null) {
             try {
-                o = new JSONObject(content);
+                return getJSONObject();
             } catch (JSONException e) {
                 e.printStackTrace();
-                o = new JSONArray(content);
             }
-            cache.put(key, o);
         }
-        return o;
+        if (content instanceof JSONObject) {
+            return ((JSONObject) content).opt(key);
+        } else if (content instanceof JSONArray) {
+            Object aaa = ((JSONArray) content).opt(0);
+            if (aaa == null) {
+                return aaa;
+            }
+            return getCacheJSON(key, aaa);
+        }
+        return cache;
     }
 
-
-    //缓存已经实例化的JSONObject,JSONArray对象
-    private HashMap<String, Object> cache;
 
 }

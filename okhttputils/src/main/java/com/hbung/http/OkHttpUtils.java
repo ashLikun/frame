@@ -2,13 +2,18 @@ package com.hbung.http;
 
 import com.hbung.http.request.RequestCall;
 import com.hbung.http.request.RequestParam;
+import com.hbung.http.response.HttpResponse;
+import com.hbung.json.GsonHelper;
 
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * 作者　　: 李坤
@@ -77,20 +82,71 @@ public class OkHttpUtils implements SuperHttp {
         return execute(requestCall, callback);
     }
 
-    //同步请求
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/5/27 18:37
+     * <p>
+     * 方法功能：同步请求
+     *
+     * @param requestCall 请求参数
+     * @param raw         原始数据
+     * @param args        内部数据
+     */
+
     @Override
-    public Response execute(RequestCall requestCall) throws IOException {
-        return requestCall.buildCall(null).execute();
+    public <ResultType> ResultType syncExecute(RequestCall requestCall, Class raw, final Type... args) throws IOException {
+        Response response = requestCall.buildCall(null).execute();
+        return handerResult(type(raw, args), response);
     }
 
     //同步请求
     @Override
-    public Response execute(RequestParam requestParam) throws IOException {
+    public <ResultType> ResultType syncExecute(RequestParam requestParam, Class raw, final Type... args) throws IOException {
         RequestCall requestCall = new RequestCall.Builder(requestParam)
                 .build();
-        return execute(requestCall);
+        return syncExecute(requestCall, raw, args);
     }
 
+    //同步请求的 构建Type   args是泛型数据
+    private ParameterizedType type(final Class raw, final Type... args) {
+        return new ParameterizedType() {
+            public Type getRawType() {
+                return raw;
+            }
 
+            public Type[] getActualTypeArguments() {
+                return args;
+            }
+
+            public Type getOwnerType() {
+                return null;
+            }
+        };
+    }
+
+    //处理返回值
+    public static <T> T handerResult(Type type, final Response response) throws IOException {
+        if (type != null) {
+            if (type == Response.class) {
+                return (T) response;
+            } else if (type == ResponseBody.class) {
+                return (T) response.body();
+            } else {
+                String json = response.body().string();
+                if (type == String.class) {
+                    return (T) json;
+                } else {
+                    T res = GsonHelper.getGson().fromJson(json, type);
+                    if (res instanceof HttpResponse) {
+                        ((HttpResponse) res).json = json;
+                        ((HttpResponse) res).httpcode = response.code();
+                        ((HttpResponse) res).response = response;
+                    }
+                    return res;
+                }
+            }
+        }
+        return null;
+    }
 }
 

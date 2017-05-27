@@ -6,11 +6,13 @@ import android.view.View;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
+import com.hbung.http.OkHttpUtils;
+import com.hbung.http.request.RequestParam;
 import com.hbung.http.response.HttpResponse;
+import com.hbung.http.response.HttpResult;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.utils.Utils;
-import com.hbung.utils.other.LogUtils;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.hbung.xrecycleview.OnLoaddingListener;
@@ -19,8 +21,12 @@ import com.hbung.xrecycleview.SuperRecyclerView;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import utils.hbung.com.utils.datebean.GsonTest;
+import utils.hbung.com.utils.datebean.HttpTestData;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
     LoopView loopView;
@@ -31,10 +37,11 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     boolean chang = true;
     LoadingAndRetryManager manager;
     private SuperRecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.init(getApplication(),false,null);
+        Utils.init(getApplication(), false, null);
         setContentView(R.layout.activity_main);
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +94,32 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 //            }
 //        });
         gsonTest();
+        httpTest();
+    }
+
+    private void httpTest() {
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                RequestParam p = new RequestParam();
+                p.get();
+                p.addHeader("accessToken", "8079CE15-038E-4977-8443-E885730DE268");
+                //4690943?accessToken=8079CE15-038E-4977-8443-E885730DE268
+                p.url("http://10.155.50.51:5080/api/jlh/apply/getCustomerApplyInfo/");
+                p.appendPath("4690943");
+                p.addParam("accessToken", "8079CE15-038E-4977-8443-E885730DE268");
+                try {
+                    HttpResult<HttpTestData> result = OkHttpUtils.getInstance().syncExecute(p, HttpResult.class, HttpTestData.class);
+                    if (result.isSucceed()) {
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     private void gsonTest() {
@@ -103,13 +136,12 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 "}";
         HttpResponse response = new HttpResponse();
         response.json = gson;
-        int s = 222222;
+        GsonTest s;
         try {
-            s = response.getTypeToObject(Integer.class,"key1","key2");
+            s = response.getTypeToObject(GsonTest.class, "key1");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        LogUtils.e(s);
     }
 
 

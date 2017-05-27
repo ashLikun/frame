@@ -4,8 +4,7 @@ import com.hbung.http.request.RequestCall;
 import com.hbung.http.request.RequestParam;
 
 import java.io.IOException;
-
-import okhttp3.Response;
+import java.lang.reflect.Type;
 
 /**
  * 作者　　: 李坤
@@ -26,9 +25,9 @@ public interface SuperHttp {
     <T> ExecuteCall execute(RequestParam requestParam, Callback<T> callback);
 
     //同步执行
-    Response execute(RequestCall requestCall) throws IOException;
+    public <ResultType> ResultType syncExecute(RequestCall requestCall,  Class raw, final Type... args) throws IOException;
 
     //同步执行
-    Response execute(RequestParam requestParam) throws IOException;
+    public <ResultType> ResultType syncExecute(RequestParam requestParam,  Class raw, final Type... args) throws IOException;
 
 }

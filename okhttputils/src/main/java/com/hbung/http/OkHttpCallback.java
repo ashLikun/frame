@@ -1,8 +1,5 @@
 package com.hbung.http;
 
-import com.hbung.http.response.HttpResponse;
-import com.hbung.json.GsonHelper;
-
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -11,7 +8,6 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * 作者　　: 李坤
@@ -67,7 +63,7 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
     public void onResponse(final Call call, final Response response) throws IOException {
         if (response.isSuccessful()) {
             try {
-                ResultType resultType = handerResult(response);
+                ResultType resultType = OkHttpUtils.handerResult(getType(), response);
                 postResponse(response, resultType);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -81,30 +77,6 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
 
     }
 
-    private ResultType handerResult(final Response response) throws IOException {
-        if (callback != null) {
-            Type type = getType();
-            if (type == Response.class) {
-                return (ResultType) response;
-            } else if (type == ResponseBody.class) {
-                return (ResultType) response.body();
-            } else {
-                String json = response.body().string();
-                if (type == String.class) {
-                    return (ResultType) json;
-                } else {
-                    ResultType res = GsonHelper.getGson().fromJson(json, type);
-                    if (res instanceof HttpResponse) {
-                        ((HttpResponse) res).json = json;
-                        ((HttpResponse) res).httpcode = response.code();
-                        ((HttpResponse) res).response = response;
-                    }
-                    return res;
-                }
-            }
-        }
-        return null;
-    }
 
     /**
      * 获取回调里面的泛型
