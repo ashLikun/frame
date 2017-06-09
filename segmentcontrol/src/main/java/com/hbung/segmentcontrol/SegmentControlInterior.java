@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -54,6 +55,8 @@ public class SegmentControlInterior extends View {
     //动画相关
     private boolean mIsAnimStart = false;
     private float mAnimPosition = 1;
+    private boolean mIsMovePostionFirst = true;//保证外部移动控件只初始化一次
+    private boolean mIsMovePostionLeft = true;//保证外部移动控件只初始化一次
 
     public SegmentControlInterior(Context context) {
         this(context, null);
@@ -279,6 +282,7 @@ public class SegmentControlInterior extends View {
         }
         mPaint.setShader(null);
         mPaint.setAlpha(0xff);
+        Log.e("aaaa", "mCurrentIndex = " + mCurrentIndex + "   mAnimPosition = " + mAnimPosition);
         for (int i = 0; i < mTexts.length; i++) {
             String item = mTexts[i];//待绘制的文本
             if (mCurrentIndex == i) {//选中
@@ -334,17 +338,35 @@ public class SegmentControlInterior extends View {
         if (mCurrentIndex == index) {
             return;
         }
-        mLastIndex = mCurrentIndex;
-        mCurrentIndex = index;
+        moveItem(index);
         invalidate();
     }
 
-    //viewpager调用
-    public void setCurrentIndexPosition(int index, float position) {
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/9 15:25
+     * <p>
+     * 方法功能：设置选中的位置移动  viewpager调用
+     *
+     * @param isLeft   是否左移，true:左移，false:右移
+     * @param position 移动的百分比 0-1
+     */
+
+    public void setSelectMove(boolean isLeft, float position) {
+        if (mIsAnimStart) return;
+
         this.mAnimPosition = position;
-        if (mCurrentIndex != index) {
-            mLastIndex = mCurrentIndex;
-            mCurrentIndex = index;
+        if (isLeft != mIsMovePostionLeft) {//方向改变了
+            mIsMovePostionFirst = true;
+            mIsMovePostionLeft = isLeft;
+        }
+        if (mIsMovePostionFirst) {
+            if ((!isLeft && mCurrentIndex < getCount() - 1)
+                    || (isLeft && mCurrentIndex > 0)) {
+                mLastIndex = mCurrentIndex;
+                mCurrentIndex = mCurrentIndex + (isLeft ? -1 : 1);
+            }
+            mIsMovePostionFirst = false;
         }
         mPostion = (mItemWidth * mCurrentIndex - mItemWidth * mLastIndex) * position;
         invalidate();

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 if (position >= 1) {
                     position = 0;
                 }
-                controlInterior.setCurrentIndexPosition(1, position);
+                controlInterior.setSelectMove(false, position);
                 aaa();
             }
         }, 20);
@@ -65,12 +65,13 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
-//        controlInterior.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                aaa();
-//            }
-//        },2000);
+        controlInterior.setCurrentIndex(1);
+        controlInterior.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                aaa();
+            }
+        }, 2000);
 //        Utils.myApp = getApplication();
 //        LinkedHashMap ll = new LinkedHashMap();
 //        LiteOrmUtil.getLiteOrm().save(new LitormData());
