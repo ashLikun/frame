@@ -15,6 +15,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 
 import com.hbung.utils.Utils;
@@ -282,5 +283,12 @@ public class DrawableUtils {
             view.setBackgroundDrawable(drawable);
         }
         view.setPadding(pL, pT, pR, pB);
+    }
+
+    //把drawable渲染成指定的颜色
+    public Drawable getTintDrawable(Drawable drawable, @ColorInt int color) {
+        Drawable wrapDrawable = DrawableCompat.wrap(drawable).mutate();
+        DrawableCompat.setTint(wrapDrawable, color);
+        return wrapDrawable;
     }
 }

@@ -12,6 +12,7 @@ import com.hbung.http.response.HttpResponse;
 import com.hbung.http.response.HttpResult;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
+import com.hbung.segmentcontrol.SegmentControlInterior;
 import com.hbung.utils.Utils;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
@@ -37,7 +38,21 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     boolean chang = true;
     LoadingAndRetryManager manager;
     private SuperRecyclerView recyclerView;
-
+    float position = 0;
+     SegmentControlInterior controlInterior = null;
+    private void aaa(){
+        controlInterior.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                position = (position + 0.001f);
+                if (position >= 1) {
+                    position = 0;
+                }
+                controlInterior.setCurrentIndexPosition(1, position);
+                aaa();
+            }
+        }, 20);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +64,13 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
             }
         });
+        controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
+//        controlInterior.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                aaa();
+//            }
+//        },2000);
 //        Utils.myApp = getApplication();
 //        LinkedHashMap ll = new LinkedHashMap();
 //        LiteOrmUtil.getLiteOrm().save(new LitormData());
@@ -111,7 +133,8 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 p.appendPath("4690943");
                 p.addParam("accessToken", "8079CE15-038E-4977-8443-E885730DE268");
                 try {
-                    HttpResult<HttpTestData> result = OkHttpUtils.getInstance().syncExecute(p, HttpResult.class, HttpTestData.class);
+                    HttpResult<List<HttpTestData>> result = OkHttpUtils.getInstance().
+                            syncExecute(p, HttpResult.class, List.class, HttpTestData.class);
                     if (result.isSucceed()) {
 
                     }

@@ -11,25 +11,43 @@
     tools:context="utils.hbung.com.utils.MainActivity">
 
     <!--<com.hbung.xrecycleview.SuperRecyclerView-->
-        <!--android:id="@+id/recycleView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"></com.hbung.xrecycleview.SuperRecyclerView>-->
+    <!--android:id="@+id/recycleView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"></com.hbung.xrecycleview.SuperRecyclerView>-->
 
-    <com.hbung.flatbutton.FlatButton
+    <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/actionButton"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="39dp"
         android:layout_marginRight="39dp"
+        android:enabled="true"
         android:gravity="center"
         android:padding="10dp"
-        android:enabled="true"
         android:text="马上申请"
         app:colorNormal="#fffcfeff"
-        app:colorRipple="#ffff0000"
         app:colorPressed="#ffeeeeee"
         app:colorPressedText="#ff999999"
+        app:colorRipple="#ffff0000"
         app:cornerRadius="20dp"></com.hbung.flatbutton.FlatButton>
+
+    <com.hbung.segmentcontrol.SegmentControl xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionButton"
+        android:textSize="16sp"
+        app:gaps="@dimen/dp_20"
+        app:scCornerRadius="@dimen/dp_10"
+        app:scTexts="我的二维码|消息"
+        app:selectedTextColors="@color/colorAccent"></com.hbung.segmentcontrol.SegmentControl>
+
+    <com.hbung.segmentcontrol.SegmentControlInterior xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/controlInterior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        app:sci_texts="阿斯顿|捱三顶五"
+        app:sci_gradual_color2="#ff579ff2"
+        android:textSize="16sp"></com.hbung.segmentcontrol.SegmentControlInterior>
 </RelativeLayout>

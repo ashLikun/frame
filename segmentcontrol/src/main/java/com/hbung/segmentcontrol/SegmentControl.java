@@ -434,7 +434,6 @@ public class SegmentControl extends View {
                 } else {
                     mPaint.setColor(mSelectedBackgroundColors);
                 }
-
                 //draw texts
                 canvas.drawText(mTexts[i], mCacheBounds[i].left + (mSingleChildWidth - mTextBounds[i].width()) / 2, mCacheBounds[i].top + (mSingleChildHeight - mPaint.ascent() - mPaint.descent()) / 2, mPaint);
             }
