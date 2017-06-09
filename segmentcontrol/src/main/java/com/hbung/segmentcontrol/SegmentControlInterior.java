@@ -224,8 +224,8 @@ public class SegmentControlInterior extends View {
     }
 
     private void moveItem(int index) {
-
-        ValueAnimator animator = ValueAnimator.ofFloat(mItemWidth * mCurrentIndex, mItemWidth * index);
+        mPostion = mItemWidth * mCurrentIndex;
+        ValueAnimator animator = ValueAnimator.ofFloat(mPostion, mItemWidth * index);
         animator.setDuration(200);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -252,7 +252,6 @@ public class SegmentControlInterior extends View {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = index;
         animator.start();
-
     }
 
     @Override
@@ -282,7 +281,6 @@ public class SegmentControlInterior extends View {
         }
         mPaint.setShader(null);
         mPaint.setAlpha(0xff);
-        Log.e("aaaa", "mCurrentIndex = " + mCurrentIndex + "   mAnimPosition = " + mAnimPosition);
         for (int i = 0; i < mTexts.length; i++) {
             String item = mTexts[i];//待绘制的文本
             if (mCurrentIndex == i) {//选中
@@ -335,7 +333,7 @@ public class SegmentControlInterior extends View {
 
     //对外提供的方法
     public void setCurrentIndex(int index) {
-        if (mCurrentIndex == index) {
+        if (mCurrentIndex == index || mIsAnimStart) {
             return;
         }
         moveItem(index);
@@ -361,14 +359,25 @@ public class SegmentControlInterior extends View {
             mIsMovePostionLeft = isLeft;
         }
         if (mIsMovePostionFirst) {
-            if ((!isLeft && mCurrentIndex < getCount() - 1)
-                    || (isLeft && mCurrentIndex > 0)) {
+            if (!isLeft && mCurrentIndex < getCount() - 1) {//右移
                 mLastIndex = mCurrentIndex;
-                mCurrentIndex = mCurrentIndex + (isLeft ? -1 : 1);
+                mCurrentIndex = mCurrentIndex + 1;
+            }
+            if ((isLeft && mCurrentIndex > 0)) {
+                mLastIndex = mCurrentIndex;
+                mCurrentIndex = mCurrentIndex - 1;
             }
             mIsMovePostionFirst = false;
         }
+        if (isLeft && mLastIndex < mCurrentIndex) {
+            return;
+        }
+        if (!isLeft && mLastIndex > mCurrentIndex) {
+            return;
+        }
+
         mPostion = (mItemWidth * mCurrentIndex - mItemWidth * mLastIndex) * position;
+        Log.e("aaa", "mLastIndex = " + mLastIndex + "    mCurrentIndex = " + mCurrentIndex);
         invalidate();
     }
 

@@ -38,21 +38,28 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     boolean chang = true;
     LoadingAndRetryManager manager;
     private SuperRecyclerView recyclerView;
-    float position = 0;
-     SegmentControlInterior controlInterior = null;
-    private void aaa(){
+    float position = 1;
+    float aaaaa = 0.002f;
+    SegmentControlInterior controlInterior = null;
+
+    private void aaa() {
         controlInterior.postDelayed(new Runnable() {
             @Override
             public void run() {
-                position = (position + 0.001f);
-                if (position >= 1) {
-                    position = 0;
+
+                position = position - 0.002f;
+                if (position <= 0.01) {
+                    position = 1;
                 }
-                controlInterior.setSelectMove(false, position);
+//                if (position >= 0.99) {
+//                    aaaaa = -0.002f;
+//                }
+                controlInterior.setSelectMove(true, position);
                 aaa();
             }
         }, 20);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
-        controlInterior.setCurrentIndex(1);
+        controlInterior.setCurrentIndex(0);
         controlInterior.postDelayed(new Runnable() {
             @Override
             public void run() {
