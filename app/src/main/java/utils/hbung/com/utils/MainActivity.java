@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 //                if (position >= 0.99) {
 //                    aaaaa = -0.002f;
 //                }
-                controlInterior.setSelectMove(true, position);
+               // controlInterior.setSelectMove(true, position);
                 aaa();
             }
         }, 20);
@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
-        controlInterior.setCurrentIndex(0);
+        controlInterior.setCurrentIndex(1);
         controlInterior.postDelayed(new Runnable() {
             @Override
             public void run() {
-                aaa();
+              // aaa();
             }
         }, 2000);
 //        Utils.myApp = getApplication();

@@ -12,7 +12,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -55,8 +54,9 @@ public class SegmentControlInterior extends View {
     //动画相关
     private boolean mIsAnimStart = false;
     private float mAnimPosition = 1;
-    private boolean mIsMovePostionFirst = true;//保证外部移动控件只初始化一次
-    private boolean mIsMovePostionLeft = true;//保证外部移动控件只初始化一次
+
+    //
+    private boolean isOnLayout = false;
 
     public SegmentControlInterior(Context context) {
         this(context, null);
@@ -158,6 +158,7 @@ public class SegmentControlInterior extends View {
         }
         mPostion = mCurrentIndex * mItemWidth;
         setMeasuredDimension(width, height);
+        isOnLayout = true;
     }
 
     //测量字体最大值
@@ -225,33 +226,41 @@ public class SegmentControlInterior extends View {
 
     private void moveItem(int index) {
         mPostion = mItemWidth * mCurrentIndex;
-        ValueAnimator animator = ValueAnimator.ofFloat(mPostion, mItemWidth * index);
-        animator.setDuration(200);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mIsAnimStart = false;
-                mAnimPosition = 1;
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                mIsAnimStart = true;
-                mAnimPosition = 0;
-            }
-        });
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mAnimPosition = animation.getAnimatedFraction();
-                float value = (float) animation.getAnimatedValue();
-                mPostion = value;
-                invalidate();
-            }
-        });
         mLastIndex = mCurrentIndex;
         mCurrentIndex = index;
-        animator.start();
+        if (isOnLayout) {
+            ValueAnimator animator = ValueAnimator.ofFloat(mPostion, mItemWidth * index);
+            animator.setDuration(200);
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mIsAnimStart = false;
+                    mAnimPosition = 1;
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    mIsAnimStart = true;
+                    mAnimPosition = 0;
+                }
+            });
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mAnimPosition = animation.getAnimatedFraction();
+                    float value = (float) animation.getAnimatedValue();
+                    mPostion = value;
+                    invalidate();
+                }
+            });
+            animator.start();
+        } else {
+            mIsAnimStart = false;
+            mAnimPosition = 1;
+            invalidate();
+        }
+
+
     }
 
     @Override
@@ -337,47 +346,6 @@ public class SegmentControlInterior extends View {
             return;
         }
         moveItem(index);
-        invalidate();
-    }
-
-    /**
-     * 作者　　: 李坤
-     * 创建时间: 2017/6/9 15:25
-     * <p>
-     * 方法功能：设置选中的位置移动  viewpager调用
-     *
-     * @param isLeft   是否左移，true:左移，false:右移
-     * @param position 移动的百分比 0-1
-     */
-
-    public void setSelectMove(boolean isLeft, float position) {
-        if (mIsAnimStart) return;
-
-        this.mAnimPosition = position;
-        if (isLeft != mIsMovePostionLeft) {//方向改变了
-            mIsMovePostionFirst = true;
-            mIsMovePostionLeft = isLeft;
-        }
-        if (mIsMovePostionFirst) {
-            if (!isLeft && mCurrentIndex < getCount() - 1) {//右移
-                mLastIndex = mCurrentIndex;
-                mCurrentIndex = mCurrentIndex + 1;
-            }
-            if ((isLeft && mCurrentIndex > 0)) {
-                mLastIndex = mCurrentIndex;
-                mCurrentIndex = mCurrentIndex - 1;
-            }
-            mIsMovePostionFirst = false;
-        }
-        if (isLeft && mLastIndex < mCurrentIndex) {
-            return;
-        }
-        if (!isLeft && mLastIndex > mCurrentIndex) {
-            return;
-        }
-
-        mPostion = (mItemWidth * mCurrentIndex - mItemWidth * mLastIndex) * position;
-        Log.e("aaa", "mLastIndex = " + mLastIndex + "    mCurrentIndex = " + mCurrentIndex);
         invalidate();
     }
 
