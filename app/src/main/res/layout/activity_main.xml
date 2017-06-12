@@ -29,6 +29,7 @@
         app:colorNormal="#fffcfeff"
         app:colorPressed="#ffeeeeee"
         app:colorPressedText="#ff999999"
+        app:clickDelay="2000"
         app:colorRipple="#ffff0000"
         app:cornerRadius="20dp"></com.hbung.flatbutton.FlatButton>
 

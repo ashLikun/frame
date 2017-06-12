@@ -40,6 +40,12 @@ public class FlatButton extends TextView {
     private int colorEnableText;
     //水波纹颜色
     private int colorRipple;
+    private long clickDelay = 0;
+
+
+    private long lastClickTime = 0;
+
+    private boolean isUseBackground;
 
     public FlatButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -57,6 +63,7 @@ public class FlatButton extends TextView {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray attr = getTypedArray(context, attrs, R.styleable.FlatButton);
+        isUseBackground = attr.hasValue(R.styleable.FlatButton_android_background);
         cornerRadius = attr.getDimension(R.styleable.FlatButton_cornerRadius, dip2px(getContext(), 2));
         strokeColor = attr.getColor(R.styleable.FlatButton_strokeColor, strokeColor);
         strokeWidth = attr.getDimension(R.styleable.FlatButton_strokeWidth, strokeWidth);
@@ -66,7 +73,10 @@ public class FlatButton extends TextView {
         colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
-        setBackgroundCompat(getStateListDrawable());
+        clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
     }
 
     private Drawable getStateListDrawable() {
@@ -181,23 +191,36 @@ public class FlatButton extends TextView {
 
     public void setColorPressed(int colorPressed) {
         this.colorPressed = colorPressed;
-        setBackgroundCompat(getStateListDrawable());
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
     }
 
     public void setColorNormal(int colorNormal) {
         this.colorNormal = colorNormal;
-        setBackgroundCompat(getStateListDrawable());
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
     }
 
     public void setColorPressedText(int colorPressedText) {
         this.colorPressedText = colorPressedText;
-        setBackgroundCompat(getStateListDrawable());
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
     }
 
 
     public void setColorRipple(int colorRipple) {
         this.colorRipple = colorRipple;
-        setBackgroundCompat(getStateListDrawable());
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
+    }
+
+    //设置是否使用外部设置的background
+    public void setUseBackground(boolean useBackground) {
+        isUseBackground = useBackground;
     }
 
     public void setCornerRadius(float cornerRadius) {
@@ -206,7 +229,9 @@ public class FlatButton extends TextView {
 
     public void setStrokeColor(int strokeColor) {
         this.strokeColor = strokeColor;
-        setBackgroundCompat(getStateListDrawable());
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
     }
 
     public void setStrokeWidth(float strokeWidth) {
@@ -232,5 +257,27 @@ public class FlatButton extends TextView {
         states[2] = new int[]{};
         ColorStateList colorList = new ColorStateList(states, colors);
         return colorList;
+    }
+
+    @Override
+    public boolean performClick() {
+        //暴力点击
+        if (System.currentTimeMillis() - lastClickTime > clickDelay) {
+            lastClickTime = System.currentTimeMillis();
+            return super.performClick();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean callOnClick() {
+        //暴力点击
+        if (System.currentTimeMillis() - lastClickTime > clickDelay) {
+            lastClickTime = System.currentTimeMillis();
+            return super.callOnClick();
+        } else {
+            return false;
+        }
     }
 }

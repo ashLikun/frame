@@ -14,6 +14,7 @@ import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
 import com.hbung.utils.Utils;
+import com.hbung.utils.ui.ToastUtils;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.hbung.xrecycleview.OnLoaddingListener;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     LoadingAndRetryManager manager;
     private SuperRecyclerView recyclerView;
     float position = 1;
-    float aaaaa = 0.002f;
+    float aaaaa = 1;
     SegmentControlInterior controlInterior = null;
 
     private void aaa() {
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 //                if (position >= 0.99) {
 //                    aaaaa = -0.002f;
 //                }
-               // controlInterior.setSelectMove(true, position);
+                // controlInterior.setSelectMove(true, position);
                 aaa();
             }
         }, 20);
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ToastUtils.showShort(MainActivity.this, "aaaaaaaa" + aaaaa++);
             }
         });
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         controlInterior.postDelayed(new Runnable() {
             @Override
             public void run() {
-              // aaa();
+                // aaa();
             }
         }, 2000);
 //        Utils.myApp = getApplication();
