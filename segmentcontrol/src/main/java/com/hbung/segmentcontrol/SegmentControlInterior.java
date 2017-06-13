@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.animation.OvershootInterpolator;
 
 /**
  * 作者　　: 李坤
@@ -29,13 +30,12 @@ public class SegmentControlInterior extends View {
     private int mTextSize;//文字大小
     private String[] mTexts;//多段文本
     private int mCurrentIndex;//当前选中的位置
-    private int mLastIndex;//上一次选中的位置
     private int mCornerRadius;//圆角大小
     private int mTextColorDefault;//文字默认颜色
     private int mTextColorSelect;//文字选中的颜色
     private int mDefaultColor;//默认的颜色
     private int[] mGradualColor;//渐变的颜色合集
-    private float mPostion = 0;//选中的框已经走到哪里了
+    private float mPostion = 0;//选中的框已经走到哪里了   中心点
     private float mItemWidth = 0;//item的宽度
     private float mItemHeight = 0;//item的高度
     private int mHorizonGap;//水平的间隙
@@ -43,6 +43,7 @@ public class SegmentControlInterior extends View {
 
     //触摸相关
     private float mInitDownX;
+    private float mDownMoveX;
     private float mInitDownY;
     private float mTouchSlop;
     private boolean mIsTouchMove = false;//这个触摸事件是否是移动
@@ -52,10 +53,8 @@ public class SegmentControlInterior extends View {
     private OnItemClickListener listener;
 
     //动画相关
-    private boolean mIsAnimStart = false;
-    private float mAnimPosition = 1;
-
-    //
+    private boolean mIsAnimStart = false;//是否正在移动
+    private boolean mIsPageing = false;//viewpager正在移动
     private boolean isOnLayout = false;
 
     public SegmentControlInterior(Context context) {
@@ -113,10 +112,6 @@ public class SegmentControlInterior extends View {
 
     }
 
-    public int getCount() {
-        return mTexts == null ? 0 : mTexts.length;
-    }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -156,7 +151,7 @@ public class SegmentControlInterior extends View {
             width = widthSize;
             height = widthSize;
         }
-        mPostion = mCurrentIndex * mItemWidth;
+        mPostion = mCurrentIndex * mItemWidth + mItemWidth / 2;
         setMeasuredDimension(width, height);
         isOnLayout = true;
     }
@@ -182,24 +177,26 @@ public class SegmentControlInterior extends View {
             case MotionEvent.ACTION_DOWN:
                 mIsTouchMove = false;
                 mInitDownX = event.getX();
+                mDownMoveX = mInitDownX;
                 mInitDownY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
                 float y = event.getY();
-
-                int dx = (int) (x - mInitDownX);
-                int dy = (int) (y - mInitDownY);
-
-                float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-                if (distance > mTouchSlop) {
-                    mIsTouchMove = true;//是移动事件  取消抬起处理
+                if (!mIsTouchMove) {
+                    int dx = (int) (x - mInitDownX);
+                    int dy = (int) (y - mInitDownY);
+                    float distance = (float) Math.sqrt(dx * dx + dy * dy);
+                    if (distance > mTouchSlop) {
+                        mIsTouchMove = true;//是移动事件  取消抬起处理
+                    }
+                } else {
+                    int index = (int) (mInitDownX / mItemWidth);//获取按下的位置
+                    if (index == mCurrentIndex) {
+                        touchMoveItem((int) (x - mDownMoveX));
+                        mDownMoveX = x;
+                    }
                 }
-                if (mIsTouchMove) {
-                    touchMoveItem(dx);
-                }
-
                 break;
             case MotionEvent.ACTION_UP:
                 if (!mIsTouchMove) {//不是移动事件
@@ -212,6 +209,7 @@ public class SegmentControlInterior extends View {
                     }
                 } else {//是移动抬起了
                     //判断是否可以跳到下一个或者上一个
+                    finishTouchMove();
                 }
                 break;
         }
@@ -219,35 +217,73 @@ public class SegmentControlInterior extends View {
         return true;
     }
 
-    private void touchMoveItem(int dx) {
-        float offX = dx / mTouchSlop;//去除摩檫力的实际移动
+    //结束触摸移动 回弹
+    private void finishTouchMove() {
+        final int currentIndex = (int) (mPostion / mItemWidth);
+        float position = mItemWidth * currentIndex + mItemWidth / 2;
+        float offset = mPostion - position;
+        ValueAnimator animator = ValueAnimator.ofFloat(mPostion, position);
+        animator.setDuration((long) (200 * Math.max(Math.abs(offset) / mItemWidth, 0.5)));
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mCurrentIndex != currentIndex) {
+                    mCurrentIndex = currentIndex;
+                    if (listener != null)
+                        listener.onItemClick(mCurrentIndex);
+                }
+                mIsAnimStart = false;
+            }
 
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mIsAnimStart = true;
+            }
+        });
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mPostion = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        animator.start();
     }
 
-    private void moveItem(int index) {
-        mPostion = mItemWidth * mCurrentIndex;
-        mLastIndex = mCurrentIndex;
-        mCurrentIndex = index;
+    private void touchMoveItem(int dx) {
+        //float offX = dx / mTouchSlop;//去除摩檫力的实际移动
+        mPostion = mPostion + dx;
+        //越界判断
+        if (mPostion < mItemWidth / 2) {
+            mPostion = mItemWidth / 2;
+        } else if (mPostion > getCount() * mItemWidth - mItemWidth / 2) {
+            mPostion = getCount() * mItemWidth - mItemWidth / 2;
+        }
+        invalidate();
+    }
+
+    private void moveItem(final int index) {
+        mPostion = mItemWidth * mCurrentIndex + mItemWidth / 2;
         if (isOnLayout) {
-            ValueAnimator animator = ValueAnimator.ofFloat(mPostion, mItemWidth * index);
+            ValueAnimator animator = ValueAnimator.ofFloat(mPostion, mItemWidth * index + mItemWidth / 2);
             animator.setDuration(200);
+            animator.setInterpolator(new OvershootInterpolator());
             animator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mIsAnimStart = false;
-                    mAnimPosition = 1;
+                    mCurrentIndex = index;
                 }
 
                 @Override
                 public void onAnimationStart(Animator animation) {
                     mIsAnimStart = true;
-                    mAnimPosition = 0;
                 }
             });
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    mAnimPosition = animation.getAnimatedFraction();
                     float value = (float) animation.getAnimatedValue();
                     mPostion = value;
                     invalidate();
@@ -256,7 +292,6 @@ public class SegmentControlInterior extends View {
             animator.start();
         } else {
             mIsAnimStart = false;
-            mAnimPosition = 1;
             invalidate();
         }
 
@@ -279,7 +314,7 @@ public class SegmentControlInterior extends View {
         mPaint.setAlpha(0xff);
         //平移画布
         canvas.save();
-        canvas.translate(mPostion, 0);
+        canvas.translate(mPostion - mItemWidth / 2, 0);
         canvas.drawRoundRect(new RectF(0, 0, mItemWidth, mItemHeight), mCornerRadius, mCornerRadius, mPaint);
         canvas.restore();
     }
@@ -292,18 +327,12 @@ public class SegmentControlInterior extends View {
         mPaint.setAlpha(0xff);
         for (int i = 0; i < mTexts.length; i++) {
             String item = mTexts[i];//待绘制的文本
-            if (mCurrentIndex == i) {//选中
-                mPaint.setColor(mAnimPosition > 0.5 ? mTextColorSelect : mTextColorDefault);
-                mPaint.setAlpha((int) (Math.max(mAnimPosition, 0.2) * 0xff));
+            if ((int) (mPostion / mItemWidth) == i) {//选中
+                mPaint.setColor(mTextColorSelect);
             } else {//未选中
-                if (mLastIndex == i) {//上一次位置
-                    mPaint.setColor(mTextColorDefault);
-                    mPaint.setAlpha((int) (Math.max(mAnimPosition, 0.2) * 0xff));
-                } else {
-                    mPaint.setColor(mTextColorDefault);
-                    mPaint.setAlpha(0xff);
-                }
+                mPaint.setColor(mTextColorDefault);
             }
+            mPaint.setAlpha((int) ((mIsAnimStart ? 0.7 : 1) * 0xff));
             Paint.FontMetricsInt fontMetrics = mPaint.getFontMetricsInt();//文字的4根线，baseLine为0，top为负值， bottom为正数
             int baseline = (getHeight() - fontMetrics.top - fontMetrics.bottom) / 2;
             canvas.drawText(item, mItemWidth * (i + 0.5f), baseline, mPaint);
@@ -312,7 +341,7 @@ public class SegmentControlInterior extends View {
 
     private LinearGradient changGradient() {
         int[] color = mGradualColor.clone();
-        if (mGradualColor.length == 2 && (mCurrentIndex > getCount() / 2 || mCurrentIndex == getCount() - 1) && mAnimPosition > 0.5) {
+        if (mGradualColor.length == 2 && mPostion >= (getCount() * mItemWidth) / 2) {
             color[0] = mGradualColor[1];
             color[1] = mGradualColor[0];
         }
@@ -328,10 +357,38 @@ public class SegmentControlInterior extends View {
     }
 
 
+    //移动选中的item  viewpager
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (!mIsAnimStart && mIsPageing) {
+            mCurrentIndex = position;
+            mPostion = mCurrentIndex * mItemWidth + mItemWidth / 2 + mItemWidth * positionOffset;
+            invalidate();
+        }
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/13 10:49
+     * <p>
+     * 方法功能： viewpager
+     * arg0 ==1的时辰默示正在滑动，
+     * arg0==2的时辰默示滑动完毕了，
+     * arg0==0的时辰默示什么都没做。
+     */
+    public void onPageScrollStateChanged(int state) {
+        if (mIsPageing) {
+            if (state == 0) {
+                mIsPageing = false;
+            }
+        } else {
+            mIsPageing = state == 1;
+        }
+    }
+
     /**
      * 将dip或dp值转换为px值，保证尺寸大小不变
      *
-     * @param dipValue （DisplayMetrics类中属�?�density�?
+     * @param dipValue DisplayMetrics类中属
      * @return
      */
     public int dip2px(float dipValue) {
@@ -355,10 +412,19 @@ public class SegmentControlInterior extends View {
         invalidate();
     }
 
+    public int getCount() {
+        return mTexts == null ? 0 : mTexts.length;
+    }
+
+    public int[] getGradualColor() {
+        return mGradualColor;
+    }
+
 
     public void setListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
 
     public interface OnItemClickListener {
         public void onItemClick(int index);

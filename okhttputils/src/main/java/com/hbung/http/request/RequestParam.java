@@ -143,6 +143,7 @@ public class RequestParam {
             postContent = GsonHelper.getGson().toJson(params);
             params.clear();
             isJson = true;
+            post();
         }
     }
 
@@ -181,6 +182,7 @@ public class RequestParam {
 
     public RequestBody buildRequestBody(Callback callback) {
         RequestBody body = null;
+
         if (method.equals("GET")) {
             //get请求把参数放在url里面, 没有请求实体
             url = appendQueryParams(url, params);

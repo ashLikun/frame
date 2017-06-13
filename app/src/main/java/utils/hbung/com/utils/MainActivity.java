@@ -1,15 +1,16 @@
 package utils.hbung.com.utils;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
-import com.hbung.http.OkHttpUtils;
 import com.hbung.http.request.RequestParam;
 import com.hbung.http.response.HttpResponse;
-import com.hbung.http.response.HttpResult;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
@@ -23,17 +24,16 @@ import com.hbung.xrecycleview.SuperRecyclerView;
 
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import utils.hbung.com.utils.datebean.GsonTest;
-import utils.hbung.com.utils.datebean.HttpTestData;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
     LoopView loopView;
     List<LoopViewData> listDatas = new ArrayList<>();
     List<LoopViewData> headDatas = new ArrayList<>();
+    List<View> listView = new ArrayList<>();
     CommonAdapter adapter;
     CommonHeaderAdapter headerAdapter;
     boolean chang = true;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     float position = 1;
     float aaaaa = 1;
     SegmentControlInterior controlInterior = null;
+    ViewPager viewpager;
 
     private void aaa() {
         controlInterior.postDelayed(new Runnable() {
@@ -73,13 +74,47 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
-        controlInterior.setCurrentIndex(1);
-        controlInterior.postDelayed(new Runnable() {
+        for (int i = 0; i < controlInterior.getCount(); i++) {
+            TextView tv = new TextView(this);
+            tv.setBackgroundColor(controlInterior.getGradualColor()[i % 2]);
+            tv.setLayoutParams(new ViewPager.LayoutParams());
+            listView.add(tv);
+        }
+        viewpager = (ViewPager) findViewById(R.id.viewpager);
+        viewpager.setAdapter(new WebViewPagerAdapter(listView));
+
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void run() {
-                // aaa();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                controlInterior.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                Log.e("onPageScrolled", "position = " + position + "    positionOffset = " + positionOffset + "   positionOffsetPixels = " + positionOffsetPixels);
             }
-        }, 2000);
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.e("StateChanged", "state = " + state);
+                controlInterior.onPageScrollStateChanged(state);
+            }
+        });
+        controlInterior.setListener(new SegmentControlInterior.OnItemClickListener() {
+            @Override
+            public void onItemClick(int index) {
+                viewpager.setCurrentItem(index);
+            }
+        });
+
+        //controlInterior.setCurrentIndex(1);
+//        controlInterior.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // aaa();
+//            }
+//        }, 2000);
 //        Utils.myApp = getApplication();
 //        LinkedHashMap ll = new LinkedHashMap();
 //        LiteOrmUtil.getLiteOrm().save(new LitormData());
@@ -141,15 +176,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 p.url("http://10.155.50.51:5080/api/jlh/apply/getCustomerApplyInfo/");
                 p.appendPath("4690943");
                 p.addParam("accessToken", "8079CE15-038E-4977-8443-E885730DE268");
-                try {
-                    HttpResult<List<HttpTestData>> result = OkHttpUtils.getInstance().
-                            syncExecute(p, HttpResult.class, List.class, HttpTestData.class);
-                    if (result.isSucceed()) {
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                p.toJson();
             }
         }.start();
     }
