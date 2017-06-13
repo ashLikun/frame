@@ -1,4 +1,4 @@
-package com.vcredit.jlh_app.adapter;
+package utils.hbung.com.utils;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

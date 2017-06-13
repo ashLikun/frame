@@ -26,10 +26,10 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="马上申请"
+        app:clickDelay="2000"
         app:colorNormal="#fffcfeff"
         app:colorPressed="#ffeeeeee"
         app:colorPressedText="#ff999999"
-        app:clickDelay="2000"
         app:colorRipple="#ffff0000"
         app:cornerRadius="20dp"></com.hbung.flatbutton.FlatButton>
 
@@ -48,7 +48,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
-        app:sci_texts="阿斯顿|捱三顶五"
+        android:textSize="16sp"
         app:sci_gradual_color2="#ff579ff2"
-        android:textSize="16sp"></com.hbung.segmentcontrol.SegmentControlInterior>
+        app:sci_texts="阿斯顿|捱三顶五|啊啊啊啊"></com.hbung.segmentcontrol.SegmentControlInterior>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/controlInterior"></android.support.v4.view.ViewPager>
 </RelativeLayout>
