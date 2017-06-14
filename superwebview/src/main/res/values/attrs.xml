@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HorizontalProgress">
+        <attr name="hp_progress" format="integer" />
+        <attr name="hp_progress_max" format="integer" />
+        <attr name="hp_default_color" format="color" />
+        <attr name="hp_progress_color" format="color" />
+    </declare-styleable>
+</resources>

@@ -10,15 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="utils.hbung.com.utils.MainActivity">
 
-    <!--<com.hbung.xrecycleview.SuperRecyclerView-->
-    <!--android:id="@+id/recycleView"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></com.hbung.xrecycleview.SuperRecyclerView>-->
+    <com.hbung.superwebview.HorizontalProgress
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"></com.hbung.superwebview.HorizontalProgress>
 
     <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/actionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBar"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_gravity="center"
         android:layout_marginLeft="39dp"
         android:layout_marginRight="39dp"
@@ -56,5 +58,7 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/controlInterior"></android.support.v4.view.ViewPager>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"></android.support.v4.view.ViewPager>
 </RelativeLayout>

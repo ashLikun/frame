@@ -5,7 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
@@ -14,6 +13,7 @@ import com.hbung.http.response.HttpResponse;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
+import com.hbung.superwebview.SuperWebView;
 import com.hbung.utils.Utils;
 import com.hbung.utils.ui.ToastUtils;
 import com.hbung.wheelview3d.LoopView;
@@ -75,10 +75,15 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         });
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
         for (int i = 0; i < controlInterior.getCount(); i++) {
-            TextView tv = new TextView(this);
-            tv.setBackgroundColor(controlInterior.getGradualColor()[i % 2]);
-            tv.setLayoutParams(new ViewPager.LayoutParams());
-            listView.add(tv);
+            SuperWebView superWebView = new SuperWebView(this);
+            superWebView.setButtonClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.showShort(MainActivity.this, "aaaaa");
+                }
+            });
+            superWebView.loadUrl("http://www.baidu.com");
+            listView.add(superWebView);
         }
         viewpager = (ViewPager) findViewById(R.id.viewpager);
         viewpager.setAdapter(new WebViewPagerAdapter(listView));

@@ -84,7 +84,9 @@ public class AnimCheckBox extends View {
     }
 
     private void init(AttributeSet attrs) {
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            setLayerType(LAYER_TYPE_SOFTWARE, null);
+        }
         if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.AnimCheckBox);
             mStrokeWidth = (int) array.getDimension(R.styleable.AnimCheckBox_ab_strokeWidth, dip(mStrokeWidth));

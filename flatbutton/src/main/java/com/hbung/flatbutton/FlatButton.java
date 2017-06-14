@@ -97,7 +97,7 @@ public class FlatButton extends TextView {
             setTextColor(getColorStateList(getCurrentTextColor(), colorEnableText, colorPressedText));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{colorRipple});
-                return new RippleDrawable(colorList, drawable.getAlpha() == 0 ? null : drawable, drawable.getAlpha() == 0 ? new ColorDrawable(colorRipple) : null);
+                return new RippleDrawable(colorList, drawable,new ColorDrawable(colorRipple));
             }
         } finally {
 
@@ -106,11 +106,7 @@ public class FlatButton extends TextView {
     }
 
     private LayerDrawable createNormalDrawable() {
-        int deffault = Color.TRANSPARENT;
-        //默认的颜色为透明，那么第一层的颜色也为透明
-        if (colorNormal == deffault) {
-            colorPressed = 0;
-        }
+
         //第一层
         GradientDrawable drawableTop = new GradientDrawable();
         drawableTop.setCornerRadius(getCornerRadius());
@@ -122,12 +118,17 @@ public class FlatButton extends TextView {
         GradientDrawable drawableBottom = new GradientDrawable();
         drawableBottom.setCornerRadius(getCornerRadius());
         drawableBottom.setShape(GradientDrawable.RECTANGLE);
-
         drawableBottom.setColor(colorNormal);
+        drawableBottom.setStroke((int) strokeWidth, strokeColor);
+        LayerDrawable layerDrawable;
+        //默认的颜色为透明，那么第一层的颜色也为透明
+        if (colorNormal == Color.TRANSPARENT) {
+            layerDrawable = new LayerDrawable(new GradientDrawable[]{drawableBottom});
+        } else {
+            layerDrawable = new LayerDrawable(new GradientDrawable[]{drawableTop, drawableBottom});
+            layerDrawable.setLayerInset(1, 0, 0, dip2px(getContext(), 0.5f), dip2px(getContext(), 0.9f));
+        }
 
-        LayerDrawable layerDrawable = new LayerDrawable(new GradientDrawable[]{drawableTop, drawableBottom});
-
-        layerDrawable.setLayerInset(1, 0, 0, dip2px(getContext(), 1f), dip2px(getContext(), 1.8f));
         return layerDrawable;
     }
 
