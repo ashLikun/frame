@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -20,36 +21,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/progressBar"
-        android:layout_marginTop="@dimen/dp_10"
         android:layout_gravity="center"
         android:layout_marginLeft="39dp"
         android:layout_marginRight="39dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:enabled="true"
         android:gravity="center"
         android:padding="10dp"
         android:text="马上申请"
         app:clickDelay="2000"
-        app:colorNormal="#fffcfeff"
-        app:colorPressed="#ffeeeeee"
+        app:colorPressed="#ff00ff00"
         app:colorPressedText="#ff999999"
-        app:colorRipple="#ffff0000"
-        app:cornerRadius="20dp"></com.hbung.flatbutton.FlatButton>
+        app:colorRipple="@color/webview_progress_button_stroke_color"
+        app:cornerRadius="20dp"
+        app:strokeColor="@color/webview_progress_button_stroke_color"
+        app:strokeWidth="1dp"></com.hbung.flatbutton.FlatButton>
+
+    <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/actionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionButton"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="重新加载"
+        android:textColor="@color/webview_progress_button_default_color"
+        app:clickDelay="200"
+        app:colorPressed="#ffaaaaaa"
+        app:cornerRadius="4dp"
+        app:strokeColor="@color/webview_progress_button_stroke_color"
+        app:strokeWidth="1dp"></com.hbung.flatbutton.FlatButton>
 
     <com.hbung.segmentcontrol.SegmentControl xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/actionButton"
+        android:layout_below="@+id/actionButton2"
         android:textSize="16sp"
         app:gaps="@dimen/dp_20"
         app:scCornerRadius="@dimen/dp_10"
         app:scTexts="我的二维码|消息"
         app:selectedTextColors="@color/colorAccent"></com.hbung.segmentcontrol.SegmentControl>
 
+    <utils.hbung.com.utils.PathView
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
+
     <com.hbung.segmentcontrol.SegmentControlInterior xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/controlInterior"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
         android:textSize="16sp"
         app:sci_gradual_color2="#ff579ff2"
         app:sci_texts="阿斯顿|捱三顶五|啊啊啊啊"></com.hbung.segmentcontrol.SegmentControlInterior>
@@ -60,5 +83,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"></android.support.v4.view.ViewPager>
-</RelativeLayout>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/controlInterior"></android.support.v4.view.ViewPager>
+</LinearLayout>

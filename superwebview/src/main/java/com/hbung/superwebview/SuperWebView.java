@@ -7,14 +7,11 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.hbung.flatbutton.FlatButton;
 
 /**
@@ -121,35 +118,41 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        if (listener != null) {
+            return listener.shouldOverrideUrlLoading(view, url);
+        }
         webView.loadUrl(url);
         return true;
     }
 
     @Override
-    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        //加载错误
-        if (listener != null) {
-            listener.onReceivedError(view, request, error);
-        }
+    public void onError(WebView view, XWebView.ErrorInfo errorInfo) {
         webView.setVisibility(GONE);
         errorRl.setVisibility(VISIBLE);
+        progressBar.setVisibility(GONE);
+        //加载错误
+        if (listener != null) {
+            listener.onError(view, errorInfo);
+        }
     }
 
     @Override
-    public void onPageFinished(WebView view, String url) {
+    public void onPageFinished(WebView view, String url, boolean isSuccess) {
         //加载完成
         if (listener != null) {
-            listener.onPageFinished(view, url);
+            listener.onPageFinished(view, url, isSuccess);
         }
     }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        webView.setVisibility(VISIBLE);
+        progressBar.setVisibility(VISIBLE);
+        errorRl.setVisibility(GONE);
         //加载开始
         if (listener != null) {
             listener.onPageStarted(view, url, favicon);
         }
-        webView.setVisibility(VISIBLE);
     }
 
     @Override
@@ -204,5 +207,16 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
      */
     public void sendToJs(String methodName, Object... params) {
         webView.sendToJs(methodName, params);
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/19 16:08
+     * <p>
+     * 方法功能：主动调用js  让js调用java   一般用于获取网页信息
+     * JavaScript:window.aaaaa.assign('img://'+ document.getElementsByTagName('img').toString())
+     */
+    public void sendToJava(XWebView.BridgeParams bridgeParams) {
+        webView.sendToJava(bridgeParams);
     }
 }

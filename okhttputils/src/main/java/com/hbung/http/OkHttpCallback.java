@@ -3,8 +3,6 @@ package com.hbung.http;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -83,32 +81,25 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
      */
     private Type getType() {
         Type types = callback.getClass().getGenericSuperclass();
-        if (types == null) {
-            new Throwable("HttpSubscription  ->>>  未获取到callBack的超级类");
-        }
-        List<Type> needtypes = new ArrayList<>();
+        Type[] parentypes;//泛型类型集合
         if (types instanceof ParameterizedType) {
-            Type[] parentypes = ((ParameterizedType) types).getActualTypeArguments();
-            if (parentypes == null || parentypes.length == 0) {
-                new Throwable("HttpSubscription  ->>>  callBack回调 不能没有泛型，请查看HttpCallBack是否有泛型");
-            }
+            parentypes = ((ParameterizedType) types).getActualTypeArguments();
+        } else {
+            parentypes = callback.getClass().getGenericInterfaces();
             for (Type childtype : parentypes) {
-                needtypes.add(childtype);
                 if (childtype instanceof ParameterizedType) {
-                    Type[] childtypes = ((ParameterizedType) childtype).getActualTypeArguments();
-                    for (Type type : childtypes) {
-                        needtypes.add(type);
+                    Type rawType = ((ParameterizedType) childtype).getRawType();
+                    if (rawType instanceof Class && ((Class) rawType).isAssignableFrom(Callback.class)) {//实现的接口是Callback
+                        parentypes = ((ParameterizedType) childtype).getActualTypeArguments();//Callback里面的类型
                     }
                 }
             }
+        }
+        if (parentypes == null || parentypes.length == 0) {
+            new Throwable("HttpSubscription  ->>>  callBack回调 不能没有泛型，请查看HttpCallBack是否有泛型");
         } else {
-            new Throwable("HttpSubscription  ->>>  callBack回调 不能没有泛型，请查看HttpCallBack是否有泛型");
+            return parentypes[0];
         }
-        if (needtypes.size() > 0)
-            return needtypes.get(0);
-        else {
-            new Throwable("HttpSubscription  ->>>  callBack回调 不能没有泛型，请查看HttpCallBack是否有泛型");
-            return null;
-        }
+        return null;
     }
 }

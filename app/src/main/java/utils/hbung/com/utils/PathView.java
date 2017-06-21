@@ -10,10 +10,9 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.hbung.pathanim.PathAnimHelper;
-import com.hbung.pathanim.utils.PathParserUtils;
+import com.hbung.pathanim.utils.StringPathUtils;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 
 /**
  * 作者　　: 李坤
@@ -28,7 +27,7 @@ public class PathView extends View implements PathAnimHelper.OnPathAnimCallback 
     Path animPath = new Path();
     PathAnimHelper pathHelper;
     Paint mPaint = new Paint();
-
+    String pathStr = "M12,4l-1.41,1.41L16.17,11H4v2h12.17l-5.58,5.59L12,20l8,-8z";
     public PathView(Context context) {
         this(context, null);
     }
@@ -49,19 +48,9 @@ public class PathView extends View implements PathAnimHelper.OnPathAnimCallback 
     private void initView(Context context, AttributeSet attrs) throws ParseException {
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.RED);
-        mPaint.setStrokeWidth(5);
-        mPaint.setStyle(Paint.Style.STROKE);
 
-//        path = new SvgPathParser().parsePath(context.getString(R.string.tieta));
-//        path = PathParserUtils.getPathFromArrayFloatList(StringPathUtils.getPath("LIKUN A B C"));
-        path.moveTo(0, 0);
-        path.addCircle(100, 100, 60, Path.Direction.CW);
-//        path = new SvgPathParser().parsePath("M950.144 248.384l-71.744-71.68c-13.184-13.248-34.624-13.248-47.872 0L400.576 606.656 196.096 400.704c-13.248-13.248-34.624-13.248-47.872 0L76.48 472.448c-13.184 13.248-13.184 34.56 0 47.744l299.968 301.952c13.184 13.184 34.56 13.184 47.808 0l525.888-525.888C963.328 283.072 963.328 261.632 950.144 248.384z");
-        //path.addCircle(100, 100, 40, Path.Direction.CW);
-        ArrayList<float[]> aaa = new ArrayList<>();
-        aaa.add(new float[]{0,30,30,60});
-        aaa.add(new float[]{30,60,60,0});
-        path = PathParserUtils.getPathFromArrayFloatList(aaa);
+        //path = new SvgPathParser().parsePath(pathStr);
+        path = StringPathUtils.getPath("LIKUN");
         pathHelper = new PathAnimHelper(path, animPath);
         pathHelper.setCallback(this);
         pathHelper.start();
@@ -80,14 +69,6 @@ public class PathView extends View implements PathAnimHelper.OnPathAnimCallback 
 
     @Override
     public void callBack(PathMeasure pathMeasure, Path mAnimPath, float progress) {
-//        float end = pathMeasure.getLength() / 100f * progress;
-//        float start = end - pathMeasure.getLength() / 100 * (50 - Math.abs(progress - 50));
-//        animPath.reset();
-//        Log.e("aaaaaaa", "progress = " + progress + "   end = " + end + "   " + "start" + start);
-//        if (start <= 0) {
-//            pathMeasure.getSegment(pathMeasure.getLength() + start, pathMeasure.getLength(), mAnimPath, true);
-//        }
-//        pathMeasure.getSegment(start, end, mAnimPath, true);
         invalidate();
     }
 }

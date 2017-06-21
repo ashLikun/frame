@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
@@ -28,7 +26,7 @@ public class FlatButton extends TextView {
     //边框宽度
     private float strokeWidth;
     //边框颜色
-    private int strokeColor;
+    private int strokeColor = Color.TRANSPARENT;
 
     //按下颜色
     private int colorPressed;
@@ -69,13 +67,15 @@ public class FlatButton extends TextView {
         strokeWidth = attr.getDimension(R.styleable.FlatButton_strokeWidth, strokeWidth);
         colorPressed = attr.getColor(R.styleable.FlatButton_colorPressed, 0xffeeeeee);
         colorNormal = attr.getColor(R.styleable.FlatButton_colorNormal, Color.TRANSPARENT);
-        colorPressedText = attr.getColor(R.styleable.FlatButton_colorPressedText, 0xff676767);
+        colorPressedText = attr.getColor(R.styleable.FlatButton_colorPressedText, getCurrentTextColor());
         colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
         clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
         if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
+            if (!isInEditMode()) {
+                setBackgroundCompat(getStateListDrawable());
+            }
         }
     }
 
@@ -97,7 +97,7 @@ public class FlatButton extends TextView {
             setTextColor(getColorStateList(getCurrentTextColor(), colorEnableText, colorPressedText));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{colorRipple});
-                return new RippleDrawable(colorList, drawable,new ColorDrawable(colorRipple));
+                return new RippleDrawable(colorList, drawable, createRippleDrawable());
             }
         } finally {
 
@@ -105,31 +105,12 @@ public class FlatButton extends TextView {
         return drawable;
     }
 
-    private LayerDrawable createNormalDrawable() {
-
-        //第一层
-        GradientDrawable drawableTop = new GradientDrawable();
-        drawableTop.setCornerRadius(getCornerRadius());
-        drawableTop.setShape(GradientDrawable.RECTANGLE);
-        drawableTop.setColor(colorPressed);
-        drawableTop.setStroke((int) strokeWidth, strokeColor);
-
-        //第二层
+    private Drawable createNormalDrawable() {
         GradientDrawable drawableBottom = new GradientDrawable();
         drawableBottom.setCornerRadius(getCornerRadius());
-        drawableBottom.setShape(GradientDrawable.RECTANGLE);
         drawableBottom.setColor(colorNormal);
         drawableBottom.setStroke((int) strokeWidth, strokeColor);
-        LayerDrawable layerDrawable;
-        //默认的颜色为透明，那么第一层的颜色也为透明
-        if (colorNormal == Color.TRANSPARENT) {
-            layerDrawable = new LayerDrawable(new GradientDrawable[]{drawableBottom});
-        } else {
-            layerDrawable = new LayerDrawable(new GradientDrawable[]{drawableTop, drawableBottom});
-            layerDrawable.setLayerInset(1, 0, 0, dip2px(getContext(), 0.5f), dip2px(getContext(), 0.9f));
-        }
-
-        return layerDrawable;
+        return drawableBottom;
     }
 
     private Drawable createPressedDrawable() {
@@ -144,6 +125,14 @@ public class FlatButton extends TextView {
         GradientDrawable drawablePressed = new GradientDrawable();
         drawablePressed.setCornerRadius(getCornerRadius());
         drawablePressed.setColor(colorEnable);
+        drawablePressed.setStroke((int) strokeWidth, strokeColor);
+        return drawablePressed;
+    }
+
+    private Drawable createRippleDrawable() {
+        GradientDrawable drawablePressed = new GradientDrawable();
+        drawablePressed.setCornerRadius(getCornerRadius());
+        drawablePressed.setColor(colorRipple);
         drawablePressed.setStroke((int) strokeWidth, strokeColor);
         return drawablePressed;
     }
