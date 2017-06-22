@@ -197,9 +197,17 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         webView.reload();
     }
 
+    public WebView.HitTestResult getHitTestResult() {
+        return webView.getHitTestResult();
+    }
+
     @SuppressLint("JavascriptInterface")
     public void addJavascriptInterface(Object object, String name) {
         webView.addJavascriptInterface(object, name);
+    }
+
+    public String getUrl() {
+        return webView.getUrl();
     }
 
     /**
