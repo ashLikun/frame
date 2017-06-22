@@ -109,9 +109,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             });
             superWebView.loadUrl("http://www.asdaffwwwf.com");
             superWebView.addJavascriptInterface(new JsToAndroid(), "aaaaa");
-            //
-
-
             listView.add(superWebView);
         }
         viewpager = (ViewPager) findViewById(R.id.viewpager);

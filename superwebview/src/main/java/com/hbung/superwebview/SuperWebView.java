@@ -106,8 +106,10 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
      */
 
     public void setProgress(int progress) {
-        progressBar.setVisibility(progress < 100 ? VISIBLE : GONE);
-        progressBar.setProgress(progress);
+        if (progressBar != null) {
+            progressBar.setVisibility(progress < 100 ? VISIBLE : GONE);
+            progressBar.setProgress(progress);
+        }
     }
 
     public void setListener(XWebView.IWebViewListener listener) {
@@ -123,15 +125,19 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         if (listener != null) {
             return listener.shouldOverrideUrlLoading(view, url);
         }
-        webView.loadUrl(url);
+        if (webView != null) {
+            webView.loadUrl(url);
+        }
         return true;
     }
 
     @Override
     public void onError(WebView view, XWebView.ErrorInfo errorInfo) {
-        webView.setVisibility(GONE);
-        errorRl.setVisibility(VISIBLE);
-        progressBar.setVisibility(GONE);
+        if (webView != null) {
+            webView.setVisibility(GONE);
+            errorRl.setVisibility(VISIBLE);
+            progressBar.setVisibility(GONE);
+        }
         //加载错误
         if (listener != null) {
             listener.onError(view, errorInfo);
@@ -148,9 +154,11 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        webView.setVisibility(VISIBLE);
-        progressBar.setVisibility(VISIBLE);
-        errorRl.setVisibility(GONE);
+        if (webView != null) {
+            webView.setVisibility(VISIBLE);
+            progressBar.setVisibility(VISIBLE);
+            errorRl.setVisibility(GONE);
+        }
         //加载开始
         if (listener != null) {
             listener.onPageStarted(view, url, favicon);
