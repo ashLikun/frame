@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                     ToastUtils.showShort(MainActivity.this, "aaaaa");
                 }
             });
-            superWebView.loadUrl("http://www.baidu.com");
+            superWebView.loadUrl("http://www.asdaffwwwf.com");
             superWebView.addJavascriptInterface(new JsToAndroid(), "aaaaa");
             //
 
