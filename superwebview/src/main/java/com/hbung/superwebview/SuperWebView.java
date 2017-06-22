@@ -58,7 +58,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         actionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadUrl(webView.getUrl());
+                reload();
             }
         });
     }
@@ -122,7 +122,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         if (listener != null) {
             return listener.shouldOverrideUrlLoading(view, url);
         }
-        webView.reload();
+        webView.loadUrl(url);
         return true;
     }
 
@@ -139,6 +139,11 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     @Override
     public void onPageFinished(WebView view, String url, boolean isSuccess) {
+        if (isSuccess) {
+            webView.setVisibility(VISIBLE);
+            progressBar.setVisibility(GONE);
+            errorRl.setVisibility(GONE);
+        }
         //加载完成
         if (listener != null) {
             listener.onPageFinished(view, url, isSuccess);
@@ -147,9 +152,11 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        webView.setVisibility(VISIBLE);
-        progressBar.setVisibility(VISIBLE);
-        errorRl.setVisibility(GONE);
+        if (!webView.getErrorInfo().isError) {
+            webView.setVisibility(VISIBLE);
+            progressBar.setVisibility(VISIBLE);
+            errorRl.setVisibility(GONE);
+        }
         //加载开始
         if (listener != null) {
             listener.onPageStarted(view, url, favicon);
