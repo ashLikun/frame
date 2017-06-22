@@ -122,7 +122,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         if (listener != null) {
             return listener.shouldOverrideUrlLoading(view, url);
         }
-        webView.loadUrl(url);
+        webView.reload();
         return true;
     }
 
