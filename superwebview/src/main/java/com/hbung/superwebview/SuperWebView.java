@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.hbung.flatbutton.FlatButton;
 
 /**
@@ -189,6 +190,11 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     public void goBack() {
         webView.goBack();
+    }
+
+
+    public void reload() {
+        webView.reload();
     }
 
     @SuppressLint("JavascriptInterface")
