@@ -3,10 +3,12 @@ package com.hbung.superwebview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -33,6 +35,7 @@ public class XWebView extends WebView {
     private IWebViewListener listener;
     private String jsObject;
     private ErrorInfo errorInfo;
+    private String title;
 
     public XWebView(Context context) {
         super(context);
@@ -56,6 +59,14 @@ public class XWebView extends WebView {
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         errorInfo = new ErrorInfo();
+    }
+
+    @Override
+    public String getTitle() {
+        if (super.getTitle() != null && !super.getTitle().equals(getUrl())) {
+            return super.getTitle();
+        }
+        return title;
     }
 
     @Override
@@ -232,6 +243,7 @@ public class XWebView extends WebView {
     WebViewClient webViewClient = new WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            title = null;
             errorInfo.clean();
             if (listener != null) {
                 return listener.shouldOverrideUrlLoading(view, url);
@@ -241,8 +253,8 @@ public class XWebView extends WebView {
         }
 
         @Override
-        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            super.onReceivedHttpError(view, request, errorResponse);
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
         }
 
         // 旧版本，会在新版本中也可能被调用，所以加上一个判断，防止重复显示
@@ -295,6 +307,7 @@ public class XWebView extends WebView {
     WebChromeClient webChromeClient = new WebChromeClient() {
         @Override
         public void onReceivedTitle(WebView view, String title) {
+            XWebView.this.title = title;
             //页面标题
             if (listener != null) {
                 listener.onReceivedTitle(view, title);
