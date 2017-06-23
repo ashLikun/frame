@@ -339,6 +339,12 @@ public class SegmentControlInterior extends View {
         }
     }
 
+    private LinearGradient getTextGradient(int index) {
+        int[] color = new int[]{mTextColorSelect, mTextColorDefault};
+        LinearGradient gradient = new LinearGradient(0, 0, mItemWidth, 0, color, new float[]{0.3f, 0.3f}, Shader.TileMode.REPEAT);
+        return gradient;
+    }
+
     private LinearGradient changGradient() {
         int[] color = mGradualColor.clone();
         if (mGradualColor.length == 2 && mPostion >= (getCount() * mItemWidth) / 2) {

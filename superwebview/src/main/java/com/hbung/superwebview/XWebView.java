@@ -37,6 +37,8 @@ public class XWebView extends WebView {
     private ErrorInfo errorInfo;
     private String title;
 
+    private boolean titleIsCall;//标题是否已经回掉过了，解决onReceivedTitle 不回掉问题
+
     public XWebView(Context context) {
         super(context);
         init(context, null);
@@ -63,7 +65,9 @@ public class XWebView extends WebView {
 
     @Override
     public String getTitle() {
-        if (super.getTitle() != null && !super.getTitle().equals(getUrl())) {
+        String superTitle = super.getTitle();
+        if (superTitle != null && !superTitle.equals(getUrl()) && !superTitle.startsWith("http")) {
+            title = superTitle;
             return super.getTitle();
         }
         return title;
@@ -72,20 +76,29 @@ public class XWebView extends WebView {
     @Override
     public void loadUrl(String url) {
         if (!url.contains("data:text/html,chromewebdata")) {
+            clean();
             super.loadUrl(url);
         }
+
+    }
+
+    @Override
+    public void reload() {
+        clean();
+        super.reload();
     }
 
     @Override
     public void loadUrl(String url, Map<String, String> additionalHttpHeaders) {
         if (!url.contains("data:text/html,chromewebdata")) {
+            clean();
             super.loadUrl(url, additionalHttpHeaders);
         }
     }
 
     @Override
     public void goBack() {
-        errorInfo.clean();
+        clean();
         super.goBack();
     }
 
@@ -189,6 +202,7 @@ public class XWebView extends WebView {
         String failingUrl;
 
         public void clean() {
+
             isError = false;
             errorCode = 0;
             description = null;
@@ -232,6 +246,13 @@ public class XWebView extends WebView {
         return errorInfo;
     }
 
+    //清空数据，新加载的界面
+    private void clean() {
+        title = null;
+        errorInfo.clean();
+        titleIsCall = false;
+    }
+
     /**
      * 作者　　: 李坤
      * 创建时间: 2017/6/7 15:50
@@ -243,8 +264,7 @@ public class XWebView extends WebView {
     WebViewClient webViewClient = new WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            title = null;
-            errorInfo.clean();
+            clean();
             if (listener != null) {
                 return listener.shouldOverrideUrlLoading(view, url);
             } else {
@@ -285,6 +305,9 @@ public class XWebView extends WebView {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            if (!titleIsCall) {//标题没有回掉过
+                webChromeClient.onReceivedTitle(view, getTitle());
+            }
             //加载完成
             if (listener != null) {
                 //是否错误
@@ -308,6 +331,7 @@ public class XWebView extends WebView {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             XWebView.this.title = title;
+            titleIsCall = true;
             //页面标题
             if (listener != null) {
                 listener.onReceivedTitle(view, title);

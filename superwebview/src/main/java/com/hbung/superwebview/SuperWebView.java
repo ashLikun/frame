@@ -58,7 +58,6 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         actionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.getErrorInfo().clean();
                 reload();
             }
         });

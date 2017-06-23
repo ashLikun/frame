@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.widget.ImageView;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
@@ -98,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             public void onClick(View v) {
             }
         });
+        ImageView iv = (ImageView) findViewById(R.id.imageView);
+        iv.setImageResource(R.drawable.ic_android_black_24dp);
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
         for (int i = 0; i < controlInterior.getCount(); i++) {
             SuperWebView superWebView = new SuperWebView(this);
