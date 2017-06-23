@@ -68,7 +68,6 @@ public class XWebView extends WebView {
         String superTitle = super.getTitle();
         if (superTitle != null && !superTitle.equals(getUrl()) && !superTitle.startsWith("http")) {
             title = superTitle;
-            return super.getTitle();
         }
         return title;
     }
