@@ -20,18 +20,16 @@ import okhttp3.ResponseBody;
  * 创建时间: 10:31 admin
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：http工具类
+ * 功能介绍：http实现类  调用者可继承此类
  */
 
-public class OkHttpUtils implements SuperHttp {
+public class OkHttpImp implements SuperHttp {
 
-    //单列模式
-    private volatile static OkHttpUtils mInstance;
     //okhttp核心类
-    private OkHttpClient mOkHttpClient;
-    private MainThread mMainThread;//线程切换
+    protected OkHttpClient mOkHttpClient;
+    protected MainThread mMainThread;//线程切换
 
-    private OkHttpUtils(OkHttpClient okHttpClient) {
+    protected OkHttpImp(OkHttpClient okHttpClient) {
         if (okHttpClient == null) {
             mOkHttpClient = new OkHttpClient.Builder()
                     .readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
@@ -42,26 +40,6 @@ public class OkHttpUtils implements SuperHttp {
             mOkHttpClient = okHttpClient;
         }
         mMainThread = new MainThread();
-    }
-
-
-    public static OkHttpUtils initClient(OkHttpClient okHttpClient) {
-        if (mInstance == null) {
-            synchronized (OkHttpUtils.class) {
-                if (mInstance == null) {
-                    mInstance = new OkHttpUtils(okHttpClient);
-                }
-            }
-        }
-        return mInstance;
-    }
-
-    public static OkHttpUtils getInstance() {
-        return initClient(null);
-    }
-
-    public OkHttpClient getOkHttpClient() {
-        return mOkHttpClient;
     }
 
     //异步请求

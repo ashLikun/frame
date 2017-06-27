@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -390,7 +389,6 @@ public class CameraUtils implements SurfaceHolder.Callback {
 //            rotation = rotation - 90;
 //        }
         rotation = rotation - 90;
-        Log.e("aaaa", rotation + "");
         return rotation;
     }
 

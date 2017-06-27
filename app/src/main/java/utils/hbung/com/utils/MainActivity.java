@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
-import com.hbung.http.OkHttpUtils;
+import com.hbung.http.OkHttpImp;
 import com.hbung.http.request.RequestParam;
 import com.hbung.http.response.HttpResponse;
 import com.hbung.loadingandretrymanager.ContextData;
@@ -94,13 +94,14 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 save();
             }
         });
+        final ImageView iv = (ImageView) findViewById(R.id.imageView);
+        iv.setImageResource(R.drawable.ic_android_black_24dp);
         findViewById(R.id.actionButton2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                iv.getDrawable();
             }
         });
-        ImageView iv = (ImageView) findViewById(R.id.imageView);
-        iv.setImageResource(R.drawable.ic_android_black_24dp);
         controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
         for (int i = 0; i < controlInterior.getCount(); i++) {
             SuperWebView superWebView = new SuperWebView(this);
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         p.url("http://jielehua.vcash.cn/api/jlh/apply/getApplyProgress/");
         p.appendPath("118915");
         p.addParam("accessToken", "A8C5CF33-64A1-49F4-ADBC-4DBF05D5F94B");
-        OkHttpUtils.getInstance().execute(p, new HttpCallBack<String>() {
+        OkHttpImp.getInstance().execute(p, new HttpCallBack<String>() {
             @Override
             public void onSuccess(String responseBody) {
                 Log.e("aa", responseBody.toString());

@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 public interface SuperHttp {
     //默认的超时时间
     public static final long DEFAULT_MILLISECONDS = 20_000L;
+    public static final long DEFAULT_MILLISECONDS_LONG = 200_000L;
 
     //异步回调
     <T> ExecuteCall execute(RequestCall requestCall, Callback<T> callback);

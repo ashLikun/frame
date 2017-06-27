@@ -1,7 +1,7 @@
 package com.hbung.http.request;
 
 import com.hbung.http.Callback;
-import com.hbung.http.OkHttpUtils;
+import com.hbung.http.OkHttpImp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +45,10 @@ public class RequestCall {
         request = requestParam.bulidRequest(callback);//获得请求实体
         //如果超时时间大于0,就重新构建OkHttpClient
         if (isNewBuilder()) {
-            readTimeOut = readTimeOut > 0 ? readTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
-            writeTimeOut = writeTimeOut > 0 ? writeTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
-            connTimeOut = connTimeOut > 0 ? connTimeOut : OkHttpUtils.DEFAULT_MILLISECONDS;
-            OkHttpClient.Builder clone = OkHttpUtils.getInstance().getOkHttpClient().newBuilder()
+            readTimeOut = readTimeOut > 0 ? readTimeOut : OkHttpImp.DEFAULT_MILLISECONDS;
+            writeTimeOut = writeTimeOut > 0 ? writeTimeOut : OkHttpImp.DEFAULT_MILLISECONDS;
+            connTimeOut = connTimeOut > 0 ? connTimeOut : OkHttpImp.DEFAULT_MILLISECONDS;
+            OkHttpClient.Builder clone = OkHttpImp.getInstance().getOkHttpClient().newBuilder()
                     .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
                     .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
                     .connectTimeout(connTimeOut, TimeUnit.MILLISECONDS);
@@ -58,7 +58,7 @@ public class RequestCall {
                 clone.networkInterceptors().addAll(networkInterceptors);
             call = clone.build().newCall(request);
         } else {
-            call = OkHttpUtils.getInstance().getOkHttpClient().newCall(request);
+            call = OkHttpImp.getInstance().getOkHttpClient().newCall(request);
         }
         return call;
     }

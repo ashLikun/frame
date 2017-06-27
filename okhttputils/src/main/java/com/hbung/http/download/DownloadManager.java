@@ -16,7 +16,7 @@
 package com.hbung.http.download;
 
 
-import com.hbung.http.OkHttpUtils;
+import com.hbung.http.OkHttpImp;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +65,7 @@ public class DownloadManager {
             synchronized (DownloadManager.class) {
                 if (manager == null) {
                     //DEFAULT_MILLISECONDS == 20s
-                    OkHttpClient.Builder client = OkHttpUtils.getInstance().getOkHttpClient()
+                    OkHttpClient.Builder client = OkHttpImp.getInstance().getOkHttpClient()
                             .newBuilder()
                             .readTimeout(DEFAULT_MILLISECONDS * 30, TimeUnit.MILLISECONDS)
                             .writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
