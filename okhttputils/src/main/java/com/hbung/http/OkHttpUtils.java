@@ -20,16 +20,29 @@ import okhttp3.ResponseBody;
  * 创建时间: 10:31 admin
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：http实现类  调用者可继承此类
+ * 功能介绍：http工具类
  */
 
-public class OkHttpImp implements SuperHttp {
+public class OkHttpUtils implements SuperHttp {
 
+    private volatile static OkHttpUtils INSTANCE = null;
     //okhttp核心类
-    protected OkHttpClient mOkHttpClient;
-    protected MainThread mMainThread;//线程切换
+    private OkHttpClient mOkHttpClient;
+    private MainThread mMainThread;//线程切换
 
-    protected OkHttpImp(OkHttpClient okHttpClient) {
+    //获取单例
+    public static OkHttpUtils getInstance() {
+        if (INSTANCE == null) {
+            synchronized (OkHttpUtils.class) {
+                if (INSTANCE == null) {
+                    init(null);
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    private OkHttpUtils(OkHttpClient okHttpClient) {
         if (okHttpClient == null) {
             mOkHttpClient = new OkHttpClient.Builder()
                     .readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
@@ -40,6 +53,16 @@ public class OkHttpImp implements SuperHttp {
             mOkHttpClient = okHttpClient;
         }
         mMainThread = new MainThread();
+    }
+
+    //初始化
+    public static void init(OkHttpClient okHttpClient) {
+        INSTANCE = new OkHttpUtils(okHttpClient);
+    }
+
+
+    public OkHttpClient getOkHttpClient() {
+        return mOkHttpClient;
     }
 
     //异步请求
@@ -126,5 +149,6 @@ public class OkHttpImp implements SuperHttp {
         }
         return null;
     }
+
 }
 

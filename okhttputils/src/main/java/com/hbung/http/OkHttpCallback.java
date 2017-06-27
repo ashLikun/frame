@@ -61,7 +61,7 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
     public void onResponse(final Call call, final Response response) throws IOException {
         if (response.isSuccessful()) {
             try {
-                ResultType resultType = OkHttpImp.handerResult(getType(), response);
+                ResultType resultType = OkHttpUtils.handerResult(getType(), response);
                 postResponse(response, resultType);
             } catch (IOException e) {
                 e.printStackTrace();

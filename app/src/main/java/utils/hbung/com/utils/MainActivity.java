@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
-import com.hbung.http.OkHttpImp;
+import com.hbung.http.OkHttpUtils;
 import com.hbung.http.request.RequestParam;
 import com.hbung.http.response.HttpResponse;
 import com.hbung.loadingandretrymanager.ContextData;
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         p.url("http://jielehua.vcash.cn/api/jlh/apply/getApplyProgress/");
         p.appendPath("118915");
         p.addParam("accessToken", "A8C5CF33-64A1-49F4-ADBC-4DBF05D5F94B");
-        OkHttpImp.getInstance().execute(p, new HttpCallBack<String>() {
+        OkHttpUtils.getInstance().execute(p, new HttpCallBack<String>() {
             @Override
             public void onSuccess(String responseBody) {
                 Log.e("aa", responseBody.toString());
@@ -284,4 +284,4 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         }, 5000);
     }
 
-   }
+}
