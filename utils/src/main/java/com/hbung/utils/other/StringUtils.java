@@ -6,7 +6,6 @@
 package com.hbung.utils.other;
 
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import java.math.BigDecimal;
 
@@ -30,27 +29,24 @@ public class StringUtils {
         return str == null ? "" : str.trim();
     }
 
-    /**
-     * 是否绝对的空
-     *
-     * @return
-     */
-    public static boolean isBlank(String str) {
-        return (str == null || str.trim().length() == 0 || str.equals("null"));
-    }
 
     /**
-     * 是否正常的字符串
-     *
-     * @return
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 10:54
+     * <p>
+     * 方法功能：是否正常的字符串
      */
     public static boolean isEmpty(String str) {
-        return (str == null || str.length() == 0);
+        return (TextUtils.isEmpty(str) || str.equals("null") || str.equals("NULL"));
     }
 
-    /*
-     * 比较两个字符串
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:00
+     * <p>
+     * 方法功能：比较两个字符串
      */
+
     public static boolean isEquals(String actual, String expected) {
         return actual == expected
                 || (actual == null ? expected == null : actual.equals(expected));
@@ -58,29 +54,10 @@ public class StringUtils {
 
 
     /**
-     * bytes[]转换成Hex字符串,可用于URL转换，IP地址转换
-     *
-     * @param bytes
-     * @return
-     */
-    public static String bytesToHexString(byte[] bytes) {
-        // http://stackoverflow.com/questions/332079
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < bytes.length; i++) {
-            String hex = Integer.toHexString(0xFF & bytes[i]);
-            if (hex.length() == 1) {
-                sb.append('0');
-            }
-            sb.append(hex);
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 字节转换成合适的单位
-     *
-     * @param value
-     * @return
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:01
+     * <p>
+     * 方法功能：字节转换成合适的单位
      */
     public static String prettyBytes(long value) {
         String args[] = {"B", "KB", "MB", "GB", "TB"};
@@ -109,28 +86,16 @@ public class StringUtils {
 
 
     /**
-     * 判断View 的Text是否为空
-     */
-    public static boolean isEmpty(TextView textView) {
-        if (textView != null && !TextUtils.isEmpty(textView.getText().toString().trim())) {
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * 非空判断处理和转换为String类型
+     * 作者　　: 李坤
+     * 创建时间: 2016/4/29 11:05
+     * 方法功能：非空判断处理和转换为String类型
      * dataFilter("aaa")  -> aaa
      * dataFilter(null)    ->"未知"
      * dataFilter("aaa","未知")  -> aaa
-     * <p>
      * dataFilter(123.456  ,  2) -> 123.46
      * dataFilter(123.456  ,  0) -> 123
      * dataFilter(123.456  )    -> 123.46
-     * <p>
      * dataFilter(56  )    -> "56"
-     * <p>
      * dataFilter(true)        ->true
      *
      * @param source 主要对String,Integer,Double这三种类型进行处理
@@ -140,18 +105,19 @@ public class StringUtils {
      *               3如是传入的是0会认为double要取整
      * @return 把内容转换为String返回
      */
+
     public static String dataFilter(Object source, Object filter) {
         try {
-            if (source != null && !isBlank(source.toString())) {//数据源没有异常
-                if (source instanceof String) {//String 处理
-                    return source.toString().trim();
-                } else if (source instanceof Double ||source instanceof Float) {//小数处理，
+            if (source != null && !isEmpty(source.toString())) {//数据源没有异常
+                if (source instanceof String) {
+                    return source.toString().trim();//String 处理
+                } else if (source instanceof Double || source instanceof Float) {
+                    //小数处理，
                     BigDecimal bd = new BigDecimal(Double.parseDouble(source.toString()));
                     if (filter != null && filter instanceof Integer) {
                         if ((int) filter == 0) {
                             return String.valueOf((int) (bd.setScale(0, BigDecimal.ROUND_HALF_EVEN).doubleValue()));
                         } else {
-
                             return String.valueOf(bd.setScale(Math.abs((int) filter), BigDecimal.ROUND_HALF_EVEN).doubleValue());
                         }
                     }
@@ -167,7 +133,6 @@ public class StringUtils {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         return "未知";
     }
 
@@ -182,12 +147,14 @@ public class StringUtils {
      * 方法功能：返回指定长度的字符串
      */
     public static String isNullToConvert(String str, int maxLenght) {
-        return isBlank(str) ? "未知" : str.substring(0, str.length() < maxLenght ? str.length() : maxLenght);
-
+        return isEmpty(str) ? "未知" : str.substring(0, str.length() < maxLenght ? str.length() : maxLenght);
     }
 
     /**
-     * 小数 四舍五入 19.0->19.0    返回Double
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:06
+     * <p>
+     * 方法功能：小数 四舍五入 19.0->19.0    返回Double
      */
     public static Double roundDouble(double val, int precision) {
         int resQ = (int) Math.round(val * Math.pow(10.0, precision));
@@ -196,54 +163,51 @@ public class StringUtils {
     }
 
     /**
-     * 小数后两位
-     *
-     * @param val
-     * @return
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:06
+     * <p>
+     * 方法功能：小数后两位
      */
+
     public static Double roundDouble(double val) {
-        int resQ = (int) Math.round(val * Math.pow(10.0, 2));
-        double res = resQ / Math.pow(10.0, 2);
-        return res;
+        return roundDouble(val, 2);
     }
 
     /**
-     * 小数 四舍五入 19.0->19.0   返回字符串
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:07
+     * <p>
+     * 方法功能：小数 四舍五入 19.0->19.0   返回字符串
      */
-
     public static String roundString(double val, int precision) {
         return String.valueOf(roundDouble(val, precision));
 
     }
 
-
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:08
+     * <p>
+     * 方法功能：从url里面获取最后一个，就是文件名
+     */
     public static String getUrlToFileName(String url) {
-        String res = null;
         if (url != null) {
-            String[] ress = url.split("/");
-            if (ress.length > 0) {
-                res = ress[ress.length - 1];
+            String[] splitS = url.split("/");
+            if (splitS.length > 0) {
+                return splitS[splitS.length - 1];
             }
         }
-        return res;
+        return null;
     }
 
-
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:09
+     * <p>
+     * 方法功能：获取钱过滤成字符串
+     */
     public static String getMoney(int money) {
         return money <= 0 ? "- -" : String.valueOf(money);
     }
-
-    public static String getMessageCount(int count) {
-        if (count > 0) {
-            if (count >= 100) {
-                return "99+";
-            } else {
-                return String.valueOf(count);
-            }
-        } else {
-            return String.valueOf("");
-        }
-    }
-
 
 }

@@ -23,13 +23,12 @@ import com.hbung.flatbutton.FlatButton;
  * 功能介绍：
  */
 public class SuperWebView extends FrameLayout implements XWebView.IWebViewListener {
-    private RelativeLayout errorRl;
-    private HorizontalProgress progressBar;
-    private XWebView webView;
-    private TextView swvMessageView;
-    private ImageView swvImageView;
-    private FlatButton actionButton;
-
+    private RelativeLayout errorRl;//错误根布局
+    private HorizontalProgress progressBar;//进度条
+    private XWebView webView;//webview
+    private TextView swvMessageView;//消息TextView
+    private ImageView swvImageView;//图标
+    private FlatButton actionButton;//失败按钮
 
     private XWebView.IWebViewListener listener;
 
@@ -63,6 +62,13 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         });
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:03
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：加载url
+     */
 
     public void loadUrl(String url) {
         if (!TextUtils.isEmpty(url)) {
@@ -70,11 +76,22 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
     }
 
-
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:04
+     * 邮箱　　：496546144@qq.com
+     * 方法功能：获取错误跟布局
+     */
     public RelativeLayout getErrorRoot() {
         return errorRl;
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:04
+     * 邮箱　　：496546144@qq.com
+     * 方法功能：获取进度条
+     */
     public HorizontalProgress getProgressBar() {
         return progressBar;
     }
@@ -111,14 +128,35 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:04
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：设置webview自定义的监听
+     */
     public void setListener(XWebView.IWebViewListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:04
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：当按钮点击时候的监听。默认内部会实现去调用reload方法刷新
+     */
     public void setButtonClick(OnClickListener click) {
         actionButton.setOnClickListener(click);
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:05
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：webview去加载另外一个连接，默认会在当前view加载
+     */
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (listener != null) {
@@ -129,6 +167,14 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
         return true;
     }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:06
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：当错误的时候，默认ui切换
+     */
 
     @Override
     public void onError(WebView view, XWebView.ErrorInfo errorInfo) {
@@ -143,6 +189,13 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:07
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：页面加载成功
+     */
     @Override
     public void onPageFinished(WebView view, String url, boolean isSuccess) {
         //加载完成
@@ -151,6 +204,13 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:07
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：页面开始加载
+     */
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         if (webView != null) {
@@ -164,6 +224,14 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:07
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：页面标题回掉
+     */
+
     @Override
     public void onReceivedTitle(WebView view, String title) {
         if (listener != null) {
@@ -171,6 +239,13 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/30 15:08
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：精度回掉
+     */
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
         setProgress(newProgress);

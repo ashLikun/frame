@@ -26,9 +26,16 @@ import java.util.List;
  */
 
 public class AnimUtils {
-    /*
-     * 上下抖动动画，用于提醒用户去点击 rotation:转动角度,
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/27 17:25
+     * <p>
+     * 方法功能：上下抖动动画，用于提醒用户去点击
+     *
+     * @param scaleMax:缩放的最大值 0.85
+     * @param rotation:转动角度   6
      */
+
     public static void shakeUp(View view, float scaleMax, float rotation) {
         getShakeUp(view, scaleMax, rotation).start();
 
@@ -78,9 +85,16 @@ public class AnimUtils {
         return objectAnimator;
     }
 
-    /*
-     * 左右抖动动画，用于表单验证失败 translation:平移距离, 0.85, 6
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/27 17:26
+     * <p>
+     * 方法功能：左右抖动动画，用于表单验证失败
+     *
+     * @param scaleMax:缩放最大    0.85
+     * @param translation:平移距离 6
      */
+
     public static void shakeLeft(View view, float scaleMax, float translation) {
         translation = DimensUtils.dip2px(view.getContext(), translation);
         // Keyframe是一个时间/值对，用于定义在某个时刻动画的状态
@@ -128,8 +142,16 @@ public class AnimUtils {
     }
 
     /**
-     * 缩放动画，先放大，后缩小，   用于提醒用户状态的变化
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/27 17:27
+     * <p>
+     * 方法功能： 缩放动画，先放大，后缩小，   用于提醒用户状态的变化
+     *
+     * @param scaleMax 缩放最大值
+     * @param scaleMin 缩放最小值
+     * @param duration 时间
      */
+
     public static void scaleAnim(View view, float scaleMax, float scaleMin, int duration) {
 
         PropertyValuesHolder scx = PropertyValuesHolder.ofFloat("scaleX", 1, scaleMax, 1, scaleMin, 1);
@@ -142,6 +164,12 @@ public class AnimUtils {
 
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/27 17:27
+     * <p>
+     * 方法功能： 缩放动画，先放大，后缩小，   用于提醒用户状态的变化
+     */
     public static void scaleAnim(View view) {
         scaleAnim(view, 1.3f, 0.5f, 800);
     }
@@ -172,7 +200,7 @@ public class AnimUtils {
      * 作者　　: 李坤
      * 创建时间: 2016/10/12 10:01
      * <p>
-     * 方法功能：改变textVIew 的字体动画
+     * 方法功能：改变textVIew 的字体大小动画
      */
     public static void updateTextSize(final TextView textView, float fromSize, float toSize) {
         ValueAnimator animator = ValueAnimator.ofFloat(fromSize, toSize);

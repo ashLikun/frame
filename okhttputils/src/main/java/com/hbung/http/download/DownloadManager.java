@@ -97,7 +97,6 @@ public class DownloadManager {
      * @param downloadTask
      */
     public void addDownloadTask(DownloadTask downloadTask) {
-
         if (downloadTask != null && !isDownloading(downloadTask)) {
             DownloadTask oldTask = mCurrentTaskList.get(downloadTask.getId());
             if (oldTask != null) {

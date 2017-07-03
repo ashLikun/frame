@@ -1,6 +1,7 @@
 package com.hbung.http.request;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.hbung.http.Callback;
 import com.hbung.json.GsonHelper;
@@ -42,10 +43,16 @@ public class RequestParam {
 
     private boolean isJson = false;
 
+    public RequestParam(String url) {
+        url(url);
+    }
+
     public void appendPath(String path) {
         if (url == null) new Exception("先调用url方法");
         Uri.Builder builder = url.buildUpon();
-        url = builder.appendPath(path).build();
+        if (!TextUtils.isEmpty(path)) {
+            url = builder.appendPath(path).build();
+        }
     }
 
     public void setMethod(String method) {
@@ -75,11 +82,6 @@ public class RequestParam {
     public boolean isHavafiles() {
         return files != null && !files.isEmpty();
     }
-
-
-    public RequestParam() {
-    }
-
 
     public void addParam(String key, String valuse) {
         if (!isEmpty(key) && !isEmpty(valuse)) {
@@ -163,8 +165,9 @@ public class RequestParam {
                 header.add(entry.getKey(), entry.getValue());
             }
         }
+        String urlStr = url.toString().replaceAll("//", "/");
         return builder
-                .url(url.toString())
+                .url(urlStr)
                 .headers(header.build())
                 .method(method, requestBody)
                 .build();

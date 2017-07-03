@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.init(getApplication(), false, null);
+        Utils.init(getApplication(), false);
         setContentView(R.layout.activity_main);
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                     ToastUtils.showShort(MainActivity.this, "aaaaa");
                 }
             });
-            superWebView.loadUrl("http://www.asdaffwwwf.com");
+            superWebView.loadUrl("http://jlhpredeploy.vcash.cn/qd/semiAnnual/index.html?salesId=23257&index_share");
             superWebView.addJavascriptInterface(new JsToAndroid(), "aaaaa");
             listView.add(superWebView);
         }
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
     private void httpTest() {
 //http://jielehua.vcash.cn/api/jlh/apply/getApplyProgress/118915?accessToken=4E396D4E-67E1-4B04-A70C-B1C6AFBFB238
-        RequestParam p = new RequestParam();
+        RequestParam p = new RequestParam("");
         p.get();
         p.addHeader("accessToken", "A8C5CF33-64A1-49F4-ADBC-4DBF05D5F94B");
         //4690943?accessToken=8079CE15-038E-4977-8443-E885730DE268

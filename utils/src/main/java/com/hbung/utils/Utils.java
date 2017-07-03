@@ -9,15 +9,13 @@ import android.app.Application;
  * <p>
  * 功能介绍：
  */
-
 public class Utils {
     public static boolean isDebug;
-    public static String BASE_URL;
     public static Application myApp;
 
-    public static void init(Application context, boolean isDebug, String BASE_URL) {
+    //尽量每个地方
+    public static void init(Application context, boolean isDebug) {
         myApp = context;
         Utils.isDebug = isDebug;
-        Utils.BASE_URL = BASE_URL;
     }
 }

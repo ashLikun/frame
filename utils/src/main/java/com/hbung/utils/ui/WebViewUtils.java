@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.hbung.utils.encryption.UnicodeUtils;
 import com.hbung.utils.other.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.hbung.utils.Utils.BASE_URL;
 
 
 /**
@@ -20,28 +17,6 @@ import static com.hbung.utils.Utils.BASE_URL;
  * "document.getElementById('content').innerHTML+'</body>');");
  */
 public class WebViewUtils {
-
-    /*
-    * 获取到服务器数据后开始跟新UI
-    */
-    public static void loadDataWithBaseURL(WebView webView, String content) {
-        if (content == null) {
-            content = "";
-        }
-        content = UnicodeUtils.unicode2String(content);
-        // 配置webview数据源
-        StringBuilder data = new StringBuilder();
-        data.append("<style type=\"text/css\">img{WIDTH:100% !important;HEIGHT:auto !important;}");
-        data.append(getFont());
-        data.append("</style><base href=\"");
-        data.append(BASE_URL);
-        data.append("\"/><body class=\"Likun\" style=\"padding-left:0%;padding-right:0%;\">");
-        data.append(content);
-        data.append("</body>");
-        // 设置webview 加载数据
-        webView.loadDataWithBaseURL(null, data.toString(), "text/html",
-                "utf-8", null);
-    }
 
     public static String getFont() {
         StringBuilder builder = new StringBuilder();

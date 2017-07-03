@@ -26,7 +26,7 @@ import static com.hbung.utils.Utils.myApp;
 
 /**
  * 作者　　: 李坤
- * 创建时间: 16:34 Administrator
+ * 创建时间: 2016/3/29 11:29
  * 邮箱　　：496546144@qq.com
  * <p>
  * 功能介绍：Drawable 常用的状态变化
@@ -36,10 +36,12 @@ import static com.hbung.utils.Utils.myApp;
 public class DrawableUtils {
 
     /**
-     * 获取ColorStateList实例
-     * 列如 ：对TextView设置不同状态时其文字颜色。
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:30
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：获取ColorStateList ，，对TextView设置不同状态时其文字颜色。
      */
-
     public static ColorStateList getColorStateList(int normal, int pressed, int focused, int unable) {
         int[] colors = new int[]{pressed, focused, normal, focused, unable, normal};
         int[][] states = new int[6][];
