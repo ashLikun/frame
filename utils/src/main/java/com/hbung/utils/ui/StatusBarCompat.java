@@ -37,7 +37,6 @@ public class StatusBarCompat {
         }
         //4.4版本
         else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            activity.getWindow().setStatusBarColor(color);
             ViewGroup contentView = (ViewGroup) activity.getWindow().getDecorView();
             View statusBarView = new View(activity);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
