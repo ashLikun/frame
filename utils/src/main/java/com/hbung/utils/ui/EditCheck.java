@@ -3,7 +3,6 @@ package com.hbung.utils.ui;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.style.BulletSpan;
 import android.util.SparseArray;
 import android.widget.EditText;
 
@@ -22,7 +21,9 @@ public class EditCheck {
 
     private Context context;
     private IEditCheck mIEditCheck;
+    private IEditStatusChang mIEditStatusChang;
     private SparseArray<EditText> mEdithelpdatas;
+    private Boolean mCurrentStatus = null;//当前的状态
 
     /**
      * 作者　　: 李坤
@@ -38,7 +39,9 @@ public class EditCheck {
         this.mIEditCheck = mIEditCheck;
     }
 
-
+    public void setmIEditStatusChang(IEditStatusChang mIEditStatusChang) {
+        this.mIEditStatusChang = mIEditStatusChang;
+    }
 
     /**
      * 作者　　: 李坤
@@ -111,10 +114,51 @@ public class EditCheck {
             boolean isNoGoCheck = false;
             if (!isNoGoCheck) {//去检测
                 if (mIEditCheck != null) {
-                    mIEditCheck.check();
+                    boolean status = mIEditCheck.check();
+                    if (mIEditStatusChang != null && mCurrentStatus != status) {
+                        mCurrentStatus = status;
+                        mIEditStatusChang.onEditChang();
+                    }
                 }
             }
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28　16:18
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 功能介绍：{@link EditCheck}
+     * 实体类实现的接口
+     */
+
+    public interface IEditCheck {
+        /**
+         * 作者　　: 李坤
+         * 创建时间: 2017/6/28 16:19
+         * 方法功能：当edittext改变的时候调用的方法
+         * 实体类必须实现这个接口，实现具体的逻辑
+         */
+        boolean check();
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28　16:18
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 功能介绍：{@link IEditStatusChang}
+     * 当edit状态改变的时候,是调用完数据判断后
+     */
+
+    public interface IEditStatusChang {
+        /**
+         * 作者　　: 李坤
+         * 创建时间: 2017/6/28 16:19
+         * 方法功能：当edittext改变的时候调用的方法
+         * 实体类必须实现这个接口，实现具体的逻辑
+         */
+        boolean onEditChang();
+    }
 }
