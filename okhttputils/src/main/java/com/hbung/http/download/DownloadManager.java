@@ -64,7 +64,6 @@ public class DownloadManager {
         if (manager == null) {
             synchronized (DownloadManager.class) {
                 if (manager == null) {
-                    //DEFAULT_MILLISECONDS == 20s
                     OkHttpClient.Builder client = OkHttpUtils.getInstance().getOkHttpClient()
                             .newBuilder()
                             .readTimeout(DEFAULT_MILLISECONDS * 30, TimeUnit.MILLISECONDS)
@@ -98,7 +97,6 @@ public class DownloadManager {
      * @param downloadTask
      */
     public void addDownloadTask(DownloadTask downloadTask) {
-
         if (downloadTask != null && !isDownloading(downloadTask)) {
             DownloadTask oldTask = mCurrentTaskList.get(downloadTask.getId());
             if (oldTask != null) {

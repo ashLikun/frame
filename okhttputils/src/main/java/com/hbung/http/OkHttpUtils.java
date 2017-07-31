@@ -25,11 +25,22 @@ import okhttp3.ResponseBody;
 
 public class OkHttpUtils implements SuperHttp {
 
-    //单列模式
-    private volatile static OkHttpUtils mInstance;
+    private volatile static OkHttpUtils INSTANCE = null;
     //okhttp核心类
     private OkHttpClient mOkHttpClient;
     private MainThread mMainThread;//线程切换
+
+    //获取单例
+    public static OkHttpUtils getInstance() {
+        if (INSTANCE == null) {
+            synchronized (OkHttpUtils.class) {
+                if (INSTANCE == null) {
+                    init(null);
+                }
+            }
+        }
+        return INSTANCE;
+    }
 
     private OkHttpUtils(OkHttpClient okHttpClient) {
         if (okHttpClient == null) {
@@ -44,21 +55,11 @@ public class OkHttpUtils implements SuperHttp {
         mMainThread = new MainThread();
     }
 
-
-    public static OkHttpUtils initClient(OkHttpClient okHttpClient) {
-        if (mInstance == null) {
-            synchronized (OkHttpUtils.class) {
-                if (mInstance == null) {
-                    mInstance = new OkHttpUtils(okHttpClient);
-                }
-            }
-        }
-        return mInstance;
+    //初始化
+    public static void init(OkHttpClient okHttpClient) {
+        INSTANCE = new OkHttpUtils(okHttpClient);
     }
 
-    public static OkHttpUtils getInstance() {
-        return initClient(null);
-    }
 
     public OkHttpClient getOkHttpClient() {
         return mOkHttpClient;
@@ -148,5 +149,6 @@ public class OkHttpUtils implements SuperHttp {
         }
         return null;
     }
+
 }
 

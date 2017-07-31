@@ -7,11 +7,17 @@ import java.security.NoSuchAlgorithmException;
 /**
  * 作者　　: 李坤
  * 创建时间: 2017/3/27 16:40
- *
- * 方法功能：Md5加密  不可逆算法
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：Md5加密  不可逆算法
  */
-
 public class Md5Utils {
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 10:31
+     * <p>
+     * 方法功能：md加密
+     */
     public static String getMD5(String info) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
@@ -25,7 +31,6 @@ public class Md5Utils {
                     strBuf.append(Integer.toHexString(0xff & encryption[i]));
                 }
             }
-
             return strBuf.toString();
         } catch (NoSuchAlgorithmException e) {
             return "";

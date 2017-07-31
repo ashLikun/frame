@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
  * 创建时间:2016/12/9　9:16
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：RecycleView的item动画
  */
 
 public class RecycleItemAnimator extends DefaultItemAnimator {

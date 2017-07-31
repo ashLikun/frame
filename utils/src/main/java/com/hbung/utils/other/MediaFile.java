@@ -13,10 +13,8 @@ import java.util.Iterator;
  */
 
 public class MediaFile {
-    // comma separated list of all file extensions supported by the media scanner
-    public static String sFileExtensions;
 
-    // Audio file types
+    // 音频文件类型
     public static final int FILE_TYPE_MP3 = 1;
     public static final int FILE_TYPE_M4A = 2;
     public static final int FILE_TYPE_WAV = 3;
@@ -27,14 +25,14 @@ public class MediaFile {
     private static final int FIRST_AUDIO_FILE_TYPE = FILE_TYPE_MP3;
     private static final int LAST_AUDIO_FILE_TYPE = FILE_TYPE_OGG;
 
-    // MIDI file types
+    // 乐器数字类型
     public static final int FILE_TYPE_MID = 11;
     public static final int FILE_TYPE_SMF = 12;
     public static final int FILE_TYPE_IMY = 13;
     private static final int FIRST_MIDI_FILE_TYPE = FILE_TYPE_MID;
     private static final int LAST_MIDI_FILE_TYPE = FILE_TYPE_IMY;
 
-    // Video file types
+    // 视频文件类型
     public static final int FILE_TYPE_MP4 = 21;
     public static final int FILE_TYPE_M4V = 22;
     public static final int FILE_TYPE_3GPP = 23;
@@ -43,7 +41,7 @@ public class MediaFile {
     private static final int FIRST_VIDEO_FILE_TYPE = FILE_TYPE_MP4;
     private static final int LAST_VIDEO_FILE_TYPE = FILE_TYPE_WMV;
 
-    // Image file types
+    // 图片文件类型
     public static final int FILE_TYPE_JPEG = 31;
     public static final int FILE_TYPE_GIF = 32;
     public static final int FILE_TYPE_PNG = 33;
@@ -52,7 +50,7 @@ public class MediaFile {
     private static final int FIRST_IMAGE_FILE_TYPE = FILE_TYPE_JPEG;
     private static final int LAST_IMAGE_FILE_TYPE = FILE_TYPE_WBMP;
 
-    // Playlist file types
+    // 流媒体文件地址
     public static final int FILE_TYPE_M3U = 41;
     public static final int FILE_TYPE_PLS = 42;
     public static final int FILE_TYPE_WPL = 43;
@@ -60,7 +58,7 @@ public class MediaFile {
     private static final int LAST_PLAYLIST_FILE_TYPE = FILE_TYPE_WPL;
 
 
-    // wps files
+    // wps 文件类型
     public static final int FILE_TYPE_DOC = 51;
     public static final int FILE_TYPE_DOCX = 52;
     public static final int FILE_TYPE_XLS = 53;
@@ -73,8 +71,6 @@ public class MediaFile {
     public static final int FILE_TYPE_WPS = 60;
     public static final int FILE_TYPE_ZIP = 61;
     public static final int FILE_TYPE_RAR = 62;
-
-
     private static final int FIRST_WPS_FILE_TYPE = FILE_TYPE_DOC;
     private static final int LAST_WPS_FILE_TYPE = FILE_TYPE_RAR;
 
@@ -133,9 +129,6 @@ public class MediaFile {
         addFileType("WPL", FILE_TYPE_WPL, "application/vnd.ms-wpl");
 
 
-        /**
-         * wps
-         */
         addFileType("ZIP", FILE_TYPE_ZIP, "application/x-zip");
         addFileType("WPS", FILE_TYPE_WPS, "application/vnd.ms-works");
         addFileType("TXT", FILE_TYPE_TXT, "text/plain");
@@ -149,7 +142,6 @@ public class MediaFile {
         addFileType("XLSX", FILE_TYPE_XLSX, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
 
-        // compute file extensions list for native Media Scanner
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = sFileTypeMap.keySet().iterator();
 
@@ -159,10 +151,14 @@ public class MediaFile {
             }
             builder.append(iterator.next());
         }
-        sFileExtensions = builder.toString();
     }
 
-    public static final String UNKNOWN_STRING = "<unknown>";
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:47
+     * <p>
+     * 方法功能：是否是音频文件
+     */
 
     public static boolean isAudioFileType(int fileType) {
         return ((fileType >= FIRST_AUDIO_FILE_TYPE &&
@@ -171,28 +167,113 @@ public class MediaFile {
                         fileType <= LAST_MIDI_FILE_TYPE));
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:48
+     * <p>
+     * 方法功能：是否是视频文件
+     */
+
     public static boolean isVideoFileType(int fileType) {
         return (fileType >= FIRST_VIDEO_FILE_TYPE &&
                 fileType <= LAST_VIDEO_FILE_TYPE);
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:48
+     * <p>
+     * 方法功能：是否是视频文件
+     */
+    public static boolean isAudioFileType(String path) {
+        MediaFileType type = getFileType(path);
+        if (null != type) {
+            return isAudioFileType(type.fileType);
+        }
+        return false;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:49
+     * <p>
+     * 方法功能：是否是视频文件
+     */
+
+    public static boolean isVideoFileType(String path) {
+        MediaFileType type = getFileType(path);
+        if (null != type) {
+            return isVideoFileType(type.fileType);
+        }
+        return false;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:48
+     * <p>
+     * 方法功能：是否是图片文件
+     */
     public static boolean isImageFileType(int fileType) {
         return (fileType >= FIRST_IMAGE_FILE_TYPE &&
                 fileType <= LAST_IMAGE_FILE_TYPE);
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:48
+     * <p>
+     * 方法功能：是否是图片文件
+     */
+    public static boolean isImageFileType(String path) {
+        MediaFileType type = getFileType(path);
+        if (null != type) {
+            return isImageFileType(type.fileType);
+        }
+        return false;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:48
+     * <p>
+     * 方法功能：是否是wps文件
+     */
     public static boolean isWpsFileType(int fileType) {
         return (fileType >= FIRST_WPS_FILE_TYPE &&
                 fileType <= LAST_WPS_FILE_TYPE);
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:48
+     * <p>
+     * 方法功能：是否是wps文件
+     */
+    public static boolean isWpsFileType(String path) {
+        MediaFileType type = getFileType(path);
+        if (null != type) {
+            return isWpsFileType(type.fileType);
+        }
+        return false;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:49
+     * <p>
+     * 方法功能：是否是流媒体类型
+     */
     public static boolean isPlayListFileType(int fileType) {
         return (fileType >= FIRST_PLAYLIST_FILE_TYPE &&
                 fileType <= LAST_PLAYLIST_FILE_TYPE);
     }
 
     /**
-     * 获取文件类型
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:49
+     * <p>
+     * 方法功能：获取文件类型
      */
     public static MediaFileType getFileType(String path) {
         int lastDot = path.lastIndexOf(".");
@@ -201,43 +282,14 @@ public class MediaFile {
         return sFileTypeMap.get(path.substring(lastDot + 1).toUpperCase());
     }
 
-    //根据 视频 文件路径判断文件类型
-    public static boolean isVideoFileType(String path) {  //自己增加
-        MediaFileType type = getFileType(path);
-        if (null != type) {
-            return isVideoFileType(type.fileType);
-        }
-        return false;
-    }
 
-    //根据 音频 文件路径判断文件类型
-    public static boolean isAudioFileType(String path) {  //自己增加
-        MediaFileType type = getFileType(path);
-        if (null != type) {
-            return isAudioFileType(type.fileType);
-        }
-        return false;
-    }
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:51
+     * <p>
+     * 方法功能：根据 mime 类型查看文件类型
+     */
 
-    //根据 图片 文件路径判断文件类型
-    public static boolean isImageFileType(String path) {  //自己增加
-        MediaFileType type = getFileType(path);
-        if (null != type) {
-            return isImageFileType(type.fileType);
-        }
-        return false;
-    }
-
-    //是否是wps类型
-    public static boolean isWpsFileType(String path) {  //自己增加
-        MediaFileType type = getFileType(path);
-        if (null != type) {
-            return isWpsFileType(type.fileType);
-        }
-        return false;
-    }
-
-    //根据 mime 类型查看文件类型
     public static int getFileTypeForMimeType(String mimeType) {
         Integer value = sMimeTypeMap.get(mimeType);
         return (value == null ? 0 : value.intValue());
@@ -245,15 +297,15 @@ public class MediaFile {
 
 
     /**
-     * 判断是不指定的格式
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:51
+     * 方法功能：判断是不指定的格式
      *
      * @param path     文件路径
      * @param fileType 指定类型
-     * @return
      */
-    public static boolean JudgeFileType(String path, String... fileType) {  //自己增加
+    public static boolean isFileType(String path, String... fileType) {
         String[] type = fileType;
-
         try {
             for (int i = 0; i < type.length; i++) {
                 File file = new File(path);
@@ -276,6 +328,7 @@ public class MediaFile {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return false;
     }
 

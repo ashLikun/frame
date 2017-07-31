@@ -53,11 +53,12 @@ public class CountdownUtils {
     }
 
     /**
-     * 倒计时
-     *
-     * @param hint
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 10:36
+     * <p>
+     * 方法功能：开始倒计时
      */
-    public void recordTime(final TextView hint) {
+    public void start(final TextView hint) {
 
         /**
          * 记录当下剩余时间
@@ -78,6 +79,12 @@ public class CountdownUtils {
         countDownTimer.start();
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 10:36
+     * <p>
+     * 方法功能：取消倒计时
+     */
     public void cancel() {
         countDownTimer.cancel();
     }

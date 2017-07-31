@@ -29,3 +29,12 @@
 	compile 'com.github.ashLikun.frame:glideutils:1.0.9'//glide封装
 
 
+
+
+### 混肴
+#### Okhttputils
+        -dontwarn okio.**
+        -dontwarn javax.annotation.Nullable
+        -dontwarn javax.annotation.ParametersAreNonnullByDefault
+#### adapter
+

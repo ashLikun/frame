@@ -1,4 +1,4 @@
-package com.hbung.utils.other;
+package com.hbung.utils.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,46 +12,65 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hbung.utils.animator.AnimUtils;
-import com.hbung.utils.ui.ActivityUtils;
-import com.hbung.utils.ui.SnackbarUtil;
-import com.hbung.utils.ui.ToastUtils;
 
 
 /**
- * [\u4e00-\u9fa5_a-zA-Z0-9_]{4,10}
- * "[\\S]+","[\\S]+","[\\S]+","[\\S]+", Validators.REGEX_PHONE_NUMBER,"\\d+","[\\S]{6,}","[\\S]{6,}","[\\S]+")
+ * 作者　　: 李坤
+ * 创建时间: 2017/6/28 13:30
+ * <p>
+ * 方法功能：输入框检查工具
+ * 1：最后再调用check正则判断
+ * 2：可监听输入状态，然后回掉接口判断
  */
+
 
 public class EditHelper {
 
     public Context context;
 
-    private SparseArray<EditHelperData> editTexts = new SparseArray<EditHelperData>();
+    private SparseArray<EditHelperData> mEdithelpdatas;
 
     public EditHelper(Context context) {
         this.context = context;
     }
 
-    /*
-     * 设置监听的输入框
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 13:32
+     * <p>
+     * 方法功能：设置监听的输入框
+     *
+     * @param edits 多个被检测的EditView对象
      */
     public void setEditText(EditHelperData... edits) {
-        editTexts.clear();
+        if (mEdithelpdatas == null) mEdithelpdatas = new SparseArray<>();
+        mEdithelpdatas.clear();
         for (EditHelperData e : edits) {
             if (e != null && e.getTextView() != null) {
-                editTexts.put(e.getTextView().getId(), e);
+                mEdithelpdatas.put(e.getTextView().getId(), e);
                 addTextChangedListener(e);
             }
         }
     }
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 13:33
+     * <p>
+     * 方法功能：清空
+     */
+
     public void clear() {
-        editTexts.clear();
+        if (mEdithelpdatas != null) {
+            mEdithelpdatas.clear();
+        }
     }
 
     public void addEditHelperData(EditHelperData edits) {
         if (edits != null) {
-            editTexts.put(edits.getView().getId(), edits);
+            if (mEdithelpdatas == null) mEdithelpdatas = new SparseArray<>();
+            mEdithelpdatas.put(edits.getView().getId(), edits);
             addTextChangedListener(edits);
         }
     }
@@ -66,7 +85,7 @@ public class EditHelper {
     }
 
     public String getText(int id) {
-        TextView textView = editTexts.get(id).getTextView();
+        TextView textView = mEdithelpdatas.get(id).getTextView();
         if (textView != null) {
             return textView.getText().toString().trim();
         } else {
@@ -75,21 +94,25 @@ public class EditHelper {
     }
 
     public TextView getTextView(int id) {
-        TextView textView = editTexts.get(id).getTextView();
+        TextView textView = mEdithelpdatas.get(id).getTextView();
         return textView;
     }
 
     public EditHelperData getEditHelperData(int id) {
-        return editTexts.get(id);
+        return mEdithelpdatas.get(id);
     }
 
-    /*
-     * 检查是否满足
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 13:37
+     * <p>
+     * 方法功能：检查是否满足
      */
     public boolean check() {
         try {
-            for (int i = 0; i < editTexts.size(); i++) {
-                EditHelperData e = editTexts.valueAt(i);
+            if (mEdithelpdatas == null) return false;
+            for (int i = 0; i < mEdithelpdatas.size(); i++) {
+                EditHelperData e = mEdithelpdatas.valueAt(i);
                 if (!e.check(context)) {
                     return false;
                 }
@@ -102,12 +125,17 @@ public class EditHelper {
 
     }
 
-    /*
-        * 检查是否满足
-        */
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 13:37
+     * <p>
+     * 方法功能：检查某个view是否满足
+     */
+
     public boolean check(int id) {
         try {
-            EditHelperData e = editTexts.get(id);
+            if (mEdithelpdatas == null) return false;
+            EditHelperData e = mEdithelpdatas.get(id);
             if (e == null || !e.check(context)) {
                 return false;
             }

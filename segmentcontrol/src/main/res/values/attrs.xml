@@ -15,4 +15,18 @@
         <attr name="verticalGap" format="dimension|reference" />
         <attr name="selectedIndex" format="integer" />
     </declare-styleable>
+    <declare-styleable name="SegmentControlInterior">
+        <attr name="sci_default_color" format="color|reference" />
+        <attr name="sci_gradual_color1" format="color" />
+        <attr name="sci_gradual_color2" format="color" />
+        <attr name="sci_gradual_color3" format="color" />
+        <attr name="sci_default_text_color" format="color|reference" />
+        <attr name="sci_select_text_color" format="color|reference" />
+        <attr name="sci_gaps" format="dimension|reference" />
+        <attr name="sci_horizon_gap" format="dimension|reference" />
+        <attr name="sci_vertical_gap" format="dimension|reference" />
+        <attr name="sci_corner_radius" format="dimension|reference" />
+        <attr name="android:textSize" />
+        <attr name="sci_texts" format="string|reference" />
+    </declare-styleable>
 </resources>

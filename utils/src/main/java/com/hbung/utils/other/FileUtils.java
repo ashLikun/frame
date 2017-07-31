@@ -9,8 +9,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,7 +16,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,7 +32,7 @@ import static com.hbung.utils.Utils.myApp;
  * 创建时间: 13:49 Administrator
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：对问价操作的类
+ * 功能介绍：对文件操作的类
  */
 
 public class FileUtils {
@@ -50,7 +47,19 @@ public class FileUtils {
     }
 
 
-    public static String startPaiZhao(Activity context, String appSDCachePath, int requestCode) {
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:28
+     * <p>
+     * 方法功能：开始拍照
+     *
+     * @param context
+     * @param appSDCachePath 文件存放路径
+     * @param requestCode    请求的Code
+     * @return 文件，异步的
+     */
+
+    public static String startPicture(Activity context, String appSDCachePath, int requestCode) {
         File fDir = new File(appSDCachePath);
         String cachePath = System.currentTimeMillis() + ".jpg";
         if (fDir.exists() || fDir.mkdirs()) {
@@ -69,20 +78,34 @@ public class FileUtils {
         return cachePath;
     }
 
+
     /**
-     * 开启文件选择
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:29
      * <p>
-     * intent.setType(“audio/*”); //选择音频
-     * intent.setType(“video/*”); //选择视频 （mp4 3gp 是android支持的视频格式）
-     * intent.setType(“video/*;image/*”);//同时选择视频和图片
+     * 方法功能：开启文件选择
+     *
+     * @param context
+     * @param type    媒体类型 audio/*  选择音频
+     *                video/*  选择视频
+     *                video/*;image/*  同时选择视频和图片
+     *                * /*  全部  没有空格
      */
-    public static void startFileSelect(Activity context, String Type, int requestCode) {
+
+    public static void startFileSelect(Activity context, String type, int requestCode) {
         Intent intent = new Intent();
-        intent.setType(Type);
+        intent.setType(type);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.putExtra("return-data", true);
         context.startActivityForResult(intent, requestCode);
     }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:32
+     * <p>
+     * 方法功能：同上
+     */
 
     public static void startFileSelect(Fragment context, String Type, int requestCode) {
         Intent intent = new Intent();
@@ -93,7 +116,13 @@ public class FileUtils {
     }
 
 
-    // 获取ApiKey
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:32
+     * <p>
+     * 方法功能：获取清单文件的mate值
+     */
+
     public static String getMetaValue(Context context, String metaKey) {
         Bundle metaData = null;
         String apiKey = null;
@@ -116,25 +145,16 @@ public class FileUtils {
         return apiKey;
     }
 
-    public static String readInputStream(InputStream is) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            int len = 0;
-            byte[] buffer = new byte[1024];
-            while ((len = is.read(buffer)) != -1) {
-                baos.write(buffer, 0, len);
-            }
-            is.close();
-            baos.close();
-            byte[] result = baos.toByteArray();
-            return new String(result, "GB2312");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "获取失败";
-        }
 
-    }
-
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:32
+     * <p>
+     * 方法功能：读取输入流
+     *
+     * @param coding 编码    如：GB2312，GBK,UTF-8
+     * @return 文本
+     */
     public static String readInputStream(InputStream is, String coding) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -154,17 +174,32 @@ public class FileUtils {
 
     }
 
-    /*
-     * 读取assets文件目录下的文件，以字符串返回
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:32
+     * <p>
+     * 方法功能：同上
+     *
+     * @return 文本UTF-8
      */
+    public static String readInputStream(InputStream is) {
+        return readInputStream(is, "UTF-8");
+
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:35
+     * <p>
+     * 方法功能： 读取assets文件目录下的文件，以字符串返回
+     */
+
     public static String readAssets(Context context, String name) {
         String resultString = "";
         InputStream inputStream = null;
         try {
             inputStream = context.getResources().getAssets().open(name);
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-            resultString = new String(buffer);
+            return readInputStream(inputStream);
         } catch (Exception e) {
 
         } finally {
@@ -180,13 +215,17 @@ public class FileUtils {
     }
 
     /**
-     * 复制单个文件
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:39
+     * <p>
+     * 方法功能：复制单个文件
      *
-     * @param oldPath String 原文件路径 如：c:/fqf.txt
-     * @param newPath String 复制后路径 如：f:/fqf.txt
-     * @return boolean
+     * @param oldPath 原始文件
+     * @param newPath 新的文件
+     * @return 是否成功
      */
-    public static void copyFile(String oldPath, String newPath) {
+
+    public static boolean copyFile(String oldPath, String newPath) {
         try {
             int byteread = 0;
             File oldfile = new File(oldPath);
@@ -198,18 +237,24 @@ public class FileUtils {
                     fs.write(buffer, 0, byteread);
                 }
                 inStream.close();
+                return true;
             }
         } catch (Exception e) {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
 
         }
-
+        return false;
     }
 
-    /*
-        * 获取笨的的url的文件路径
-        */
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/28 16:41
+     * 方法功能： 获取本地url的文件路径
+     *
+     * @param uri
+     * @return 文件路径
+     */
     @SuppressLint("NewApi")
     public static String getPath(Context context, Uri uri) {
 

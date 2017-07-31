@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.text.TextUtils;
 
+import com.hbung.utils.Utils;
+
 import java.util.List;
 
 /**
@@ -20,10 +22,10 @@ public class ActivityUtils {
 
 
     /**
-     * Get AppCompatActivity from context
-     *
-     * @param context
-     * @return AppCompatActivity if it's not null
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:12
+     * <p>
+     * 方法功能：从context中获取activity，如果context不是activity那么久返回null
      */
     public static Activity getActivity(Context context) {
         if (context == null) return null;
@@ -36,18 +38,19 @@ public class ActivityUtils {
     }
 
     /**
-     * 判断某个界面是否在前台
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:13
+     * 方法功能：判断某个界面是否在前台
      *
-     * @param context 某个界面名称
+     * @param classs 某个界面activity
      */
-    public static boolean isForeground(Activity context) {
-        if (context instanceof Activity) {
-            String className = context.getClass().getName();
-            if (context == null || TextUtils.isEmpty(className)) {
+    public static boolean isForeground(Class classs) {
+        if (Activity.class.isAssignableFrom(classs)) {
+            String className = classs.getClass().getName();
+            if (classs == null || TextUtils.isEmpty(className)) {
                 return false;
             }
-
-            ActivityManager am = (ActivityManager) context
+            ActivityManager am = (ActivityManager) Utils.myApp
                     .getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
             if (list != null && list.size() > 0) {
@@ -58,15 +61,25 @@ public class ActivityUtils {
             }
         }
         return false;
-
     }
 
     /**
-     * 判断应用是否处于前台
-     *
-     * @param context 某个界面名称
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:21
+     * 方法功能：同上
      */
-    public static boolean isForeground(Context context) {
+    public static boolean isForeground(Activity activity) {
+        return activity != null ? isForeground(activity.getClass()) : false;
+    }
+
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:25
+     * 方法功能：判断应用是否处于前台
+     *
+     * @param context 上下文对象
+     */
+    public static boolean isAppForeground(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTasks = am.getRunningTasks(1);
         if (runningTasks != null) {
@@ -80,7 +93,9 @@ public class ActivityUtils {
     }
 
     /**
-     * 把栈顶activity切换到前台，如果应用未启动就打开应
+     * 作者　　: 李坤
+     * 创建时间: 2017/6/29 11:26
+     * 方法功能：把栈顶activity切换到前台，如果应用未启动就打开应
      *
      * @return 0：前台 1:处于后台  2：未启动或者被回收
      */
@@ -100,7 +115,6 @@ public class ActivityUtils {
             }
         }
         //若没有找到运行的task，用户结束了task或被系统释放，则重新启动mainactivity
-
         return 2;//未启动
     }
     /**

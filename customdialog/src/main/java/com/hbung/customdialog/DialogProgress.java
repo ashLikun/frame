@@ -11,8 +11,13 @@ import com.hbung.numberprogressbar.NumberProgressBar;
 import com.hbung.utils.ui.UiUtils;
 
 /**
- * 加载的dialog
+ * 作者　　: 李坤
+ * 创建时间: 2017/7/7 17:35
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 方法功能：加载精度对话框
  */
+
 public class DialogProgress extends Dialog {
     private Context context;
     private NumberProgressBar progressBar;

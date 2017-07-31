@@ -1,6 +1,5 @@
 package com.hbung.utils.other;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import static com.hbung.utils.Utils.isDebug;
@@ -11,7 +10,7 @@ import static com.hbung.utils.Utils.isDebug;
  * 创建时间: 13:47 Administrator
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：项目得Log工具
+ * 功能介绍：项目的Log工具
  */
 
 public class LogUtils {
@@ -189,5 +188,4 @@ public class LogUtils {
 
         Log.wtf(tag, tr);
     }
-
 }

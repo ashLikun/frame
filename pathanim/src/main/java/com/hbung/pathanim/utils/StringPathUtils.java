@@ -1,5 +1,6 @@
 package com.hbung.pathanim.utils;
 
+import android.graphics.Path;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 /**
  * 获取StoreHouse风格Path
  * Created by srain on 11/7/14.
- *
+ * <p>
  * 增加一个getPath()方法，
  * update by zhangxutong on 2016 11 04
  */
@@ -329,7 +330,26 @@ public class StringPathUtils {
         sPointList.append(c, points);
     }
 
-    public static ArrayList<float[]> getPath(String str) {
+    public static ArrayList<float[]> getPathList(String str) {
+        return getPathList(str, 1, 14);
+    }
+
+
+    public static Path getPath(String str, float scale, int gapBetweenLetter) {
+        ArrayList<float[]> list = getPathList(str, scale, gapBetweenLetter);
+        Path path = new Path();
+        if (list == null) {
+            return path;
+        }
+        path.moveTo(list.get(0)[0], list.get(0)[1]);
+        for (float[] item : list) {
+            path.moveTo(item[0], item[1]);
+            path.lineTo(item[2], item[3]);
+        }
+        return path;
+    }
+
+    public static Path getPath(String str) {
         return getPath(str, 1, 14);
     }
 
@@ -339,7 +359,7 @@ public class StringPathUtils {
      * @param gapBetweenLetter
      * @return ArrayList of float[] {x1, y1, x2, y2}
      */
-    public static ArrayList<float[]> getPath(String str, float scale, int gapBetweenLetter) {
+    public static ArrayList<float[]> getPathList(String str, float scale, int gapBetweenLetter) {
         ArrayList<float[]> list = new ArrayList<float[]>();
         float offsetForWidth = 0;
         for (int i = 0; i < str.length(); i++) {

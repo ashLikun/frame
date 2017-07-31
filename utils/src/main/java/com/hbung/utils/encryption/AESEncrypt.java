@@ -3,16 +3,15 @@ package com.hbung.utils.encryption;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-
 /**
- * AES,加密
+ * 作者　　: 李坤
+ * 创建时间: 2016/6/23 17:38
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：AES,加密
  * AES 是一种可逆加密算法，对用户的敏感信息加密处理 对原始数据进行AES加密后，在进行Base64编码转化；
- * Created by yang on 2016/6/23.
  */
 public class AESEncrypt {
-
-
     /*
      * 加密用的Key 可以用26个字母和数字组成 此处使用AES-128-CBC加密模式，key需要为16位。
      */

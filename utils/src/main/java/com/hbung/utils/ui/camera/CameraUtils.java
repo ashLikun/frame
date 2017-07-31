@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -31,7 +30,7 @@ public class CameraUtils implements SurfaceHolder.Callback {
     private int orientation = 0;//旋转角度
     private SurfaceHolder surfaceHolder;
     private Camera mCamera;
-
+    int cameraId = 0;
     private Activity context;
     private String flashMode = Camera.Parameters.FLASH_MODE_OFF;
     public boolean cameraFront = false;//是否是前摄像头
@@ -46,6 +45,7 @@ public class CameraUtils implements SurfaceHolder.Callback {
      */
 
     public void setFlashMode(String mode) {
+        flashMode = mode;
         try {
             if (context.getPackageManager().hasSystemFeature(
                     PackageManager.FEATURE_CAMERA_FLASH)
@@ -366,32 +366,8 @@ public class CameraUtils implements SurfaceHolder.Callback {
         return cameraId;
     }
 
-    int cameraId = 0;
-
-    public int getRotation() {
-        int rotation = 0;
-        Camera.CameraInfo info = new Camera.CameraInfo();
-        Camera.getCameraInfo(cameraId, info);
-//        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {//前摄像头
-//            rotation = (info.orientation - 360) % 360;
-//        } else {  // back-facing camera
-//            rotation = (info.orientation) % 360;
-//        }
-        rotation = (info.orientation) % 360;
-//        mMediaRecorder.setOrientationHint(rotation);
-
-//        if (cameraId == Camera.CameraInfo.CAMERA_FACING_FRONT) {//前摄像头
-//            if (rotation % 90 == 0) {
-//                rotation = 180;
-//            } else {
-//                rotation = 0;
-//            }
-//        } else {
-//            rotation = rotation - 90;
-//        }
-        rotation = rotation - 90;
-        Log.e("aaaa", rotation + "");
-        return rotation;
+    public int getCameraId() {
+        return cameraId;
     }
 
     /**
