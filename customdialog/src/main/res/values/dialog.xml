@@ -2,31 +2,31 @@
 <resources>
     <!-- Dialog 主题 -->
     <style name="Animation.Dialog" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/base_dialog_enter</item>
+        <item name="android:windowEnterAnimation">@anim/base_dialog_enter</item>
         <!-- //进入时的动画 -->
-        <item name="@android:windowExitAnimation">@anim/base_dialog_exit</item>
+        <item name="android:windowExitAnimation">@anim/base_dialog_exit</item>
         <!-- //退出时的动画 -->
     </style>
 
     <style name="Animation.Dialog.progress" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/dialog_progress_anim_enter</item>
+        <item name="android:windowEnterAnimation">@anim/dialog_progress_anim_enter</item>
         <!-- //进入时的动画 -->
-        <item name="@android:windowExitAnimation">@anim/dialog_progress_anim_exit</item>
+        <item name="android:windowExitAnimation">@anim/dialog_progress_anim_exit</item>
         <!-- //退出时的动画 -->
     </style>
     <!--底部进入动画-->
     <style name="Animation.Dialog.Bottom_Form_top" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/dialog_anim_bottom_form_top_enter</item>
+        <item name="android:windowEnterAnimation">@anim/dialog_anim_bottom_form_top_enter</item>
         <!-- //进入时的动画 -->
-        <item name="@android:windowExitAnimation">@anim/dialog_anim_bottom_form_top_exit</item>
+        <item name="android:windowExitAnimation">@anim/dialog_anim_bottom_form_top_exit</item>
         <!-- //退出时的动画 -->
     </style>
 
     <!--伸缩动画-->
     <style name="Animation.Dialog.Scale" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/dialog_anim_scale_enter</item>
+        <item name="android:windowEnterAnimation">@anim/dialog_anim_scale_enter</item>
         <!-- //进入时的动画 -->
-        <item name="@android:windowExitAnimation">@anim/dialog_anim_scale_exit</item>
+        <item name="android:windowExitAnimation">@anim/dialog_anim_scale_exit</item>
         <!-- //退出时的动画 -->
     </style>
 

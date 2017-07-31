@@ -37,7 +37,18 @@ import com.hbung.utils.Utils;
  */
 
 public class SpannableUtils {
-
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/7/10 15:51
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：获取建造者
+     *
+     * @return {@link Builder}
+     */
+    public static Builder getBuilder(@NonNull CharSequence text) {
+        return new Builder(text);
+    }
 
     public static class Builder {
         private int defaultValue = 0x12000000;

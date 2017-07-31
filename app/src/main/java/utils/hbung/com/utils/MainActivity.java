@@ -6,18 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
+import com.hbung.customdialog.LoadDialog;
 import com.hbung.http.OkHttpUtils;
 import com.hbung.http.request.RequestParam;
 import com.hbung.http.response.HttpResponse;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
-import com.hbung.superwebview.SuperWebView;
 import com.hbung.utils.Utils;
+import com.hbung.utils.ui.DrawableUtils;
 import com.hbung.utils.ui.ToastUtils;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
@@ -94,52 +95,19 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 save();
             }
         });
-        final ImageView iv = (ImageView) findViewById(R.id.imageView);
-        iv.setImageResource(R.drawable.ic_android_black_24dp);
         findViewById(R.id.actionButton2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iv.getDrawable();
+                LoadDialog dialog = new LoadDialog(MainActivity.this);
+                dialog.show();
             }
         });
-        controlInterior = (SegmentControlInterior) findViewById(R.id.controlInterior);
-        for (int i = 0; i < controlInterior.getCount(); i++) {
-            SuperWebView superWebView = new SuperWebView(this);
-            superWebView.setButtonClick(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ToastUtils.showShort(MainActivity.this, "aaaaa");
-                }
-            });
-            superWebView.loadUrl("http://jlhpredeploy.vcash.cn/qd/semiAnnual/index.html?salesId=23257&index_share");
-            superWebView.addJavascriptInterface(new JsToAndroid(), "aaaaa");
-            listView.add(superWebView);
-        }
-        viewpager = (ViewPager) findViewById(R.id.viewpager);
-        viewpager.setAdapter(new WebViewPagerAdapter(listView));
-
-        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setBackgroundDrawable(new DrawableUtils.RippleBuilder(this).setNormalColor(R.color.red).setPressedColor(R.color.gray).create());
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                controlInterior.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                Log.e("onPageScrolled", "position = " + position + "    positionOffset = " + positionOffset + "   positionOffsetPixels = " + positionOffsetPixels);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                Log.e("StateChanged", "state = " + state);
-                controlInterior.onPageScrollStateChanged(state);
-            }
-        });
-        controlInterior.setListener(new SegmentControlInterior.OnItemClickListener() {
-            @Override
-            public void onItemClick(int index) {
-                viewpager.setCurrentItem(index);
+            public void onClick(View v) {
+                ToastUtils.showShort(MainActivity.this, "aaaaa");
             }
         });
         //controlInterior.setCurrentIndex(1);

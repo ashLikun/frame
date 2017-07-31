@@ -66,8 +66,9 @@
         app:scTexts="我的二维码|消息"
         app:selectedTextColors="@color/colorAccent"></com.hbung.segmentcontrol.SegmentControl>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/textView"
+        android:text="测试DrawableUtils"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -75,20 +76,7 @@
         android:layout_width="200dp"
         android:layout_height="10dp" />
 
-    <com.hbung.segmentcontrol.SegmentControlInterior xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/controlInterior"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        app:sci_gradual_color2="#ff579ff2"
-        app:sci_texts="阿斯顿|捱三顶五|啊啊啊啊"></com.hbung.segmentcontrol.SegmentControlInterior>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/controlInterior"></android.support.v4.view.ViewPager>
+    <utils.hbung.com.utils.LoaddingArrorView
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_200" />
 </LinearLayout>
