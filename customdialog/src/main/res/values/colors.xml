@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="customdialog_loadding_back">#B0000000</color>
-    <color name="customdialog_loadding_textColor">#FFffffff</color>
+    <color name="white_90">#90ffffff</color>
 </resources>
