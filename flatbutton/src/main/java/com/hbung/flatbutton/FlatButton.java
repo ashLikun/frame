@@ -72,6 +72,7 @@ public class FlatButton extends TextView {
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
         clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
+        setClickable(true);//默认可以点击
         if (!isUseBackground) {
             if (!isInEditMode()) {
                 setBackgroundCompat(getStateListDrawable());
