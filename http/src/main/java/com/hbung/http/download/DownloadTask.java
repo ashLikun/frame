@@ -151,7 +151,7 @@ public class DownloadTask implements Observer<Integer> {
         }
     }
 
-    private String getFilePath() {
+    public String getFilePath() {
         // 获得文件名
         if (!TextUtils.isEmpty(fileName)) {
         } else {

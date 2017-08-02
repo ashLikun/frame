@@ -3,6 +3,10 @@ package com.hbung.http.request;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.Buffer;
@@ -10,17 +14,13 @@ import okio.BufferedSink;
 import okio.ForwardingSink;
 import okio.Okio;
 import okio.Sink;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 /**
  * Created by likun on 2016/8/3.
  * 上传进度封装
  */
 
-public class ProgressRequestBody extends RequestBody {
+public class ProgressRequestBody extends RequestBody implements Observer<Long> {
     //实际的待包装请求体
     private final RequestBody requestBody;
     //进度回调接口
@@ -31,7 +31,7 @@ public class ProgressRequestBody extends RequestBody {
     long bytesWritten = 0L;
     //总字节长度，避免多次调用contentLength()方法
     long contentLength = 0L;
-    Subscription subscription;
+    Disposable disposable;
 
     /**
      * 构造函数，赋值
@@ -91,19 +91,10 @@ public class ProgressRequestBody extends RequestBody {
      * @return Sink
      */
     private Sink sink(Sink sink) {
-        if (progressCallBack != null && (subscription == null || subscription.isUnsubscribed())) {
-            subscription = Observable.interval(progressCallBack.getRate(),
-                    progressCallBack.getRate(), TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Long>() {
-                        @Override
-                        public void call(Long aLong) {
-                            if (bytesWritten == contentLength) {
-                                subscription.unsubscribe();
-                                subscription = null;
-                            }
-                            progressCallBack.onLoading(bytesWritten, contentLength, bytesWritten == contentLength, true);
-                        }
-                    });
+        if (progressCallBack != null && (disposable == null || !disposable.isDisposed())) {
+            Observable.interval(progressCallBack.getRate(), progressCallBack.getRate(), TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this);
 
         }
 
@@ -119,5 +110,30 @@ public class ProgressRequestBody extends RequestBody {
                 bytesWritten += byteCount;
             }
         };
+    }
+
+
+    @Override
+    public void onSubscribe(Disposable d) {
+        disposable = d;
+    }
+
+    @Override
+    public void onNext(Long aLong) {
+        if (bytesWritten == contentLength) {
+            disposable.dispose();
+            disposable = null;
+        }
+        progressCallBack.onLoading(bytesWritten, contentLength, bytesWritten == contentLength, true);
+    }
+
+    @Override
+    public void onError(Throwable t) {
+
+    }
+
+    @Override
+    public void onComplete() {
+
     }
 }

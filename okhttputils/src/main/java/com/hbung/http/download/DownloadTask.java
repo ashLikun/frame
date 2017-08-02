@@ -25,16 +25,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 import static com.hbung.http.download.DownloadManager.defaultFilePath;
 
@@ -59,7 +58,7 @@ public class DownloadTask implements Observer<Integer> {
     private int errorCode;//错误码
     private int rate;//下载多少回调一次  默认200，单位毫秒;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     private DownloadTask(Builder builder) {
         mClient = new OkHttpClient();
@@ -87,7 +86,7 @@ public class DownloadTask implements Observer<Integer> {
     /**
      * 删除数据库文件和已经下载的文件
      */
-    public void cancel() {
+    public void cancel() throws IOException {
         mListener.onCancel(DownloadTask.this);
         if (dbEntity != null) {
             DownloadEntity.delete(dbEntity);
@@ -103,11 +102,10 @@ public class DownloadTask implements Observer<Integer> {
      */
     private void onCallBack() {
         Observable.just(downloadStatus)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Integer>() {
+                .subscribe(new Consumer<Integer>() {
                     @Override
-                    public void call(Integer integer) {
+                    public void accept(Integer integer) throws Exception {
                         switch (integer) {
                             // 下载失败
                             case DownloadStatus.DOWNLOAD_STATUS_ERROR:
@@ -123,7 +121,6 @@ public class DownloadTask implements Observer<Integer> {
                                 break;
                             // 完成
                             case DownloadStatus.DOWNLOAD_STATUS_COMPLETED:
-
                                 mListener.onDownloadSuccess(DownloadTask.this, new File(getFilePath()));
                                 break;
                             // 停止
@@ -151,15 +148,13 @@ public class DownloadTask implements Observer<Integer> {
         }
     }
 
-    private String getFilePath() {
+    private String getFilePath() throws IOException {
         // 获得文件名
-        if (!TextUtils.isEmpty(fileName)) {
-        } else {
+        if (TextUtils.isEmpty(fileName)) {
             fileName = getFileNameFromUrl(url);
         }
 
-        if (!TextUtils.isEmpty(saveDirPath)) {
-        } else {
+        if (TextUtils.isEmpty(saveDirPath)) {
             saveDirPath = defaultFilePath;
         }
 
@@ -173,6 +168,10 @@ public class DownloadTask implements Observer<Integer> {
         }
 
         String filepath = saveDirPath + fileName;
+        file = new File(saveDirPath);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
         return filepath;
     }
 
@@ -233,20 +232,28 @@ public class DownloadTask implements Observer<Integer> {
         return downloadStatus;
     }
 
-    @Override
-    public void onCompleted() {
-        if (downloadStatus == DownloadStatus.DOWNLOAD_STATUS_COMPLETED) {//下载完成取消订阅
-            subscription.unsubscribe();
-        }
-    }
 
     @Override
     public void onError(Throwable e) {
         if (e != null)
             e.printStackTrace();
         if (downloadStatus == DownloadStatus.DOWNLOAD_STATUS_COMPLETED) {//下载完成取消订阅
-            subscription.unsubscribe();
+            disposable.dispose();
         }
+    }
+
+    @Override
+    public void onComplete() {
+        if (downloadStatus == DownloadStatus.DOWNLOAD_STATUS_COMPLETED) {//下载完成取消订阅
+            disposable.dispose();
+        }
+    }
+
+
+    @Override
+    public void onSubscribe(Disposable d) {
+        //保存Subscription 方便取消订阅
+        disposable = d;
     }
 
     @Override
@@ -361,12 +368,9 @@ public class DownloadTask implements Observer<Integer> {
         }
     }
 
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
-    }
 
-    public Subscription getSubscription() {
-        return subscription;
+    public Disposable getDisposable() {
+        return disposable;
     }
 
     public static class Builder {

@@ -11,9 +11,9 @@ import android.widget.TextView;
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
 import com.hbung.customdialog.LoadDialog;
-import com.hbung.http.OkHttpUtils;
 import com.hbung.http.request.RequestParam;
 import com.hbung.http.response.HttpResponse;
+import com.hbung.liteorm.LiteOrmUtil;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.init(getApplication(), false);
+        LiteOrmUtil.init(getApplication(), 1, true);
         setContentView(R.layout.activity_main);
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             @Override
             public void onClick(View v) {
                 ToastUtils.showShort(MainActivity.this, "aaaaa");
+                httpTest();
             }
         });
         //controlInterior.setCurrentIndex(1);
@@ -167,19 +169,15 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
     private void httpTest() {
 //http://jielehua.vcash.cn/api/jlh/apply/getApplyProgress/118915?accessToken=4E396D4E-67E1-4B04-A70C-B1C6AFBFB238
-        RequestParam p = new RequestParam("");
-        p.get();
-        p.addHeader("accessToken", "A8C5CF33-64A1-49F4-ADBC-4DBF05D5F94B");
-        //4690943?accessToken=8079CE15-038E-4977-8443-E885730DE268
-        p.url("http://jielehua.vcash.cn/api/jlh/apply/getApplyProgress/");
-        p.appendPath("118915");
-        p.addParam("accessToken", "A8C5CF33-64A1-49F4-ADBC-4DBF05D5F94B");
-        OkHttpUtils.getInstance().execute(p, new HttpCallBack<String>() {
-            @Override
-            public void onSuccess(String responseBody) {
-                Log.e("aa", responseBody.toString());
-            }
-        });
+        RequestParam p = new RequestParam("http://imtt.dd.qq.com/16891/1004DE3E98B403995BD5C812D86D8861.apk?fsname=com.tencent.mobileqq_7.1.5_708.apk&csr=1bbd");
+//        p.get();
+//        p.addHeader("accessToken", "A8C5CF33-64A1-49F4-ADBC-4DBF05D5F94B");
+//        //4690943?accessToken=8079CE15-038E-4977-8443-E885730DE268
+//        p.url("http://jielehua.vcash.cn/api/jlh/apply/getApplyProgress/");
+//        p.appendPath("118915");
+//        p.addParam("accessToken", "A8C5CF33-64A1-49F4-ADBC-4DBF05D5F94B");
+
+        //https://jlhpredeploy.vcash.cn/api/jlh/apply/getCustomerApplyInfo/4690943?accessToken=DE3AB2FCF409231F0C7F9D5EE306264D
     }
 
     private void gsonTest() {

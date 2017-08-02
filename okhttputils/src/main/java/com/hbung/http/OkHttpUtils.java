@@ -28,7 +28,6 @@ public class OkHttpUtils implements SuperHttp {
     private volatile static OkHttpUtils INSTANCE = null;
     //okhttp核心类
     private OkHttpClient mOkHttpClient;
-    private MainThread mMainThread;//线程切换
 
     //获取单例
     public static OkHttpUtils getInstance() {
@@ -52,7 +51,6 @@ public class OkHttpUtils implements SuperHttp {
         } else {
             mOkHttpClient = okHttpClient;
         }
-        mMainThread = new MainThread();
     }
 
     //初始化
@@ -71,7 +69,7 @@ public class OkHttpUtils implements SuperHttp {
         Call call = requestCall.buildCall(callback);
         ExecuteCall exc = new ExecuteCall();
         exc.setCall(call);
-        call.enqueue(new OkHttpCallback(mMainThread, exc, callback));
+        call.enqueue(new OkHttpCallback( exc, callback));
         return exc;
     }
 

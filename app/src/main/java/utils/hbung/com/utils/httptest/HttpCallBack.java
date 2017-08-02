@@ -1,6 +1,4 @@
-package utils.hbung.com.utils;
-
-import android.view.View;
+package utils.hbung.com.utils.httptest;
 
 import com.hbung.http.Callback;
 
@@ -12,12 +10,9 @@ import com.hbung.http.Callback;
  * 功能介绍：
  */
 
-public abstract class HttpCallBack<T> implements Callback<T>, View.OnClickListener {
+public abstract class HttpCallBack<T> implements Callback<T> {
 
-    @Override
-    public void onClick(View v) {
 
-    }
 
     @Override
     public void onStart() {
