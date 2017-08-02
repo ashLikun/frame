@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="dp_15">15dp</dimen>
-    <dimen name="dp_6">6dp</dimen>
-    <dimen name="dp_10">10dp</dimen>
-    <dimen name="text_h">14dp</dimen>
-    <dimen name="text_xxm">16dp</dimen>
-    <dimen name="customdialog_loadding_textSize">16sp</dimen>
-</resources>

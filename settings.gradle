@@ -1,4 +1,4 @@
-include ':app', ':utils', ':http', ':adapter', ':adapterDatabind', ':xrecycleview', ':stickyrecyclerview', ':segmentcontrol', ':glideutils', ':customdialog', ':baseadapter', ':superwebview',
+include ':app', ':utils', ':http', ':adapter', ':adapterDatabind', ':xrecycleview', ':stickyrecyclerview', ':segmentcontrol', ':glideutils', ':baseadapter', ':superwebview',
         ':numberprogressbar', ':supergridlayout', ':loadingandretrymanager', ':flatbutton', ':banner',
         ':charbar', ':supertoobar', ':wheelview3d', ':scaleimageview', ':animcheckbox', ':badgeview',
         ':baseresource', ':pathanim', ':okhttputils'
