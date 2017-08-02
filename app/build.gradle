@@ -26,7 +26,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+/**
+ * aar文件的编译
+ */
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+        maven {
+            url "https://jitpack.io"
+        }
+    }
 
 }
 
@@ -35,7 +45,6 @@ dependencies {
     compile rootProject.ext.designVersion
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.3'
-    compile project(':xrecycleview')
     compile project(':stickyrecyclerview')
     compile project(':flatbutton')
     compile project(':loadingandretrymanager')
@@ -54,6 +63,5 @@ dependencies {
     //  compile project(':http')
     compile project(':utils')
     compile project(':glideutils')
-    compile project(':adapterDatabind')
     compile project(':superwebview')
 }
