@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.hbung.adapter.recyclerview.CommonAdapter;
 import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
-import com.hbung.customdialog.LoadDialog;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
@@ -92,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         findViewById(R.id.actionButton2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadDialog dialog = new LoadDialog(MainActivity.this);
-                dialog.show();
             }
         });
         TextView textView = (TextView) findViewById(R.id.textView);

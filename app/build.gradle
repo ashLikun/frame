@@ -54,7 +54,6 @@ dependencies {
     //  compile project(':http')
     compile project(':utils')
     compile project(':glideutils')
-    compile project(':customdialog')
     compile project(':adapterDatabind')
     compile project(':superwebview')
 }
