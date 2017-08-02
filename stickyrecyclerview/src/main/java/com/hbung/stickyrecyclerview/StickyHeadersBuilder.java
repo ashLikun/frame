@@ -2,7 +2,8 @@ package com.hbung.stickyrecyclerview;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.hbung.baseadapter.IStickyHeadersAdapter;
+import com.ashlikun.baseadapter.IStickyHeadersAdapter;
+
 
 /**
  * 作者　　: 李坤

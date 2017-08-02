@@ -7,8 +7,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridLayout;
 
-import com.hbung.adapter.ViewHolder;
-import com.hbung.adapter.recyclerview.CommonAdapter;
+import com.ashlikun.adapter.ViewHolder;
+import com.ashlikun.adapter.recyclerview.CommonAdapter;
 
 import java.util.List;
 

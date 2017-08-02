@@ -8,8 +8,8 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 
-import com.hbung.adapter.recyclerview.CommonAdapter;
-import com.hbung.adapter.recyclerview.CommonHeaderAdapter;
+import com.ashlikun.adapter.recyclerview.CommonAdapter;
+import com.ashlikun.adapter.recyclerview.CommonHeaderAdapter;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
@@ -18,9 +18,9 @@ import com.hbung.utils.ui.DrawableUtils;
 import com.hbung.utils.ui.ToastUtils;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
-import com.hbung.xrecycleview.OnLoaddingListener;
-import com.hbung.xrecycleview.RefreshLayout;
-import com.hbung.xrecycleview.SuperRecyclerView;
+import com.ashlikun.xrecycleview.OnLoaddingListener;
+import com.ashlikun.xrecycleview.RefreshLayout;
+import com.ashlikun.xrecycleview.SuperRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

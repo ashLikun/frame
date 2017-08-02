@@ -3,10 +3,8 @@ package com.hbung.stickyrecyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-
-import com.hbung.baseadapter.IHeaderAndFooter;
-import com.hbung.baseadapter.IStickyHeadersAdapter;
-
+import com.ashlikun.baseadapter.IHeaderAndFooter;
+import com.ashlikun.baseadapter.IStickyHeadersAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
