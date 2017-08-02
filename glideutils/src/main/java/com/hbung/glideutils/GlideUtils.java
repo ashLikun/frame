@@ -16,14 +16,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
-import java.util.concurrent.ExecutionException;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 
 /**
@@ -135,25 +135,18 @@ public class GlideUtils {
      */
     public static void downloadOnly(final String url, final OnDownloadCallbacl downloadCallbacl) {
 
-        Observable.create(new Observable.OnSubscribe<File>() {
+        Observable.create(new ObservableOnSubscribe<File>() {
             @Override
-            public void call(Subscriber<? super File> subscriber) {
-                File file = null;
-                try {
-                    file = Glide.with(myApp).load(getHttpFileUrl(url))
-                            .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                subscriber.onNext(file);
+            public void subscribe(ObservableEmitter<File> e) throws Exception {
+                File file = Glide.with(myApp).load(getHttpFileUrl(url))
+                        .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+                e.onNext(file);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<File>() {
+                .subscribe(new Consumer<File>() {
                     @Override
-                    public void call(File file) {
+                    public void accept(File file) throws Exception {
                         downloadCallbacl.onCall(file);
                     }
                 });

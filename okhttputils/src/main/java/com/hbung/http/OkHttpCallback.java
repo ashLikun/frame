@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -18,12 +21,10 @@ import okhttp3.Response;
 class OkHttpCallback<ResultType> implements okhttp3.Callback {
     ExecuteCall exc;
     Callback<ResultType> callback;
-    MainThread mMainThread;
 
-    public OkHttpCallback(MainThread mMainThread, ExecuteCall exc, Callback<ResultType> callback) {
+    public OkHttpCallback(ExecuteCall exc, Callback<ResultType> callback) {
         this.exc = exc;
         this.callback = callback;
-        this.mMainThread = mMainThread;
         if (callback != null) {
             callback.onStart();
         }
@@ -35,9 +36,9 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
     }
 
     private void postFailure(final Throwable throwable) {
-        mMainThread.execute(new Runnable() {
+        switchThread(new Consumer<Integer>() {
             @Override
-            public void run() {
+            public void accept(Integer integer) throws Exception {
                 callback.onError(throwable);
                 exc.setCompleted(true);
                 callback.onCompleted();
@@ -45,10 +46,12 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
         });
     }
 
+
     private void postResponse(final Response response, final ResultType resultType) {
-        mMainThread.execute(new Runnable() {
+
+        switchThread(new Consumer<Integer>() {
             @Override
-            public void run() {
+            public void accept(Integer integer) throws Exception {
                 callback.onSuccess(resultType);
                 exc.setCompleted(true);
                 callback.onCompleted();
@@ -75,6 +78,10 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
 
     }
 
+    private void switchThread(Consumer next) {
+        Observable.just(1).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next);
+    }
 
     /**
      * 获取回调里面的泛型
@@ -89,7 +96,7 @@ class OkHttpCallback<ResultType> implements okhttp3.Callback {
             for (Type childtype : parentypes) {
                 if (childtype instanceof ParameterizedType) {
                     Type rawType = ((ParameterizedType) childtype).getRawType();
-                    if (rawType instanceof Class && ((Class) rawType).isAssignableFrom(Callback.class)) {//实现的接口是Callback
+                    if (rawType instanceof Class && Callback.class.isAssignableFrom(((Class) rawType))) {//实现的接口是Callback
                         parentypes = ((ParameterizedType) childtype).getActualTypeArguments();//Callback里面的类型
                     }
                 }

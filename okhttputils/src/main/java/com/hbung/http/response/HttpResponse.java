@@ -28,6 +28,7 @@ public class HttpResponse {
     //缓存已经实例化的JSONObject,JSONArray对象
     private transient JSONObject cache;
 
+    @HttpCode.IHttpCode
     @SerializedName("code")
     public int code;
     @SerializedName("message")

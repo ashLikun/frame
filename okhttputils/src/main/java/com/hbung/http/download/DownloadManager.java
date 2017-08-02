@@ -18,15 +18,16 @@ package com.hbung.http.download;
 
 import com.hbung.http.OkHttpUtils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
-import rx.Observable;
-import rx.Subscription;
-import rx.schedulers.Schedulers;
 
 import static com.hbung.http.SuperHttp.DEFAULT_MILLISECONDS;
 
@@ -45,7 +46,7 @@ public class DownloadManager {
     /**
      * 方法加锁，防止多线程操作时出现多个实例
      */
-    public static void initPath(OkHttpClient client, String defaultFilePath) {
+    public static void initPath(String defaultFilePath) {
         DownloadManager.defaultFilePath = defaultFilePath;
     }
 
@@ -102,7 +103,7 @@ public class DownloadManager {
             if (oldTask != null) {
                 if (isDownloading(oldTask)) return;
                 else {
-                    oldTask.onCompleted();
+                    oldTask.onComplete();
                     mCurrentTaskList.remove(oldTask);
                 }
             }
@@ -111,11 +112,11 @@ public class DownloadManager {
             downloadTask.setDownloadStatus(DownloadStatus.DOWNLOAD_STATUS_INIT);
             // 保存下载task列表
             mCurrentTaskList.put(downloadTask.getId(), downloadTask);
-            Subscription subscription = Observable.just(1).subscribeOn(Schedulers.io())//指定 subscribe() 发生在 IO 线程
+
+            Observable.just(1).subscribeOn(Schedulers.io())//指定 subscribe() 发生在 IO 线程
                     .observeOn(Schedulers.io()).//指定回调在io线程
                     subscribe(downloadTask);
-            //保存Subscription 方便取消订阅
-            downloadTask.setSubscription(subscription);
+
         }
     }
 
@@ -161,11 +162,15 @@ public class DownloadManager {
 
         DownloadTask task = getDownloadTask(id);
         if (task != null) {
-            task.cancel();
+            try {
+                task.cancel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             task.setDownloadStatus(DownloadStatus.DOWNLOAD_STATUS_CANCEL);
-            Subscription subscription = task.getSubscription();
-            if (subscription != null && !subscription.isUnsubscribed()) {
-                subscription.unsubscribe();
+            Disposable subscription = task.getDisposable();
+            if (subscription != null) {
+                subscription.dispose();
             }
         }
     }
