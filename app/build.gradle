@@ -51,7 +51,6 @@ dependencies {
     compile project(':badgeview')
     compile project(':baseresource')
     compile project(':pathanim')
-    compile project(':okhttputils')
     //  compile project(':http')
     compile project(':utils')
     compile project(':glideutils')
