@@ -1,10 +1,10 @@
 package com.hbung.stickyrecyclerview;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
-import com.ashlikun.baseadapter.IHeaderAndFooter;
-
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -250,15 +250,37 @@ public class HeaderStore {
     }
 
     public int getRecycleViewHeadSize() {
-        if (parent.getAdapter() instanceof IHeaderAndFooter) {
-            return ((IHeaderAndFooter) parent.getAdapter()).getHeaderSize();
+        Class cls = parent.getAdapter().getClass();
+        try {
+            Field field = cls.getDeclaredField("headerSize");
+            field.setAccessible(true);
+            try {
+                return (int) field.get(parent.getAdapter());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                Log.w("getRecycleViewHeadSize", "adapter设置headerSize字段失败");
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            Log.w("getRecycleViewHeadSize", "adapter没有headerSize字段");
         }
         return 0;
     }
 
     public int getRecycleViewFootViewSize() {
-        if (parent.getAdapter() instanceof IHeaderAndFooter) {
-            return ((IHeaderAndFooter) parent.getAdapter()).getFooterSize();
+        Class cls = parent.getAdapter().getClass();
+        try {
+            Field field = cls.getDeclaredField("footerSize");
+            field.setAccessible(true);
+            try {
+                return (int) field.get(parent.getAdapter());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                Log.w("getFooterSize", "adapter设置footerSize字段失败");
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            Log.w("getFooterSize", "adapter没有footerSize字段");
         }
         return 0;
     }

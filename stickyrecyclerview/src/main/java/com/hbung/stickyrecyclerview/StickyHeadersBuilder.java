@@ -2,7 +2,6 @@ package com.hbung.stickyrecyclerview;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.ashlikun.baseadapter.IStickyHeadersAdapter;
 
 
 /**
@@ -24,7 +23,7 @@ public class StickyHeadersBuilder {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private IStickyHeadersAdapter headersAdapter;
+    private RecyclerView.Adapter headersAdapter;
     private OnHeaderClickListener headerClickListener;
     private boolean overlay;
     private boolean isSticky;
@@ -41,11 +40,11 @@ public class StickyHeadersBuilder {
         return this;
     }
 
-    public StickyHeadersBuilder setStickyHeadersAdapter(IStickyHeadersAdapter adapter) {
+    public StickyHeadersBuilder setStickyHeadersAdapter(RecyclerView.Adapter adapter) {
         return setStickyHeadersAdapter(adapter, false);
     }
 
-    public StickyHeadersBuilder setStickyHeadersAdapter(IStickyHeadersAdapter adapter, boolean overlay) {
+    public StickyHeadersBuilder setStickyHeadersAdapter(RecyclerView.Adapter adapter, boolean overlay) {
         this.headersAdapter = adapter;
         this.overlay = overlay;
         return this;
