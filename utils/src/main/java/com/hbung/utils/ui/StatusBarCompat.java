@@ -82,7 +82,7 @@ public class StatusBarCompat {
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
-            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setStatusBarColor(color);
         } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             ViewGroup decorView = (ViewGroup) window.getDecorView();
