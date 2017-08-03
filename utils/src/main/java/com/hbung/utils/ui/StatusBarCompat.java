@@ -75,14 +75,14 @@ public class StatusBarCompat {
         Window window = activity.getWindow();
         int colorInt = activity.getResources().getColor(statusColor);
         //计算最终颜色
-        int color = alpha == 0 ? Color.TRANSPARENT :
+        int color = (alpha == 0 || colorInt == 0) ? Color.TRANSPARENT :
                 Color.argb(alpha, Color.red(colorInt), Color.green(colorInt), Color.blue(colorInt));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             View decorView = window.getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
-            window.setStatusBarColor(color);
+            window.setStatusBarColor(Color.TRANSPARENT);
         } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             ViewGroup decorView = (ViewGroup) window.getDecorView();

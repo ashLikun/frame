@@ -19,8 +19,8 @@ public class StatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.init(getApplication(), false);
-
+        new StatusBarCompat(this).setTransparentBar();
         setContentView(R.layout.activity_main);
-        new StatusBarCompat(this).setColorBar(R.color.red);
+
     }
 }
