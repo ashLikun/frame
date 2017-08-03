@@ -5,16 +5,19 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="utils.hbung.com.utils.MainActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"></View>
 
     <com.hbung.superwebview.HorizontalProgress
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="10dp"></com.hbung.superwebview.HorizontalProgress>
 
     <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -68,9 +71,9 @@
 
     <TextView
         android:id="@+id/textView"
-        android:text="测试DrawableUtils"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="测试DrawableUtils" />
 
     <utils.hbung.com.utils.PathView
         android:layout_width="200dp"
