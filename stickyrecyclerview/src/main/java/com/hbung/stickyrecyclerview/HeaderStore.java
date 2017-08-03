@@ -4,17 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ashlikun.baseadapter.IHeaderAndFooter;
-import com.ashlikun.baseadapter.IStickyHeadersAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by aurel on 08/11/14.
- */
 public class HeaderStore {
 
     private final RecyclerView parent;
-    private final IStickyHeadersAdapter adapter;
+    private final RecyclerView.Adapter headerAdapter;
     private final HashMap<Long, View> headersViewByHeadersIds;
     private final HashMap<Long, Boolean> wasHeaderByItemId;
     private final ArrayList<Boolean> isHeaderByItemPosition;
@@ -25,9 +22,18 @@ public class HeaderStore {
         return isHeaderByItemPosition;
     }
 
-    public HeaderStore(RecyclerView parent, IStickyHeadersAdapter adapter, boolean isSticky) {
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/8/3 10:50
+     * 邮箱　　：496546144@qq.com
+     * 方法功能：
+     *
+     * @param headerAdapter 请调用CommonHeaderAdapter
+     */
+
+    public HeaderStore(RecyclerView parent, RecyclerView.Adapter headerAdapter, boolean isSticky) {
         this.parent = parent;
-        this.adapter = adapter;
+        this.headerAdapter = headerAdapter;
         this.isSticky = isSticky;
         this.headersViewByHeadersIds = new HashMap<Long, View>();
         this.wasHeaderByItemId = new HashMap<Long, Boolean>();
@@ -41,12 +47,12 @@ public class HeaderStore {
         if (itemPosition < 0)
             return null;
 
-        long headerId = adapter.getHeaderId(itemPosition);
+        long headerId = headerAdapter.getItemId(itemPosition);
 
         if (!headersViewByHeadersIds.containsKey(headerId)) {
-            RecyclerView.ViewHolder headerViewHolder = adapter.onCreateViewHolder(parent);
+            RecyclerView.ViewHolder headerViewHolder = headerAdapter.onCreateViewHolder(parent, 0);
 
-            adapter.onBindViewHolder(headerViewHolder, itemPosition);
+            headerAdapter.onBindViewHolder(headerViewHolder, itemPosition);
             layoutHeader(headerViewHolder.itemView);
 
             headersViewByHeadersIds.put(headerId, headerViewHolder.itemView);
@@ -57,7 +63,7 @@ public class HeaderStore {
     }
 
     public long getHeaderId(int itemPosition) {
-        return adapter.getHeaderId(itemPosition);
+        return headerAdapter.getItemId(itemPosition);
     }
 
     public int getHeaderHeight(RecyclerView.ViewHolder itemHolder) {
@@ -82,7 +88,7 @@ public class HeaderStore {
             }
         }
         if (isHeaderByItemPosition.get(itemPosition) == null) {
-            isHeaderByItemPosition.set(itemPosition, itemPosition == 0 || adapter.getHeaderId(itemPosition) != adapter.getHeaderId(itemPosition - 1));
+            isHeaderByItemPosition.set(itemPosition, itemPosition == 0 || headerAdapter.getItemId(itemPosition) != headerAdapter.getItemId(itemPosition - 1));
         }
 
         return isHeaderByItemPosition.get(itemPosition);
@@ -95,7 +101,7 @@ public class HeaderStore {
         int size = parent.getAdapter().getItemCount() - getRecycleViewHeadSize() - getRecycleViewFootViewSize();
         isHeaderByItemPosition.ensureCapacity(size);
         for (int i = 0; i < size; i++) {
-            isHeaderByItemPosition.add(i == 0 || adapter.getHeaderId(i) != adapter.getHeaderId(i - 1));
+            isHeaderByItemPosition.add(i == 0 || headerAdapter.getItemId(i) != headerAdapter.getItemId(i - 1));
         }
     }
 
@@ -107,7 +113,7 @@ public class HeaderStore {
                 return false;
             }
 
-            wasHeaderByItemId.put(itemHolder.getItemId(), itemPosition == 0 || adapter.getHeaderId(itemPosition) != adapter.getHeaderId(itemPosition - 1));
+            wasHeaderByItemId.put(itemHolder.getItemId(), itemPosition == 0 || headerAdapter.getItemId(itemPosition) != headerAdapter.getItemId(itemPosition - 1));
         }
         return wasHeaderByItemId.get(itemHolder.getItemId());
     }
@@ -166,49 +172,49 @@ public class HeaderStore {
             if (fromPosition == 0) {
                 isHeaderByItemPosition.set(0, true);
             } else {
-                long fromPositionId = adapter.getHeaderId(fromPosition);
-                long beforeFromPositionId = adapter.getHeaderId(fromPosition - 1);
-                long afterFromPositionId = adapter.getHeaderId(fromPosition + 1);
+                long fromPositionId = headerAdapter.getItemId(fromPosition);
+                long beforeFromPositionId = headerAdapter.getItemId(fromPosition - 1);
+                long afterFromPositionId = headerAdapter.getItemId(fromPosition + 1);
                 isHeaderByItemPosition.set(fromPosition, fromPositionId != beforeFromPositionId);
                 isHeaderByItemPosition.set(fromPosition + 1, fromPositionId != afterFromPositionId);
             }
 
-            long toPositionId = adapter.getHeaderId(toPosition);
-            long beforeToPositionId = adapter.getHeaderId(toPosition - 1);
+            long toPositionId = headerAdapter.getItemId(toPosition);
+            long beforeToPositionId = headerAdapter.getItemId(toPosition - 1);
             isHeaderByItemPosition.set(toPosition, toPositionId != beforeToPositionId);
             if (toPosition < isHeaderByItemPosition.size() - 1) {
-                long afterToPositionId = adapter.getHeaderId(toPosition + 1);
+                long afterToPositionId = headerAdapter.getItemId(toPosition + 1);
                 isHeaderByItemPosition.set(toPosition + 1, toPositionId != afterToPositionId);
             }
         } else if (fromPosition > toPosition) {
             if (toPosition == 0) {
                 isHeaderByItemPosition.set(0, true);
             } else {
-                long toPositionId = adapter.getHeaderId(toPosition);
-                long beforeToPositionId = adapter.getHeaderId(toPosition - 1);
-                long afterToPositionId = adapter.getHeaderId(toPosition + 1);
+                long toPositionId = headerAdapter.getItemId(toPosition);
+                long beforeToPositionId = headerAdapter.getItemId(toPosition - 1);
+                long afterToPositionId = headerAdapter.getItemId(toPosition + 1);
                 isHeaderByItemPosition.set(toPosition, toPositionId != beforeToPositionId);
                 isHeaderByItemPosition.set(toPosition + 1, toPositionId != afterToPositionId);
             }
 
-            long fromPositionId = adapter.getHeaderId(fromPosition);
-            long beforeFromPositionId = adapter.getHeaderId(fromPosition - 1);
+            long fromPositionId = headerAdapter.getItemId(fromPosition);
+            long beforeFromPositionId = headerAdapter.getItemId(fromPosition - 1);
             isHeaderByItemPosition.set(fromPosition, fromPositionId != beforeFromPositionId);
 
             if (fromPosition < isHeaderByItemPosition.size() - 1) {
-                long afterFromPositionId = adapter.getHeaderId(fromPosition + 1);
+                long afterFromPositionId = headerAdapter.getItemId(fromPosition + 1);
                 isHeaderByItemPosition.set(fromPosition + 1, fromPositionId != afterFromPositionId);
             }
         } else {
             if (fromPosition == 0) {
                 isHeaderByItemPosition.set(0, true);
             } else {
-                long fromPositionId = adapter.getHeaderId(fromPosition);
-                long beforeFromPositionId = adapter.getHeaderId(fromPosition - 1);
+                long fromPositionId = headerAdapter.getItemId(fromPosition);
+                long beforeFromPositionId = headerAdapter.getItemId(fromPosition - 1);
                 isHeaderByItemPosition.set(fromPosition, fromPositionId != beforeFromPositionId);
 
                 if (fromPosition < isHeaderByItemPosition.size() - 1) {
-                    long afterFromPositionId = adapter.getHeaderId(fromPosition + 1);
+                    long afterFromPositionId = headerAdapter.getItemId(fromPosition + 1);
                     isHeaderByItemPosition.set(fromPosition + 1, fromPositionId != afterFromPositionId);
                 }
             }

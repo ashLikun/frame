@@ -32,7 +32,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile rootProject.ext.designVersion
-    compile 'com.github.ashLikun.CommonAdapter:baseadapter:1.0.0'
 
 }
 
