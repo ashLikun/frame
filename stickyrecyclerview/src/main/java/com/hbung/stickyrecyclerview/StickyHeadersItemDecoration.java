@@ -62,7 +62,7 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) child.getLayoutParams();
             RecyclerView.ViewHolder holder = parent.getChildViewHolder(child);
-            if (isHeadAndFooter( holder)) {
+            if (isHeadAndFooter(holder)) {
                 continue;
             }
 
@@ -100,7 +100,7 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
 
         RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) view.getLayoutParams();
         RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
-        if (isHeadAndFooter( holder)) {
+        if (isHeadAndFooter(holder)) {
             outRect.set(0, 0, 0, 0);
             return;
         }
@@ -108,7 +108,8 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         boolean isHeader = lp.isItemRemoved() ? headerStore.wasHeader(holder) : headerStore.isHeader(holder);
 
 
-        if (overlay || !isHeader) {
+        if (overlay || !isHeader
+                ) {
             outRect.set(0, 0, 0, 0);
         } else {
             //TODO: Handle layout direction
@@ -116,7 +117,7 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public boolean isHeadAndFooter( RecyclerView.ViewHolder holder) {
+    public boolean isHeadAndFooter(RecyclerView.ViewHolder holder) {
         return holder.getItemViewType() != 0;
     }
 
