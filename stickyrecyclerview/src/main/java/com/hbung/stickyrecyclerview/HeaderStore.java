@@ -1,10 +1,8 @@
 package com.hbung.stickyrecyclerview;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,6 +15,8 @@ public class HeaderStore {
     private final ArrayList<Boolean> isHeaderByItemPosition;
     private final HashMap<Long, Integer> headersHeightsByItemsIds;
     private boolean isSticky;
+    private int headerSize;
+    private int footerSize;
 
     public ArrayList<Boolean> getIsHeaderByItemPosition() {
         return isHeaderByItemPosition;
@@ -98,7 +98,7 @@ public class HeaderStore {
         if (parent.getAdapter() == null) {
             return;
         }
-        int size = parent.getAdapter().getItemCount() - getRecycleViewHeadSize() - getRecycleViewFootViewSize();
+        int size = parent.getAdapter().getItemCount() - headerSize - footerSize;
         isHeaderByItemPosition.ensureCapacity(size);
         for (int i = 0; i < size; i++) {
             isHeaderByItemPosition.add(i == 0 || headerAdapter.getItemId(i) != headerAdapter.getItemId(i - 1));
@@ -249,44 +249,17 @@ public class HeaderStore {
         header.layout(0, 0, header.getMeasuredWidth(), header.getMeasuredHeight());
     }
 
-    public int getRecycleViewHeadSize() {
-        Class cls = parent.getAdapter().getClass();
-        try {
-            Field field = cls.getDeclaredField("headerSize");
-            field.setAccessible(true);
-            try {
-                return (int) field.get(parent.getAdapter());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                Log.w("getRecycleViewHeadSize", "adapter设置headerSize字段失败");
-            }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            Log.w("getRecycleViewHeadSize", "adapter没有headerSize字段");
-        }
-        return 0;
+
+    public void setHeaderSize(int headerSize) {
+        this.headerSize = headerSize;
     }
 
-    public int getRecycleViewFootViewSize() {
-        Class cls = parent.getAdapter().getClass();
-        try {
-            Field field = cls.getDeclaredField("footerSize");
-            field.setAccessible(true);
-            try {
-                return (int) field.get(parent.getAdapter());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                Log.w("getFooterSize", "adapter设置footerSize字段失败");
-            }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            Log.w("getFooterSize", "adapter没有footerSize字段");
-        }
-        return 0;
+    public void setFooterSize(int footerSize) {
+        this.footerSize = footerSize;
     }
 
     public int getPosition(RecyclerView.ViewHolder itemHolder) {
-        return itemHolder.getLayoutPosition() - getRecycleViewHeadSize();
+        return itemHolder.getLayoutPosition() - headerSize;
     }
 
 }

@@ -3,7 +3,6 @@ package com.hbung.stickyrecyclerview;
 import android.support.v7.widget.RecyclerView;
 
 
-
 /**
  * 作者　　: 李坤
  * 创建时间: 12:08 Administrator
@@ -28,6 +27,8 @@ public class StickyHeadersBuilder {
     private boolean overlay;
     private boolean isSticky;
     private DrawOrder drawOrder;
+    private int headerSize;
+    private int footerSize;
 
 
     public StickyHeadersBuilder() {
@@ -50,6 +51,16 @@ public class StickyHeadersBuilder {
         return this;
     }
 
+    public StickyHeadersBuilder setHeaderSize(int headerSize) {
+        this.headerSize = headerSize;
+        return this;
+    }
+
+    public StickyHeadersBuilder setFooterSize(int footerSize) {
+        this.footerSize = footerSize;
+        return this;
+    }
+
     public StickyHeadersBuilder setAdapter(RecyclerView.Adapter adapter) {
 //        if (!adapter.hasStableIds()) {
 //            throw new IllegalArgumentException("Adapter must have stable ids");
@@ -66,13 +77,11 @@ public class StickyHeadersBuilder {
 
     public StickyHeadersBuilder setSticky(boolean isSticky) {
         this.isSticky = isSticky;
-
         return this;
     }
 
     public StickyHeadersBuilder setDrawOrder(DrawOrder drawOrder) {
         this.drawOrder = drawOrder;
-
         return this;
     }
 
