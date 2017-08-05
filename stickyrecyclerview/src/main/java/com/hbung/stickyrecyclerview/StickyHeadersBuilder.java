@@ -88,6 +88,8 @@ public class StickyHeadersBuilder {
     public StickyHeadersItemDecoration build() {
 
         HeaderStore store = new HeaderStore(recyclerView, headersAdapter, isSticky);
+        store.setHeaderSize(headerSize);
+        store.setFooterSize(footerSize);
 
         StickyHeadersItemDecoration decoration = new StickyHeadersItemDecoration(store, overlay, drawOrder);
 
