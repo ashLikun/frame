@@ -51,7 +51,6 @@ public class SharedPreUtils {
         } else if (value instanceof Set) {
             editor.putStringSet(key, (Set) value);
         }
-
         return editor.commit();
     }
 
