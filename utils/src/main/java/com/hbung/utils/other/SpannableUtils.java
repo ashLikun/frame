@@ -28,6 +28,8 @@ import android.text.style.UnderlineSpan;
 
 import com.hbung.utils.Utils;
 
+import static com.hbung.utils.Utils.getApp;
+
 /**
  * 作者　　: 李坤
  * 创建时间:2016/11/2　14:01
@@ -493,13 +495,13 @@ public class SpannableUtils {
             //设置图片
             if (imageIsBitmap || imageIsDrawable || imageIsUri || imageIsResourceId) {
                 if (imageIsBitmap) {
-                    mBuilder.setSpan(new ImageSpan(Utils.myApp, bitmap), start, end, flag);
+                    mBuilder.setSpan(new ImageSpan(getApp(), bitmap), start, end, flag);
                 } else if (imageIsDrawable) {
                     mBuilder.setSpan(new ImageSpan(drawable), start, end, flag);
                 } else if (imageIsUri) {
-                    mBuilder.setSpan(new ImageSpan(Utils.myApp, uri), start, end, flag);
+                    mBuilder.setSpan(new ImageSpan(Utils.getApp(), uri), start, end, flag);
                 } else {
-                    mBuilder.setSpan(new ImageSpan(Utils.myApp, resourceId), start, end, flag);
+                    mBuilder.setSpan(new ImageSpan(Utils.getApp(), resourceId), start, end, flag);
                 }
             }
             //设置点击

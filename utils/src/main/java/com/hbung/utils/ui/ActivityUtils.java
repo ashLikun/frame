@@ -5,6 +5,9 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.hbung.utils.Utils;
@@ -15,10 +18,37 @@ import java.util.List;
  * 作者　　: 李坤
  * 创建时间: 2016/10/12 10:47
  * <p>
- * 方法功能：activity的操作类
+ * 方法功能：activity的操作类，检测是否前台运行
+ * < uses-permission android:name =“android.permission.GET_TASKS” />
  */
 
 public class ActivityUtils {
+
+    /**
+     * 调用系统分享
+     */
+    public static void shareToOtherApp(Context context, String title, String content, String dialogTitle) {
+        Intent intentItem = new Intent(Intent.ACTION_SEND);
+        intentItem.setType("text/plain");
+        intentItem.putExtra(Intent.EXTRA_SUBJECT, title);
+        intentItem.putExtra(Intent.EXTRA_TEXT, content);
+        intentItem.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(Intent.createChooser(intentItem, dialogTitle));
+    }
+
+    /**
+     * 获取App包 信息版本号
+     */
+    public PackageInfo getPackageInfo(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packageInfo;
+    }
 
 
     /**
@@ -50,7 +80,7 @@ public class ActivityUtils {
             if (classs == null || TextUtils.isEmpty(className)) {
                 return false;
             }
-            ActivityManager am = (ActivityManager) Utils.myApp
+            ActivityManager am = (ActivityManager) Utils.getApp()
                     .getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
             if (list != null && list.size() > 0) {
@@ -76,6 +106,7 @@ public class ActivityUtils {
      * 作者　　: 李坤
      * 创建时间: 2017/6/29 11:25
      * 方法功能：判断应用是否处于前台
+     * < uses-permission android:name =“android.permission.GET_TASKS” />
      *
      * @param context 上下文对象
      */
@@ -96,6 +127,7 @@ public class ActivityUtils {
      * 作者　　: 李坤
      * 创建时间: 2017/6/29 11:26
      * 方法功能：把栈顶activity切换到前台，如果应用未启动就打开应
+     * < uses-permission android:name =“android.permission.GET_TASKS” />
      *
      * @return 0：前台 1:处于后台  2：未启动或者被回收
      */

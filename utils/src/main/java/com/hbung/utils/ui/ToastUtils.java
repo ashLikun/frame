@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.hbung.utils.other.DimensUtils;
 
-import static com.hbung.utils.Utils.myApp;
+import static com.hbung.utils.Utils.getApp;
 
 
 public class ToastUtils {
@@ -25,7 +25,7 @@ public class ToastUtils {
      * @param content
      */
     public static void getToastShort(String content) {
-        myToast.makeText(myApp, content, Toast.LENGTH_SHORT).show();
+        myToast.makeText(getApp(), content, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -35,7 +35,7 @@ public class ToastUtils {
      * @param content 内容
      */
     public static void getToastLong(String content) {
-        myToast.makeText(myApp, content, Toast.LENGTH_LONG).show();
+        myToast.makeText(getApp(), content, Toast.LENGTH_LONG).show();
     }
 
     public static void show(Context context, String text, int duration) {

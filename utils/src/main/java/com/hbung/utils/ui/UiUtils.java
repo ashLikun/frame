@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.hbung.utils.R;
 
-import static com.hbung.utils.Utils.myApp;
+import static com.hbung.utils.Utils.getApp;
 
 
 public class UiUtils {
@@ -126,9 +126,9 @@ public class UiUtils {
     public static int getStatusHeight() {
 
         int result = 0;
-        int resourceId = myApp.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = getApp().getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            result = myApp.getResources().getDimensionPixelSize(resourceId);
+            result = getApp().getResources().getDimensionPixelSize(resourceId);
         }
         return result;
     }
@@ -136,7 +136,7 @@ public class UiUtils {
 
     private static void exitOrShowInput(IBinder iBinder, View view) {
 
-        InputMethodManager inputMethodManager = (InputMethodManager) myApp.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (iBinder != null) {
             inputMethodManager.hideSoftInputFromWindow(iBinder, 0);
         }

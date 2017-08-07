@@ -9,18 +9,13 @@ package com.hbung.utils.other;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 import android.provider.Settings.Secure;
-import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * 作者　　: 李坤
@@ -41,32 +36,7 @@ public class DeviceUtil {
     private String mDeviceID;// 唯一设备号
     Context context;
 
-    /**
-     * 根据手机好拨打电话
-     *
-     * @param context
-     * @param phone
-     */
-    public static void callByPhone(final Context context, final String phone) {
-        if (StringUtils.isEmpty(phone)) {
-            return;
-        }
-        MaterialDialog dialog = new MaterialDialog.Builder(context)
-                .content("确定拨打 " + phone)
-                .title("拨打电话")
-                .positiveText("拨打")
-                .negativeColor(Color.GRAY)
-                .negativeText("取消")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phone));
-                        context.startActivity(intent);
-                    }
-                })
-                .build();
-        dialog.show();
-    }
+
 
 
     private TelephonyManager telephonyManager = null;// 很多关于手机的信息可以用此类得到

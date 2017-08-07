@@ -11,7 +11,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.MemoryCategory;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
@@ -31,16 +30,43 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 
 public class GlideUtils {
-    public static Application myApp;
     public static String BASE_URL;
 
-    public static void init(Application application, String BASE_URL) {
-        GlideUtils.myApp = application;
-        GlideUtils.BASE_URL = BASE_URL;
-//        OkHttpClient okHttpClient = (OkHttpClient) HttpManager.getInstance().getRetrofit().callFactory();
-//        OkHttpDownLoader okHttpDownloader = new OkHttpDownLoader(okHttpClient);
-        Glide.get(application).setMemoryCategory(MemoryCategory.LOW);
+    private static OnNeedListener listener;
 
+    /**
+     * 作者　　: 李坤
+     * 创建时间: 2017/8/7 10:29
+     * 邮箱　　：496546144@qq.com
+     * <p>
+     * 方法功能：一定要在Application里面调用
+     */
+
+    public static void init(OnNeedListener listener) {
+        GlideUtils.listener = listener;
+    }
+
+
+    public interface OnNeedListener {
+        public Application getApplication();
+
+        public boolean isDebug();
+    }
+
+    public static Application getApp() {
+        if (listener == null) {
+            throw new RuntimeException("请在Application调用Utils的init方法");
+        } else {
+            return listener.getApplication();
+        }
+    }
+
+    public static boolean isDebug() {
+        if (listener == null) {
+            throw new RuntimeException("请在Application调用Utils的init方法");
+        } else {
+            return listener.isDebug();
+        }
     }
 
     public static void show(ImageView view, String path, GlideOptions picassoOptions) {
@@ -102,7 +128,7 @@ public class GlideUtils {
         try {
             GlideUtils.show((ImageView) imageView,
                     path,
-                    new GlideOptions.Builder().addTransformation(new CropCircleTransformation(myApp)).bulider());
+                    new GlideOptions.Builder().addTransformation(new CropCircleTransformation(getApp())).bulider());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +164,7 @@ public class GlideUtils {
         Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> e) throws Exception {
-                File file = Glide.with(myApp).load(getHttpFileUrl(url))
+                File file = Glide.with(getApp()).load(getHttpFileUrl(url))
                         .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
                 e.onNext(file);
             }

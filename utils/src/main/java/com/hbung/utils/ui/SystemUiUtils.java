@@ -6,27 +6,60 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.hbung.utils.other.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-import static com.hbung.utils.Utils.myApp;
+import static com.hbung.utils.Utils.getApp;
+
 
 /**
  * 作者　　: 李坤
  * 创建时间:2017/8/6 0006　15:44
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：启动系统自带的ui
  */
 
 public class SystemUiUtils {
+    /**
+     * 根据手机好拨打电话
+     *
+     * @param context
+     * @param phone
+     */
+    public static void callByPhone(final Context context, final String phone) {
+        if (StringUtils.isEmpty(phone)) {
+            return;
+        }
+        MaterialDialog dialog = new MaterialDialog.Builder(context)
+                .content("确定拨打 " + phone)
+                .title("拨打电话")
+                .positiveText("拨打")
+                .negativeColor(Color.GRAY)
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phone));
+                        context.startActivity(intent);
+                    }
+                })
+                .build();
+        dialog.show();
+    }
 
     /**
      * 作者　　: 李坤
@@ -101,7 +134,7 @@ public class SystemUiUtils {
      */
     public static String getFileSelectPath(Intent data) {
         if (data == null || data.getData() == null) return null;
-        return getPath(myApp, data.getData());
+        return getPath(getApp(), data.getData());
     }
 
     /**

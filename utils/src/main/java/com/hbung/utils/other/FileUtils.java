@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,6 +64,9 @@ public class FileUtils {
         }
         return apiKey;
     }
+    /**
+     * 读取指定文件的输出
+     */
 
 
     /**
@@ -103,7 +107,15 @@ public class FileUtils {
      */
     public static String readInputStream(InputStream is) {
         return readInputStream(is, "UTF-8");
+    }
 
+    public static String readFileInputStream(String path) {
+        try {
+            return readInputStream(new FileInputStream(path), "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**

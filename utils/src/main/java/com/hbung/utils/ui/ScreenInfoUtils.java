@@ -67,7 +67,7 @@ public class ScreenInfoUtils {
 
     private void init() {
         DisplayMetrics metric = new DisplayMetrics();
-        WindowManager wm = (WindowManager) Utils.myApp.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) Utils.getApp().getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(metric);
         width = metric.widthPixels;
         height = metric.heightPixels;
