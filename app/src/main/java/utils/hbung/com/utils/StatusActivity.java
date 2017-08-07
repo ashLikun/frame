@@ -3,8 +3,6 @@ package utils.hbung.com.utils;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.hbung.utils.Utils;
-import com.hbung.utils.ui.StatusBarCompat;
 
 /**
  * 作者　　: 李坤
@@ -18,8 +16,6 @@ public class StatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.init(getApplication(), false);
         setContentView(R.layout.activity_main);
-        new StatusBarCompat(this).setTransparentBar(R.color.translucent);
     }
 }

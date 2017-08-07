@@ -49,7 +49,7 @@ public class GlideOptions {
     public Transformation[] getTransformations() {
 
         Transformation[] temp = new Transformation[transformations == null ? 1 : transformations.size() + 1];
-        temp[0] = new CenterCrop(GlideUtils.myApp);
+        temp[0] = new CenterCrop(GlideUtils.getApp());
         if (transformations != null) {
             for (int i = 0; i < transformations.size(); i++) {
                 temp[i + 1] = transformations.get(i);

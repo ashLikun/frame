@@ -10,17 +10,14 @@ import android.widget.TextView;
 
 import com.ashlikun.adapter.recyclerview.CommonAdapter;
 import com.ashlikun.adapter.recyclerview.CommonHeaderAdapter;
-import com.hbung.loadingandretrymanager.ContextData;
-import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
-import com.hbung.segmentcontrol.SegmentControlInterior;
-import com.hbung.utils.Utils;
-import com.hbung.utils.ui.DrawableUtils;
-import com.hbung.utils.ui.ToastUtils;
-import com.hbung.wheelview3d.LoopView;
-import com.hbung.wheelview3d.adapter.LoopViewData;
 import com.ashlikun.xrecycleview.OnLoaddingListener;
 import com.ashlikun.xrecycleview.RefreshLayout;
 import com.ashlikun.xrecycleview.SuperRecyclerView;
+import com.hbung.loadingandretrymanager.ContextData;
+import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
+import com.hbung.segmentcontrol.SegmentControlInterior;
+import com.hbung.wheelview3d.LoopView;
+import com.hbung.wheelview3d.adapter.LoopViewData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.init(getApplication(), false);
 
         setContentView(R.layout.activity_main);
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
@@ -94,11 +90,9 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setBackgroundDrawable(new DrawableUtils.RippleBuilder(this).setNormalColor(R.color.red).setPressedColor(R.color.gray).create());
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShort(MainActivity.this, "aaaaa");
             }
         });
         //controlInterior.setCurrentIndex(1);
@@ -153,10 +147,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 //            }
 //        });
     }
-
-
-
-
 
 
     private void showDialog() {

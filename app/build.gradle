@@ -46,7 +46,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.3'
     compile 'com.github.ashLikun:XRecycleView:1.0.1'
-
     compile project(':stickyrecyclerview')
     compile project(':flatbutton')
     compile project(':loadingandretrymanager')
@@ -63,7 +62,6 @@ dependencies {
     compile project(':baseresource')
     compile project(':pathanim')
     //  compile project(':http')
-    compile project(':utils')
     compile project(':glideutils')
     compile project(':superwebview')
 }
