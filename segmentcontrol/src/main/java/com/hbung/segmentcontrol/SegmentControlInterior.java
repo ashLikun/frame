@@ -40,7 +40,6 @@ public class SegmentControlInterior extends View {
     private float mItemHeight = 0;//item的高度
     private int mHorizonGap;//水平的间隙
     private int mVerticalGap;//垂直的间隙
-
     //触摸相关
     private float mInitDownX;
     private float mDownMoveX;
@@ -153,6 +152,12 @@ public class SegmentControlInterior extends View {
         }
         mPostion = mCurrentIndex * mItemWidth + mItemWidth / 2;
         setMeasuredDimension(width, height);
+
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
         isOnLayout = true;
     }
 
@@ -291,6 +296,7 @@ public class SegmentControlInterior extends View {
             });
             animator.start();
         } else {
+            mCurrentIndex = index;
             mIsAnimStart = false;
             invalidate();
         }

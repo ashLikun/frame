@@ -17,8 +17,8 @@
     <com.hbung.superwebview.HorizontalProgress
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="10dp"></com.hbung.superwebview.HorizontalProgress>
+        android:layout_height="10dp"
+        android:visibility="gone"></com.hbung.superwebview.HorizontalProgress>
 
     <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/actionButton"
@@ -59,15 +59,16 @@
         app:strokeColor="@color/webview_progress_button_stroke_color"
         app:strokeWidth="1dp"></com.hbung.flatbutton.FlatButton>
 
-    <com.hbung.segmentcontrol.SegmentControl xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.hbung.segmentcontrol.SegmentControlInterior xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/segment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/actionButton2"
         android:textSize="16sp"
-        app:gaps="@dimen/dp_20"
-        app:scCornerRadius="@dimen/dp_10"
-        app:scTexts="我的二维码|消息"
-        app:selectedTextColors="@color/colorAccent"></com.hbung.segmentcontrol.SegmentControl>
+        app:sci_corner_radius="@dimen/dp_10"
+        app:sci_gaps="@dimen/dp_20"
+        app:sci_gradual_color2="@color/red"
+        app:sci_texts="我的二维码|消息|2222"></com.hbung.segmentcontrol.SegmentControlInterior>
 
     <TextView
         android:id="@+id/textView"
