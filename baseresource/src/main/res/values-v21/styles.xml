@@ -11,7 +11,6 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:buttonStyle">?android:attr/selectableItemBackground</item>
         <item name="android:windowBackground">@color/activity_backgound</item>
