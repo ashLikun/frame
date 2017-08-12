@@ -50,7 +50,7 @@
         <!--菜单样式-->
         <item name="actionMenuTextAppearance">@style/ToolbarMenuTextSize</item>
         <!-- toolbar上面的Button整体样式 -->
-        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Navigation.ButtonStyle.Black</item>
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Navigation.ButtonStyle</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Overflow.ButtonStyle</item>
     </style>
 

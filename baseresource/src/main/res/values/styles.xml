@@ -99,14 +99,16 @@
     </style>
 
 
-    <style name="Theme.TextInputLayout.Login" parent="Theme.TextInputLayout">
+    <style name="Theme.TextInputLayout.Primary" parent="Theme.TextInputLayout">
         <!--线的颜色-->
         <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
 
     <style name="Theme.TextInputLayout.White" parent="Theme.TextInputLayout">
         <!--线的颜色-->
         <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
 
     <style name="TextInputLayout">
@@ -117,10 +119,10 @@
         <item name="android:theme">@style/Theme.TextInputLayout</item>
     </style>
 
-    <style name="TextInputLayout.LogIn" parent="TextInputLayout">
+    <style name="TextInputLayout.Primary" parent="TextInputLayout">
         <item name="counterTextAppearance">@style/TextInputLayout.CounterText.MainColor</item>
         <item name="errorTextAppearance">@style/TextInputLayout.ErrorText</item>
-        <item name="android:theme">@style/Theme.TextInputLayout.Login</item>
+        <item name="android:theme">@style/Theme.TextInputLayout.Primary</item>
     </style>
 
     <style name="TextInputLayout.White" parent="TextInputLayout">
