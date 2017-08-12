@@ -63,6 +63,10 @@ public class SupperToolBar extends Toolbar {
 
     }
 
+    public TextView getTitleView() {
+        return titleView;
+    }
+
     public void setSuperTitle(CharSequence title) {
         super.setTitle(title);
         if (titleView != null) {
