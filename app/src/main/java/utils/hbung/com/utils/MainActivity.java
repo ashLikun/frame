@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             public void onClick(View v) {
             }
         });
+        SegmentControlInterior segment = (SegmentControlInterior) findViewById(R.id.segment);
+        segment.setCurrentIndex(2);
         //controlInterior.setCurrentIndex(1);
 //        controlInterior.postDelayed(new Runnable() {
 //            @Override
