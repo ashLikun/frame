@@ -30,7 +30,6 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 
 public class GlideUtils {
-    public static String BASE_URL;
 
     private static OnNeedListener listener;
 
@@ -51,6 +50,8 @@ public class GlideUtils {
         public Application getApplication();
 
         public boolean isDebug();
+
+        public String getBaseUrl();
     }
 
     public static Application getApp() {
@@ -66,6 +67,14 @@ public class GlideUtils {
             throw new RuntimeException("请在Application调用Utils的init方法");
         } else {
             return listener.isDebug();
+        }
+    }
+
+    public static String getBaseUrl() {
+        if (listener == null) {
+            throw new RuntimeException("请在Application调用Utils的init方法");
+        } else {
+            return listener.getBaseUrl();
         }
     }
 
@@ -199,14 +208,14 @@ public class GlideUtils {
     public static String getHttpFileUrl(String url) {
         String res = "";
         if (url != null) {
-            if (url.startsWith("http://")) {
+            if (url.startsWith("http://") || url.startsWith("https://")) {
                 res = url;
             } else if (url.startsWith("/storage") || url.startsWith("storage") || url.startsWith("/data") || url.startsWith("data")) {
                 res = url;
             } else if (url.startsWith("/")) {
-                res = BASE_URL + url;
+                res = getBaseUrl() + url;
             } else {
-                res = BASE_URL + "/" + url;
+                res = getBaseUrl() + "/" + url;
             }
         }
         return res;
