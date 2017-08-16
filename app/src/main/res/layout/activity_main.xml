@@ -9,6 +9,12 @@
     android:orientation="vertical"
     tools:context="utils.hbung.com.utils.MainActivity">
 
+    <com.hbung.supertoobar.SupperToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Toolbar"
+        ></com.hbung.supertoobar.SupperToolBar>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

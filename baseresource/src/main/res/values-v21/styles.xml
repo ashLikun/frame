@@ -17,7 +17,7 @@
         <!--<item name="android:requiresFadingEdge">vertical</item>-->
         <item name="android:listSelector">@color/translucent</item>
         <item name="android:textCursorDrawable">@drawable/edittext_cursor_main_color</item>
-        <item name="android:textColorPrimary">@color/gray_text</item>
+        <item name="android:textColorPrimary">@color/text_color</item>
         <!--<item name="android:requiresFadingEdge">vertical</item>-->
         <item name="textColorError">@color/design_textinput_error_color_light</item>
 

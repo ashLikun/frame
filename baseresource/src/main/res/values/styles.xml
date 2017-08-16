@@ -10,7 +10,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/gray_text</item>
+        <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:buttonStyle">@null</item>
         <item name="android:windowBackground">@color/activity_backgound</item>

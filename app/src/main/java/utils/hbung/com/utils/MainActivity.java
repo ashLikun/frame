@@ -16,6 +16,7 @@ import com.ashlikun.xrecycleview.SuperRecyclerView;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
+import com.hbung.supertoobar.SupperToolBar;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
 
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        SupperToolBar toolBar = (SupperToolBar) findViewById(R.id.toolBar);
+        toolBar.setBack(this);
+        toolBar.setTitle("aaaa");
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
