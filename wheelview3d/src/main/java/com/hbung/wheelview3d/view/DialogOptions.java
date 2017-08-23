@@ -1,5 +1,6 @@
 package com.hbung.wheelview3d.view;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -14,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -125,6 +127,11 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.width = ViewGroup.LayoutParams.MATCH_PARENT; //设置宽度
+        lp.height = (ActionBar.LayoutParams.WRAP_CONTENT); //设置宽度
+        getWindow().setAttributes(lp);
+        getWindow().getAttributes().gravity = Gravity.BOTTOM;
         initView();
     }
 
@@ -167,6 +174,11 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
             }
             dismiss();
         }
+    }
+
+    //对话框数据设置
+    public LoopOptions getLoopOptions() {
+        return loopOptions;
     }
 
     public static class Builder {
