@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.ashlikun.adapter.recyclerview.BaseAdapter;
 import com.google.android.flexbox.FlexboxLayout;
 import com.ashlikun.adapter.ViewHolder;
 import com.ashlikun.adapter.recyclerview.CommonAdapter;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class SuperFlexboxLayout extends FlexboxLayout {
 
-    CommonAdapter adapter;
+    BaseAdapter adapter;
 
     private OnItemClickListener onItemClickListener;
 
@@ -74,14 +75,14 @@ public class SuperFlexboxLayout extends FlexboxLayout {
         });
     }
 
-    public CommonAdapter getAdapter() {
+    public BaseAdapter getAdapter() {
         return adapter;
     }
 
     private void addAllView() {
         removeAllViews();
         for (int i = 0; i < adapter.getItemCount(); i++) {
-            ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getmLayoutId(), i);
+            ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getLayoutId(), i);
             View view = holder.getConvertView();
             addView(view);
         }
@@ -95,7 +96,7 @@ public class SuperFlexboxLayout extends FlexboxLayout {
             removeViews(adapter.getItemCount(), getChildCount() - adapter.getItemCount());
         } else if (getChildCount() < adapter.getItemCount()) {
             for (int i = getChildCount(); i < adapter.getItemCount(); i++) {
-                ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getmLayoutId(), i);
+                ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getLayoutId(), i);
                 View view = holder.getConvertView();
                 addView(view);
             }

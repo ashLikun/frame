@@ -19,9 +19,6 @@ import com.hbung.segmentcontrol.SegmentControlInterior;
 import com.hbung.supertoobar.SupperToolBar;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
-import com.hbung.wheelview3d.listener.OnItemSelectListener;
-import com.hbung.wheelview3d.view.DialogOptions;
-import com.hbung.wheelview3d.view.LoopOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,16 +96,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         findViewById(R.id.actionButton2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogOptions options = new DialogOptions.Builder(MainActivity.this)
-                        .mode(LoopOptions.Mode.ONE)
-                        .onItemSelectListener(new OnItemSelectListener() {
-                            @Override
-                            public List<LoopData> getOneData() {
-                                return datas;
-                            }
-                        })
-                        .builder();
-                options.show();
+              
             }
         });
         TextView textView = (TextView) findViewById(R.id.textView);

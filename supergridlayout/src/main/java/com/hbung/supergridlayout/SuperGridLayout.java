@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.GridLayout;
 
 import com.ashlikun.adapter.ViewHolder;
+import com.ashlikun.adapter.recyclerview.BaseAdapter;
 import com.ashlikun.adapter.recyclerview.CommonAdapter;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class SuperGridLayout extends GridLayout {
 
-    CommonAdapter adapter;
+    BaseAdapter adapter;
     private int mItemSize;   // 水平每个item宽度
     private int hSpace = 0;   // 水平间距h
     private int vSpace = 0;   // 垂直间距h
@@ -83,14 +84,14 @@ public class SuperGridLayout extends GridLayout {
         });
     }
 
-    public CommonAdapter getAdapter() {
+    public BaseAdapter getAdapter() {
         return adapter;
     }
 
     private void addAllView() {
         removeAllViews();
         for (int i = 0; i < adapter.getItemCount(); i++) {
-            ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getmLayoutId(), i);
+            ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getLayoutId(), i);
             View view = holder.getConvertView();
             addViewInLayout(view, 0, generateDefaultLayoutParams(), true);
         }
@@ -104,7 +105,7 @@ public class SuperGridLayout extends GridLayout {
             removeViews(adapter.getItemCount(), getChildCount() - adapter.getItemCount());
         } else if (getChildCount() < adapter.getItemCount()) {
             for (int i = getChildCount(); i < adapter.getItemCount(); i++) {
-                ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getmLayoutId(), i);
+                ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getLayoutId(), i);
                 View view = holder.getConvertView();
                 addViewInLayout(view, getChildCount(), generateDefaultLayoutParams(), true);
             }

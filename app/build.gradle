@@ -71,4 +71,5 @@ dependencies {
     //  compile project(':http')
     compile project(':glideutils')
     compile project(':superwebview')
+    compile 'com.github.ashLikun:CommonUtils:1.0.7'
 }
