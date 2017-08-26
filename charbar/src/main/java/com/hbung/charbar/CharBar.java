@@ -30,47 +30,55 @@ public class CharBar extends View {
     // 用于显示dialog
     private TextView textView;
     private int textColor;
+    private int selectTextColor;
     private int letterHeight;
 
     public CharBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        // TODO Auto-generated constructor stub
-        init();
+        init(context, attrs);
     }
 
 
     public CharBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-        TypedArray array = context.getTheme().obtainStyledAttributes(new int[]{
-                android.R.attr.colorPrimary,
-        });
-        textColor = array.getColor(0, 0xff0000);
-        array.recycle();
+        this(context, attrs, 0);
     }
 
     public CharBar(Context context) {
-        super(context);
-        init();
-
+        this(context, null);
     }
 
-    private void init() {
-        letter.add("#");
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs,
+                R.styleable.CharBar);
+        textColor = a.getColor(R.styleable.CharBar_cb_textColor, Color.BLACK);
+        selectTextColor = a.getColor(R.styleable.CharBar_cb_selectTextColor, Color.BLACK);
+        a.recycle();
+        if (letter.size() == 0) {
+            letter.add("#");
+        }
+    }
 
-        setBackgroundColor(Color.TRANSPARENT);
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+        setPaint();
+    }
+
+    public void setSelectTextColor(int selectTextColor) {
+        this.selectTextColor = selectTextColor;
+        setPaint();
+    }
+
+    private void setPaint() {
         // 设置粗体
         paint.setTypeface(Typeface.DEFAULT_BOLD);
         // 设置抗锯齿
         paint.setAntiAlias(true);
         paint.setColor(textColor);
-
-
         // 设置粗体
         paintSelect.setTypeface(Typeface.DEFAULT_BOLD);
         // 设置抗锯齿
         paintSelect.setAntiAlias(true);
-        paintSelect.setColor(Color.RED);
+        paintSelect.setColor(selectTextColor);
         paintSelect.setFakeBoldText(true);
     }
 
@@ -88,9 +96,6 @@ public class CharBar extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // AT_MOST WRAP_CONTENT
-        //EXACTLY  MATCH_PARENT
-        //EXACTLY default
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
         setPaintTextSize(height - getPaddingTop() - getPaddingBottom());
@@ -127,7 +132,6 @@ public class CharBar extends View {
     }
 
     protected void onDraw(Canvas canvas) {
-        // TODO Auto-generated method stub
         super.onDraw(canvas);
         // 获取组件的大小
         int widht = getWidth();

@@ -9,13 +9,13 @@ import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 
 import com.ashlikun.adapter.recyclerview.CommonAdapter;
-import com.ashlikun.adapter.recyclerview.CommonHeaderAdapter;
 import com.ashlikun.xrecycleview.OnLoaddingListener;
 import com.ashlikun.xrecycleview.RefreshLayout;
 import com.ashlikun.xrecycleview.SuperRecyclerView;
 import com.hbung.loadingandretrymanager.ContextData;
 import com.hbung.loadingandretrymanager.LoadingAndRetryManager;
 import com.hbung.segmentcontrol.SegmentControlInterior;
+import com.hbung.stickyrecyclerview.CommonHeaderAdapter;
 import com.hbung.supertoobar.SupperToolBar;
 import com.hbung.wheelview3d.LoopView;
 import com.hbung.wheelview3d.adapter.LoopViewData;
