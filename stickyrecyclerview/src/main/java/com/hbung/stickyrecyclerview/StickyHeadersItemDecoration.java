@@ -119,7 +119,7 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
 
     //RecyclerViewWithHeaderAndFooter  viewtype
     public boolean isHeadAndFooter(RecyclerView.ViewHolder holder) {
-        return holder.getItemViewType() == -2 || holder.getItemViewType() == -3 || holder.getItemViewType() == -4;
+        return holder.getItemViewType() == -900002 || holder.getItemViewType() == -900003 || holder.getItemViewType() == -900004;
     }
 
     public void registerAdapterDataObserver(RecyclerView.Adapter adapter) {
