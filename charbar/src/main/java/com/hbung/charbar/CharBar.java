@@ -56,6 +56,7 @@ public class CharBar extends View {
         if (letter.size() == 0) {
             letter.add("#");
         }
+        setPaint();
     }
 
     public void setTextColor(int textColor) {
