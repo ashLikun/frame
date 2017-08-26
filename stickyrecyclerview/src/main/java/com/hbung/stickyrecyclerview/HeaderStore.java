@@ -33,6 +33,7 @@ public class HeaderStore {
         this.wasHeaderByItemId = new HashMap<Long, Boolean>();
         this.isHeaderByItemPosition = new ArrayList<Boolean>();
         this.headersHeightsByItemsIds = new HashMap<Long, Integer>();
+        addHeader();
     }
 
     public View getHeaderViewByItem(RecyclerView.ViewHolder itemHolder) {

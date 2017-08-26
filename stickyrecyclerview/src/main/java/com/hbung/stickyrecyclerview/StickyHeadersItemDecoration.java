@@ -145,21 +145,25 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
             headerStore.onItemRangeRemoved(positionStart, itemCount);
+            headerStore.addHeader();
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
             headerStore.onItemRangeInserted(positionStart, itemCount);
+            headerStore.addHeader();
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
             headerStore.onItemRangeMoved(fromPosition, toPosition, itemCount);
+            headerStore.addHeader();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
             headerStore.onItemRangeChanged(positionStart, itemCount);
+            headerStore.addHeader();
         }
     }
 

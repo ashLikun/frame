@@ -237,7 +237,7 @@ public class CharBar extends View {
     }
 
     // 向外公开的方法
-    public void SetOnTouchLetterChangedListener(
+    public void setOnTouchLetterChangedListener(
             OnTouchLetterChangedListener onTouchLetterChangedListener) {
         this.onTouchLetterChangedListener = onTouchLetterChangedListener;
     }
