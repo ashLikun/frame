@@ -84,6 +84,7 @@ public class CharBar extends View {
     }
 
     public void addAllChar(List<String> c) {
+        boolean isLayout = c.size() != letter.size();
         letter.clear();
         for (String cc : c) {
             if (!letter.contains(cc)) {
@@ -92,7 +93,10 @@ public class CharBar extends View {
         }
         if (!letter.contains("#"))
             letter.add("#");
-        invalidate();
+        if (isLayout)
+            requestLayout();
+        else
+            invalidate();
     }
 
     @Override
@@ -111,6 +115,7 @@ public class CharBar extends View {
     Paint.FontMetrics fontMetricsSelect = null;
 
     private void setPaintTextSize(int height) {
+        if (height <= 0) return;
         // 获取组件可绘制的大小
         // 获取每一个字母的高度
         letterHeight = (height) / letter.size();

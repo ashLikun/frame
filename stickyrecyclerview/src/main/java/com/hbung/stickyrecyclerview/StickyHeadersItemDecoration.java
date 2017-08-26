@@ -36,7 +36,6 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         this.drawOrder = drawOrder;
         this.headerStore = headerStore;
         this.adapterDataObserver = new AdapterDataObserver();
-        this.headerStore.addHeader();
     }
 
     @Override
