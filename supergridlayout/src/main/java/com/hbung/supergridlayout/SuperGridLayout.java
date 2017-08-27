@@ -9,7 +9,6 @@ import android.widget.GridLayout;
 
 import com.ashlikun.adapter.ViewHolder;
 import com.ashlikun.adapter.recyclerview.BaseAdapter;
-import com.ashlikun.adapter.recyclerview.CommonAdapter;
 
 import java.util.List;
 
@@ -71,7 +70,7 @@ public class SuperGridLayout extends GridLayout {
     }
 
 
-    public void setAdapter(CommonAdapter adapter) {
+    public void setAdapter(BaseAdapter adapter) {
         this.adapter = adapter;
         addAllView();
 

@@ -5,10 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.ashlikun.adapter.ViewHolder;
 import com.ashlikun.adapter.recyclerview.BaseAdapter;
 import com.google.android.flexbox.FlexboxLayout;
-import com.ashlikun.adapter.ViewHolder;
-import com.ashlikun.adapter.recyclerview.CommonAdapter;
 
 import java.util.List;
 
@@ -62,7 +61,7 @@ public class SuperFlexboxLayout extends FlexboxLayout {
     }
 
 
-    public void setAdapter(CommonAdapter adapter) {
+    public void setAdapter(BaseAdapter adapter) {
         this.adapter = adapter;
         addAllView();
 
