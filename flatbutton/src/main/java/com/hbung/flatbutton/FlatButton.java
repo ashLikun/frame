@@ -74,9 +74,7 @@ public class FlatButton extends TextView {
         clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
         setClickable(true);//默认可以点击
         if (!isUseBackground) {
-            if (!isInEditMode()) {
-                setBackgroundCompat(getStateListDrawable());
-            }
+            setBackgroundCompat(getStateListDrawable());
         }
     }
 

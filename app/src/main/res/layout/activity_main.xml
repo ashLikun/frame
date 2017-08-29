@@ -5,54 +5,26 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
     android:orientation="vertical"
     tools:context="utils.hbung.com.utils.MainActivity">
 
     <com.hbung.supertoobar.SupperToolBar
         android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/Toolbar"
-        ></com.hbung.supertoobar.SupperToolBar>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.hbung.supertoobar.SupperToolBar>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/dp_10"
         android:background="@color/black"></View>
-
-    <com.hbung.superwebview.HorizontalProgress
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:visibility="gone"></com.hbung.superwebview.HorizontalProgress>
-
-    <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/actionButton"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/progressBar"
-        android:layout_gravity="center"
-        android:layout_marginLeft="39dp"
-        android:layout_marginRight="39dp"
-        android:layout_marginTop="@dimen/dp_10"
-        android:enabled="true"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="马上申请"
-        app:clickDelay="2000"
-        app:colorPressed="#ff00ff00"
-        app:colorPressedText="#ff999999"
-        app:colorRipple="@color/webview_progress_button_stroke_color"
-        app:cornerRadius="20dp"
-        app:strokeColor="@color/webview_progress_button_stroke_color"
-        app:strokeWidth="1dp"></com.hbung.flatbutton.FlatButton>
 
     <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/actionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/actionButton"
-        android:layout_centerHorizontal="true"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -61,29 +33,8 @@
         android:textColor="@color/webview_progress_button_default_color"
         app:clickDelay="200"
         app:colorPressed="#ffaaaaaa"
-        app:cornerRadius="4dp"
-        app:strokeColor="@color/webview_progress_button_stroke_color"
-        app:strokeWidth="1dp"></com.hbung.flatbutton.FlatButton>
-
-    <com.hbung.segmentcontrol.SegmentControlInterior xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/segment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/actionButton2"
-        android:textSize="16sp"
-        app:sci_corner_radius="@dimen/dp_10"
-        app:sci_gaps="@dimen/dp_20"
-        app:sci_gradual_color2="@color/red"
-        app:sci_texts="我的二维码|消息|2222"></com.hbung.segmentcontrol.SegmentControlInterior>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="测试DrawableUtils" />
-
-    <utils.hbung.com.utils.PathView
-        android:layout_width="200dp"
-        android:layout_height="10dp" />
+        app:cornerRadius="10dp"
+        app:strokeColor="@color/red"
+        app:strokeWidth="2dp"></com.hbung.flatbutton.FlatButton>
 
 </LinearLayout>
