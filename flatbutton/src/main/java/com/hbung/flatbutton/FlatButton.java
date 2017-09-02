@@ -78,7 +78,7 @@ public class FlatButton extends TextView {
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
         clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
-        isUseTextColorList = attr.getBoolean(R.styleable.FlatButton_fb_textColorList, isUseTextColorList);
+        isUseTextColorList = attr.getBoolean(R.styleable.FlatButton_isUseTextColorList, isUseTextColorList);
         setClickable(true);//默认可以点击
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -228,6 +228,14 @@ public class FlatButton extends TextView {
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
         }
+    }
+    //默认文字颜色
+
+
+    @Override
+    public void setTextColor(@ColorRes int textColor) {
+        this.textColor = getColor(textColor);
+        super.setTextColor(this.textColor);
     }
 
     //设置文字按下的颜色
