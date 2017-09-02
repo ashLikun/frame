@@ -8,12 +8,16 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Parcelable;
+import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-/**N
+/**
+ * N
  * <attr name="ab_strokeWidth" format="dimension" />
  * <attr name="ab_strokeColor" format="color" />
  * <attr name="ab_outColor" format="color" />
@@ -73,14 +77,28 @@ public class AnimCheckBox extends View {
 
     public AnimCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray array = getContext().getTheme().obtainStyledAttributes(new int[]{
-                android.R.attr.colorPrimary
-        });
-        textColor = array.getColor(0, 0xff0000);
-        mStrokeColor = array.getColor(0, 0xff0000);
-        mOutCircleColor = array.getColor(0, 0xff0000);
-        array.recycle();
+        //4.4的颜色
+        int colorAccent = resolveColor(context,
+                R.attr.colorAccent, 0xff0000);
+        //5.0以上的颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            colorAccent = resolveColor(context,
+                    android.R.attr.colorAccent, colorAccent);
+        }
+        textColor = colorAccent;
+        mStrokeColor = colorAccent;
+        mOutCircleColor = colorAccent;
         init(attrs);
+    }
+
+    @ColorInt
+    public int resolveColor(Context context, @AttrRes int attr, int fallback) {
+        TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{attr});
+        try {
+            return a.getColor(0, fallback);
+        } finally {
+            a.recycle();
+        }
     }
 
     private void init(AttributeSet attrs) {
