@@ -9,6 +9,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -33,12 +35,15 @@ public class FlatButton extends TextView {
     private int colorPressedText;
     //默认的颜色
     private int colorNormal;
+    private int textColor;
     //不可用的颜色
     private int colorEnable;
     private int colorEnableText;
     //水波纹颜色
     private int colorRipple;
     private long clickDelay = 0;
+    //textColor是否使用ColorStateList
+    private boolean isUseTextColorList = true;
 
 
     private long lastClickTime = 0;
@@ -67,11 +72,13 @@ public class FlatButton extends TextView {
         strokeWidth = attr.getDimension(R.styleable.FlatButton_strokeWidth, strokeWidth);
         colorPressed = attr.getColor(R.styleable.FlatButton_colorPressed, 0xffeeeeee);
         colorNormal = attr.getColor(R.styleable.FlatButton_colorNormal, Color.TRANSPARENT);
+        textColor = attr.getColor(R.styleable.FlatButton_android_textColor, Color.GRAY);
         colorPressedText = attr.getColor(R.styleable.FlatButton_colorPressedText, getCurrentTextColor());
         colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
         clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
+        isUseTextColorList = attr.getBoolean(R.styleable.FlatButton_fb_textColorList, isUseTextColorList);
         setClickable(true);//默认可以点击
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -93,7 +100,9 @@ public class FlatButton extends TextView {
                     createEnableDrawable());
             drawable.addState(new int[]{}, createNormalDrawable());
             //文字的颜色
-            setTextColor(getColorStateList(getCurrentTextColor(), colorEnableText, colorPressedText));
+            if (isUseTextColorList) {
+                setTextColor(getColorStateList());
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{colorRipple});
                 return new RippleDrawable(colorList, drawable, createRippleDrawable());
@@ -136,15 +145,15 @@ public class FlatButton extends TextView {
         return drawablePressed;
     }
 
-    protected Drawable getDrawable(int id) {
+    public Drawable getDrawable(int id) {
         return getResources().getDrawable(id);
     }
 
-    protected float getDimension(int id) {
+    public float getDimension(int id) {
         return getResources().getDimension(id);
     }
 
-    protected int getColor(int id) {
+    public int getColor(int id) {
         return getResources().getColor(id);
     }
 
@@ -157,54 +166,88 @@ public class FlatButton extends TextView {
     }
 
 
-    /**
-     * Set the View's background. Masks the API changes made in Jelly Bean.
-     *
-     * @param drawable
-     */
     public void setBackgroundCompat(Drawable drawable) {
-        int pL = getPaddingLeft();
-        int pT = getPaddingTop();
-        int pR = getPaddingRight();
-        int pB = getPaddingBottom();
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             setBackground(drawable);
         } else {
             setBackgroundDrawable(drawable);
         }
-        setPadding(pL, pT, pR, pB);
     }
 
-
-    public void setColorPressed(int colorPressed) {
-        this.colorPressed = colorPressed;
+    //背景  设置默认的颜色
+    public void setColorNormal(@ColorRes int colorNormal) {
+        this.colorNormal = getColor(colorNormal);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
         }
     }
 
-    public void setColorNormal(int colorNormal) {
-        this.colorNormal = colorNormal;
+    //背景   设置按下的颜色
+    public void setColorPressed(@ColorRes int colorPressed) {
+        this.colorPressed = getColor(colorPressed);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
         }
     }
 
-    public void setColorPressedText(int colorPressedText) {
-        this.colorPressedText = colorPressedText;
+    //背景，设置不可用的颜色
+    public void setColorEnable(@ColorRes int colorEnable) {
+        this.colorEnable = getColor(colorEnable);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
         }
     }
 
-
-    public void setColorRipple(int colorRipple) {
-        this.colorRipple = colorRipple;
+    //设置水波纹颜色
+    public void setColorRipple(@ColorRes int colorRipple) {
+        this.colorRipple = getColor(colorRipple);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
         }
+    }
+
+    //设置圆角
+    public void setCornerRadius(@DimenRes int cornerRadius) {
+        this.cornerRadius = getDimension(cornerRadius);
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
+    }
+
+    //设置边框颜色
+    public void setStrokeColor(@ColorRes int strokeColor) {
+        this.strokeColor = getColor(strokeColor);
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
+    }
+
+    //设置边框大小
+    public void setStrokeWidth(@DimenRes int strokeWidth) {
+        this.strokeWidth = getDimension(strokeWidth);
+        if (!isUseBackground) {
+            setBackgroundCompat(getStateListDrawable());
+        }
+    }
+
+    //设置文字按下的颜色
+    public void setColorPressedText(@ColorRes int colorPressedText) {
+        this.colorPressedText = getColor(colorPressedText);
+        if (isUseTextColorList)
+            setTextColor(getColorStateList());
+    }
+
+    //设置按钮不可用 时候  文字颜色
+    public void setColorEnableText(@ColorRes int colorEnableText) {
+        this.colorEnableText = getColor(colorEnableText);
+        if (isUseTextColorList)
+            setTextColor(getColorStateList());
+    }
+
+    public void setUseTextColorList(boolean useTextColorList) {
+        isUseTextColorList = useTextColorList;
+        if (isUseTextColorList)
+            setTextColor(getColorStateList());
     }
 
     //设置是否使用外部设置的background
@@ -212,19 +255,9 @@ public class FlatButton extends TextView {
         isUseBackground = useBackground;
     }
 
-    public void setCornerRadius(float cornerRadius) {
-        this.cornerRadius = cornerRadius;
-    }
 
-    public void setStrokeColor(int strokeColor) {
-        this.strokeColor = strokeColor;
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
-    }
-
-    public void setStrokeWidth(float strokeWidth) {
-        this.strokeWidth = strokeWidth;
+    public void setClickDelay(long clickDelay) {
+        this.clickDelay = clickDelay;
     }
 
     /**
@@ -238,7 +271,10 @@ public class FlatButton extends TextView {
         return (int) (dipValue * scale + 0.5f);
     }
 
-    private ColorStateList getColorStateList(int normal, int enable, int pressed) {
+    private ColorStateList getColorStateList() {
+        int normal = textColor;
+        int enable = colorEnableText;
+        int pressed = colorPressedText;
         int[] colors = new int[]{pressed, enable, normal};
         int[][] states = new int[3][];
         states[0] = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};

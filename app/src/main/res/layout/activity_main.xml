@@ -21,7 +21,7 @@
         android:background="@color/black"></View>
 
     <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/actionButton2"
+        android:id="@+id/actionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/actionButton"
@@ -30,9 +30,10 @@
         android:paddingRight="20dp"
         android:paddingTop="10dp"
         android:text="重新加载"
-        android:textColor="@color/webview_progress_button_default_color"
+        android:textColor="#ffff0000"
         app:clickDelay="200"
         app:colorPressed="#ffaaaaaa"
+        app:colorPressedText="@color/black"
         app:cornerRadius="10dp"
         app:strokeColor="@color/red"
         app:strokeWidth="2dp"></com.hbung.flatbutton.FlatButton>
