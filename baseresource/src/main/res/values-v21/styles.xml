@@ -5,7 +5,7 @@
     <attr name="SwipeRefreshLayout_Color3" format="color"></attr>
     <attr name="SwipeRefreshLayout_Color4" format="color"></attr>
     <!-- ****************************************主题 开始**************************************-->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -28,7 +28,8 @@
         <item name="SwipeRefreshLayout_Color4">#ffFBBC05</item>
 
     </style>
-
+    <!--其他使用者可自定义-->
+    <style name="AppTheme" parent="BaseTheme"></style>
     <!-- **************************************** 主题结束**************************************-->
 
 

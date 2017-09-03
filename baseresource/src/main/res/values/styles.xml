@@ -5,7 +5,7 @@
     <attr name="SwipeRefreshLayout_Color3" format="color"></attr>
     <attr name="SwipeRefreshLayout_Color4" format="color"></attr>
     <!-- ****************************************主题 开始************************************Theme.AppCompat.Light.NoActionBar**-->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -25,25 +25,28 @@
         <item name="SwipeRefreshLayout_Color4">#ffFBBC05</item>
     </style>
 
-    <style name="AppTheme.Fullscreen" parent="AppTheme">
+    <!--其他使用者可自定义-->
+    <style name="AppTheme" parent="BaseTheme"></style>
+
+    <style name="AppTheme.Fullscreen">
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="AppTheme.Translucent" parent="AppTheme">
+    <style name="AppTheme.Translucent">
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="AppTheme.MainTheme" parent="AppTheme">
+    <style name="AppTheme.MainTheme">
         <item name="android:windowAnimationStyle">@style/MainAnimation</item>
     </style>
 
 
-    <style name="AppTheme.OtherTheme" parent="AppTheme">
+    <style name="AppTheme.OtherTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/OtherAnimation</item>
     </style>
 
-    <style name="AppTheme.PhotoBrowse" parent="AppTheme">
+    <style name="AppTheme.PhotoBrowse">
         <item name="android:windowBackground">@color/photo_browse</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
