@@ -79,11 +79,11 @@ public class AnimCheckBox extends View {
         super(context, attrs);
         //4.4的颜色
         int colorAccent = resolveColor(context,
-                R.attr.colorAccent, 0xff0000);
+                R.attr.colorPrimary, 0xff0000);
         //5.0以上的颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorAccent = resolveColor(context,
-                    android.R.attr.colorAccent, colorAccent);
+                    android.R.attr.colorPrimary, colorAccent);
         }
         textColor = colorAccent;
         mStrokeColor = colorAccent;
