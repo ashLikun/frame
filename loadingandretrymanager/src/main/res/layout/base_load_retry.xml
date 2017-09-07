@@ -32,8 +32,7 @@
         android:paddingRight="20dp"
         android:paddingTop="10dp"
         android:text="点击重试"
-        android:textColor="@android:color/black"
-        ></com.hbung.flatbutton.FlatButton>
+        android:textColor="?colorPrimary"></com.hbung.flatbutton.FlatButton>
 
 
 </LinearLayout>

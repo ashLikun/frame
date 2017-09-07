@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="  载入中..."
-        android:textColor="@android:color/black"
+        android:textColor="?colorPrimary"
         android:textSize="14sp" />
 </LinearLayout>
