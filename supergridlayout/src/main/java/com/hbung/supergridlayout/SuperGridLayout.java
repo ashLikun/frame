@@ -92,7 +92,7 @@ public class SuperGridLayout extends GridLayout {
         for (int i = 0; i < adapter.getItemCount(); i++) {
             ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), i);
             View view = holder.itemView;
-            view.setTag(10010, holder);
+            view.setTag(view.getId(), holder);
             addViewInLayout(view, 0, generateDefaultLayoutParams(), true);
         }
     }
@@ -107,7 +107,7 @@ public class SuperGridLayout extends GridLayout {
             for (int i = getChildCount(); i < adapter.getItemCount(); i++) {
                 ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), i);
                 View view = holder.itemView;
-                view.setTag(10010, holder);
+                view.setTag(view.getId(), holder);
                 addViewInLayout(view, getChildCount(), generateDefaultLayoutParams(), true);
             }
         }
@@ -145,9 +145,9 @@ public class SuperGridLayout extends GridLayout {
             for (int i = 0; i < getChildCount(); i++) {
                 View view = getChildAt(i);
                 view.setLayoutParams(generateDefaultLayoutParams((LayoutParams) view.getLayoutParams(), i));
-                if ((view.getTag(-2) == null || !(Boolean) view.getTag(-2)) && view.getTag(10010) instanceof ViewHolder) {
+                if ((view.getTag(-2) == null || !(Boolean) view.getTag(-2)) && view.getTag(view.getId()) instanceof ViewHolder) {
                     view.setTag(-2, true);
-                    adapter.convert((ViewHolder) view.getTag(10010), adapter.getItemData(i));
+                    adapter.convert((ViewHolder) view.getTag(view.getId()), adapter.getItemData(i));
                     view.setOnClickListener(new MyOnClickListener(i, adapter.getItemData(i)));
                 }
             }
