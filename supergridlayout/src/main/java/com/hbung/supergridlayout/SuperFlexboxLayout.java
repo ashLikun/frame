@@ -81,8 +81,9 @@ public class SuperFlexboxLayout extends FlexboxLayout {
     private void addAllView() {
         removeAllViews();
         for (int i = 0; i < adapter.getItemCount(); i++) {
-            ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getLayoutId(), i);
-            View view = holder.getConvertView();
+            ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), i);
+            View view = holder.itemView;
+            view.setTag(10010, holder);
             addView(view);
         }
     }
@@ -95,8 +96,9 @@ public class SuperFlexboxLayout extends FlexboxLayout {
             removeViews(adapter.getItemCount(), getChildCount() - adapter.getItemCount());
         } else if (getChildCount() < adapter.getItemCount()) {
             for (int i = getChildCount(); i < adapter.getItemCount(); i++) {
-                ViewHolder holder = ViewHolder.get(getContext(), null, this, adapter.getLayoutId(), i);
-                View view = holder.getConvertView();
+                ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), i);
+                View view = holder.itemView;
+                view.setTag(10010, holder);
                 addView(view);
             }
         }
@@ -133,9 +135,9 @@ public class SuperFlexboxLayout extends FlexboxLayout {
         if (width != 0 && getChildCount() > 0) {
             for (int i = 0; i < getChildCount(); i++) {
                 View view = getChildAt(i);
-                if ((view.getTag(-2) == null || !(Boolean) view.getTag(-2)) && view.getTag(view.getId()) instanceof ViewHolder) {
+                if ((view.getTag(-2) == null || !(Boolean) view.getTag(-2)) && view.getTag(10010) instanceof ViewHolder) {
                     view.setTag(-2, true);
-                    adapter.convert((ViewHolder) view.getTag(view.getId()), adapter.getItemData(i));
+                    adapter.convert((ViewHolder) view.getTag(10010), adapter.getItemData(i));
                     if (onItemClickListener != null) {
                         view.setOnClickListener(new MyOnClickListener(i, adapter.getItemData(i)));
                     }
