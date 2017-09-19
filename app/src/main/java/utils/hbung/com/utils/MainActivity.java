@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 //            public void onClick(View v) {
 //            }
 //        });
+        setContentView(R.layout.activity_main);
     }
 
     @Override

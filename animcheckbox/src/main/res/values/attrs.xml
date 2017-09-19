@@ -8,8 +8,14 @@
         <attr name="ab_isSelect" format="boolean" />
         <attr name="ab_isCircle" format="boolean" />
         <attr name="ab_autoSelect" format="boolean" />
-        <attr name="ab_text" format="string" />
+        <attr name="ab_text" format="string|reference" />
         <attr name="ab_textSize" format="dimension" />
         <attr name="ab_textColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="CheckBoxGroup">
+        <attr name="abg_texts" format="string|reference" />
+        <attr name="abg_check_padding" format="dimension" />
+        <attr name="abg_space" format="dimension" />
+        <attr name="android:orientation" />
     </declare-styleable>
 </resources>
