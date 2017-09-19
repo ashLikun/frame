@@ -11,17 +11,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.base_load_retry);
-//        SupperToolBar toolBar = (SupperToolBar) findViewById(R.id.toolBar);
-//        toolBar.setBack(this);
-//        toolBar.setTitle("aaaa");
-//        findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
-
+        setContentView(R.layout.activity_main);
     }
 
     @Override

@@ -16,6 +16,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * N
  * <attr name="ab_strokeWidth" format="dimension" />
@@ -45,7 +48,7 @@ public class AnimCheckBox extends View {
     private float mEndLeftHookOffset;
     private float mEndRightHookOffset;
     private int size;
-    private boolean mChecked = true;
+    private boolean mChecked = false;
     private float mHookOffset;
     private float mHookSize;
     private int mInnerCircleAlpha = 0XFF;
@@ -65,7 +68,7 @@ public class AnimCheckBox extends View {
     private int mOutCircleColor;
     private int mCircleColor = 0xffeeeeee;
     private final int defaultSize = 40;
-    private OnCheckedChangeListener mOnCheckedChangeListener;
+    private List<OnCheckedChangeListener> mOnCheckedChangeListener;
 
 
     private boolean isAutoSelect = true;
@@ -111,8 +114,8 @@ public class AnimCheckBox extends View {
             mStrokeColor = array.getColor(R.styleable.AnimCheckBox_ab_strokeColor, mStrokeColor);
             mCircleColor = array.getColor(R.styleable.AnimCheckBox_ab_circleColor, mCircleColor);
             mOutCircleColor = array.getColor(R.styleable.AnimCheckBox_ab_outColor, mOutCircleColor);
-            mChecked = array.getBoolean(R.styleable.AnimCheckBox_ab_isSelect, false);
-            isCircle = array.getBoolean(R.styleable.AnimCheckBox_ab_isCircle, true);
+            mChecked = array.getBoolean(R.styleable.AnimCheckBox_ab_isSelect, mChecked);
+            isCircle = array.getBoolean(R.styleable.AnimCheckBox_ab_isCircle, isCircle);
             isAutoSelect = array.getBoolean(R.styleable.AnimCheckBox_ab_autoSelect, isAutoSelect);
             text = array.getString(R.styleable.AnimCheckBox_ab_text);
             textSize = array.getDimension(R.styleable.AnimCheckBox_ab_textSize, sip((int) textSize));
@@ -149,7 +152,10 @@ public class AnimCheckBox extends View {
                     if (isAutoSelect) {
                         setChecked(!mChecked);
                         if (mOnCheckedChangeListener != null) {
-                            mOnCheckedChangeListener.onChange(AnimCheckBox.this, mChecked);
+                            for (int i = 0; i < mOnCheckedChangeListener.size(); i++) {
+                                mOnCheckedChangeListener.get(i).onChange(AnimCheckBox.this, mChecked);
+                            }
+
                         }
                     }
                 }
@@ -492,13 +498,10 @@ public class AnimCheckBox extends View {
         super.onRestoreInstanceState(state);
     }
 
-    /**
-     * setOnCheckedChangeListener
-     *
-     * @param listener the OnCheckedChangeListener listener
-     */
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        this.mOnCheckedChangeListener = listener;
+
+    public void addOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        if (mOnCheckedChangeListener == null) mOnCheckedChangeListener = new ArrayList<>();
+        mOnCheckedChangeListener.add(listener);
     }
 
     public interface OnCheckedChangeListener {
