@@ -49,7 +49,7 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
                     item.setChecked(!checked);
                 } else {
                     for (int j = 0; j < onSingleSelectListener.size(); j++) {
-                        onSingleSelectListener.get(i).onSingleSelect(checkBox, i);
+                        onSingleSelectListener.get(j).onSingleSelect(checkBox, j);
                     }
                 }
             }
