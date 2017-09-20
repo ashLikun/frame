@@ -16,6 +16,7 @@
         <attr name="abg_texts" format="string|reference" />
         <attr name="abg_check_padding" format="dimension" />
         <attr name="abg_space" format="dimension" />
+        <attr name="abg_select_index" format="integer" />
         <attr name="android:orientation" />
     </declare-styleable>
 </resources>

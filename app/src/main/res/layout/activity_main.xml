@@ -42,6 +42,7 @@
         android:layout_width="10dp"
         android:layout_height="40dp"
         android:orientation="vertical"
+        app:abg_select_index="2"
         app:abg_space="@dimen/dp_10"
         app:abg_texts="啊|2222|3"></com.hbung.animcheckbox.CheckBoxGroup>
 </LinearLayout>

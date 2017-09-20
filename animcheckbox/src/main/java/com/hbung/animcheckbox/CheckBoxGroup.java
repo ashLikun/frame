@@ -20,6 +20,7 @@ public class CheckBoxGroup extends ViewGroup {
     private String[] title;
     private int mCheckPadding;
     private int mSpace;
+    private int mSelectIndex;
     private int mOrientation = LinearLayout.HORIZONTAL;
     AnimCheckSingleHelp singleHelp;
 
@@ -47,6 +48,7 @@ public class CheckBoxGroup extends ViewGroup {
         String text = array.getString(R.styleable.CheckBoxGroup_abg_texts);
         mCheckPadding = array.getDimensionPixelSize(R.styleable.CheckBoxGroup_abg_check_padding, dip(10));
         mSpace = array.getDimensionPixelSize(R.styleable.CheckBoxGroup_abg_space, 0);
+        mSelectIndex = array.getInt(R.styleable.CheckBoxGroup_abg_select_index, -1);
         array.recycle();
         setTexts(text);
     }
@@ -60,6 +62,12 @@ public class CheckBoxGroup extends ViewGroup {
             AnimCheckBox box = new AnimCheckBox(getContext());
             box.setPadding(mCheckPadding, mCheckPadding, mCheckPadding, mCheckPadding);
             box.setText(t);
+            if (i == mSelectIndex) {
+                if (title.length > 2) {
+                    box.setAutoSelect(false);
+                }
+                box.setChecked(true, false);
+            }
             addView(box);
             singleHelp.addAnimCheckBox(box);
         }

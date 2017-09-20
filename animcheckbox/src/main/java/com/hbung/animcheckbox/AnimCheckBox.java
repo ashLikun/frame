@@ -71,7 +71,7 @@ public class AnimCheckBox extends View {
     private List<OnCheckedChangeListener> mOnCheckedChangeListener;
 
 
-    private boolean isAutoSelect = true;
+    private boolean isAutoSelect = false;
     private boolean isOnLayout = false;
 
     public AnimCheckBox(Context context) {
@@ -108,6 +108,7 @@ public class AnimCheckBox extends View {
         if (android.os.Build.VERSION.SDK_INT >= 11) {
             setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
+        boolean autoSelect = true;
         if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.AnimCheckBox);
             mStrokeWidth = (int) array.getDimension(R.styleable.AnimCheckBox_ab_strokeWidth, dip(mStrokeWidth));
@@ -116,20 +117,11 @@ public class AnimCheckBox extends View {
             mOutCircleColor = array.getColor(R.styleable.AnimCheckBox_ab_outColor, mOutCircleColor);
             mChecked = array.getBoolean(R.styleable.AnimCheckBox_ab_isSelect, mChecked);
             isCircle = array.getBoolean(R.styleable.AnimCheckBox_ab_isCircle, isCircle);
-            isAutoSelect = array.getBoolean(R.styleable.AnimCheckBox_ab_autoSelect, isAutoSelect);
+            autoSelect = array.getBoolean(R.styleable.AnimCheckBox_ab_autoSelect, autoSelect);
             text = array.getString(R.styleable.AnimCheckBox_ab_text);
             textSize = array.getDimension(R.styleable.AnimCheckBox_ab_textSize, sip((int) textSize));
             textColor = array.getColor(R.styleable.AnimCheckBox_ab_textColor, textColor);
             array.recycle();
-            if (mChecked) {
-                mInnerCircleAlpha = 0xFF;
-                mSweepAngle = 0.0000001f;
-                mHookOffset = mHookSize + mEndLeftHookOffset - mBaseLeftHookOffset;
-            } else {
-                mInnerCircleAlpha = 0x00;
-                mSweepAngle = 360;
-                mHookOffset = 0;
-            }
         } else {
             mStrokeWidth = dip(mStrokeWidth);
             textSize = sip((int) textSize);
@@ -139,13 +131,23 @@ public class AnimCheckBox extends View {
         mPaint.setColor(mStrokeColor);
         mBroadPath = new Path();
         mPathTemp = new Path();
-        setAutoSelect(isAutoSelect);
+        setAutoSelect(autoSelect);
+        if (mChecked) {
+            mInnerCircleAlpha = 0xFF;
+            mSweepAngle = 0.000001f;
+            mHookOffset = mHookSize + mEndLeftHookOffset - mBaseLeftHookOffset;
+        } else {
+            mInnerCircleAlpha = 0x00;
+            mSweepAngle = 360;
+            mHookOffset = 0.000001f;
+        }
 
     }
 
     public void setAutoSelect(boolean autoSelect) {
+        if (isAutoSelect == autoSelect) return;
         isAutoSelect = autoSelect;
-        if (autoSelect) {
+        if (isAutoSelect) {
             setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

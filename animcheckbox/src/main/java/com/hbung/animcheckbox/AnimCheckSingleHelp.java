@@ -42,16 +42,33 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
 
     @Override
     public void onChange(AnimCheckBox checkBox, boolean checked) {
+        int selectIndex = -1;
+        if (checked && getSize() > 2) {
+            checkBox.setAutoSelect(false);
+        }
         if (checked) {
             for (int i = 0; i < boxs.size(); i++) {
                 AnimCheckBox item = boxs.get(i);
                 if (item != checkBox) {
-                    item.setChecked(!checked);
+                    item.setAutoSelect(true);
+                    item.setChecked(false);
                 } else {
-                    for (int j = 0; j < onSingleSelectListener.size(); j++) {
-                        onSingleSelectListener.get(j).onSingleSelect(checkBox, j);
-                    }
+                    selectIndex = i;
                 }
+            }
+        } else if (getSize() == 2) {
+            for (int i = 0; i < boxs.size(); i++) {
+                AnimCheckBox item = boxs.get(i);
+                if (item != checkBox) {
+                    item.setChecked(true);
+                    selectIndex = i;
+                }
+            }
+        }
+
+        if (selectIndex >= 0) {
+            for (int j = 0; j < onSingleSelectListener.size(); j++) {
+                onSingleSelectListener.get(j).onSingleSelect(checkBox, selectIndex);
             }
         }
     }
@@ -60,6 +77,12 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
     public void clean() {
         if (boxs != null)
             boxs.clear();
+    }
+
+    public int getSize() {
+        if (boxs != null)
+            return boxs.size();
+        return 0;
     }
 
     public void addOnSingleSelectListener(OnSingleSelectListener onSingleSelectListener) {
