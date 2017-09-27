@@ -55,7 +55,6 @@ dependencies {
     compile 'com.github.ashLikun:XRecycleView:1.0.1'
     compile project(':stickyrecyclerview')
     compile project(':flatbutton')
-    compile project(':loadingandretrymanager')
     compile project(':numberprogressbar')
     compile project(':segmentcontrol')
     compile project(':supergridlayout')
