@@ -31,6 +31,7 @@ import java.util.List;
  * <attr name="ab_text" format="string" />
  * <attr name="ab_textSize" format="dimension" />
  * <attr name="ab_textColor" format="color" />
+ * <attr name="ab_textNoSelectColor" format="color" />
  */
 public class AnimCheckBox extends View {
     private final String TAG = "AnimCheckBox";
@@ -63,6 +64,7 @@ public class AnimCheckBox extends View {
     private float textSize = 16;
     private float textSpace = 5;
     private int textColor;
+    private int textNoSelectColor;
 
     private int mStrokeColor;
     private int mOutCircleColor;
@@ -81,16 +83,16 @@ public class AnimCheckBox extends View {
     public AnimCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
         //4.4的颜色
-        int colorAccent = resolveColor(context,
+        int colorPrimary = resolveColor(context,
                 R.attr.colorPrimary, 0xff0000);
         //5.0以上的颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            colorAccent = resolveColor(context,
-                    android.R.attr.colorPrimary, colorAccent);
+            colorPrimary = resolveColor(context,
+                    android.R.attr.colorPrimary, colorPrimary);
         }
-        textColor = colorAccent;
-        mStrokeColor = colorAccent;
-        mOutCircleColor = colorAccent;
+        textColor = colorPrimary;
+        mStrokeColor = colorPrimary;
+        mOutCircleColor = colorPrimary;
         init(attrs);
     }
 
@@ -119,12 +121,13 @@ public class AnimCheckBox extends View {
             isCircle = array.getBoolean(R.styleable.AnimCheckBox_ab_isCircle, isCircle);
             autoSelect = array.getBoolean(R.styleable.AnimCheckBox_ab_autoSelect, autoSelect);
             text = array.getString(R.styleable.AnimCheckBox_ab_text);
-            textSize = array.getDimension(R.styleable.AnimCheckBox_ab_textSize, sip((int) textSize));
+            textSize = array.getDimension(R.styleable.AnimCheckBox_ab_textSize, dip((int) textSize));
             textColor = array.getColor(R.styleable.AnimCheckBox_ab_textColor, textColor);
+            textNoSelectColor = array.getColor(R.styleable.AnimCheckBox_ab_textNoSelectColor, textColor);
             array.recycle();
         } else {
             mStrokeWidth = dip(mStrokeWidth);
-            textSize = sip((int) textSize);
+            textSize = dip((int) textSize);
         }
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(mStrokeWidth);
@@ -360,7 +363,7 @@ public class AnimCheckBox extends View {
 
     private void initDrawTextPaint() {
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(textColor);
+        mPaint.setColor(mChecked ? textColor : textNoSelectColor);
         mPaint.setAlpha(0xff);
         mPaint.setTextAlign(Paint.Align.LEFT);
         mPaint.setTextSize(textSize);
@@ -440,19 +443,34 @@ public class AnimCheckBox extends View {
         invalidate();
     }
 
-    /**
-     * setChecked with Animation
-     *
-     * @param checked true if checked, false if unchecked
-     */
+
+    public void setTextSize(float textSize) {
+        this.textSize = textSize;
+        invalidate();
+
+    }
+
+    public void setTextSpace(float textSpace) {
+        this.textSpace = textSpace;
+        invalidate();
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+        this.textNoSelectColor = textColor;
+        invalidate();
+    }
+
+    public void setTextNoSelectColor(int textNoSelectColor) {
+        this.textNoSelectColor = textNoSelectColor;
+        invalidate();
+    }
+
     public void setChecked(boolean checked) {
         setChecked(checked, true);
     }
 
-    /**
-     * @param checked   true if checked, false if unchecked
-     * @param animation true with animation,false without animation
-     */
+
     public void setChecked(boolean checked, boolean animation) {
         if (checked == this.mChecked) {
             return;
@@ -484,11 +502,6 @@ public class AnimCheckBox extends View {
         return (int) getContext().getResources().getDisplayMetrics().density * dip;
     }
 
-    private int sip(int sip) {
-        final float fontScale = getResources().getDisplayMetrics().scaledDensity;
-
-        return (int) (sip * fontScale + 0.5f);
-    }
 
     @Override
     protected Parcelable onSaveInstanceState() {

@@ -22,6 +22,9 @@ public class CheckBoxGroup extends ViewGroup {
     private int mSpace;
     private int mSelectIndex;
     private int mOrientation = LinearLayout.HORIZONTAL;
+    private float textSize = 16;
+    private int textColor;
+    private int textNoSelectColor;
     AnimCheckSingleHelp singleHelp;
 
     public CheckBoxGroup(Context context) {
@@ -49,6 +52,9 @@ public class CheckBoxGroup extends ViewGroup {
         mCheckPadding = array.getDimensionPixelSize(R.styleable.CheckBoxGroup_abg_check_padding, dip(10));
         mSpace = array.getDimensionPixelSize(R.styleable.CheckBoxGroup_abg_space, 0);
         mSelectIndex = array.getInt(R.styleable.CheckBoxGroup_abg_select_index, -1);
+        textSize = array.getDimension(R.styleable.CheckBoxGroup_abg_textSize, -1);
+        textColor = array.getColor(R.styleable.CheckBoxGroup_abg_textColor, -1);
+        textNoSelectColor = array.getColor(R.styleable.CheckBoxGroup_abg_textColor, -1);
         array.recycle();
         setTexts(text);
     }
@@ -62,6 +68,15 @@ public class CheckBoxGroup extends ViewGroup {
             AnimCheckBox box = new AnimCheckBox(getContext());
             box.setPadding(mCheckPadding, mCheckPadding, mCheckPadding, mCheckPadding);
             box.setText(t);
+            if (textColor != -1) {
+                box.setTextColor(textColor);
+            }
+            if (textNoSelectColor != -1) {
+                box.setTextNoSelectColor(textNoSelectColor);
+            }
+            if (textSize != -1) {
+                box.setTextSize(textSize);
+            }
             if (i == mSelectIndex) {
                 if (title.length > 2) {
                     box.setAutoSelect(false);
@@ -156,6 +171,28 @@ public class CheckBoxGroup extends ViewGroup {
             title = str.split("\\|");
             addViews();
         }
+    }
+
+    public void setCheckPadding(int mCheckPadding) {
+        this.mCheckPadding = mCheckPadding;
+        requestLayout();
+    }
+
+
+    public void setSpace(int mSpace) {
+        this.mSpace = mSpace;
+        addViews();
+        requestLayout();
+    }
+
+    public void setSelectIndex(int mSelectIndex) {
+        this.mSelectIndex = mSelectIndex;
+        addViews();
+        requestLayout();
+    }
+
+    public int getSelectIndex() {
+        return mSelectIndex;
     }
 
     public void addOnSingleSelectListener(AnimCheckSingleHelp.OnSingleSelectListener onSingleSelectListener) {
