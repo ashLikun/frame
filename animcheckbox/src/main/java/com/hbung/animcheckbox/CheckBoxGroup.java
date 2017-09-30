@@ -54,7 +54,7 @@ public class CheckBoxGroup extends ViewGroup {
         mSelectIndex = array.getInt(R.styleable.CheckBoxGroup_abg_select_index, -1);
         textSize = array.getDimension(R.styleable.CheckBoxGroup_abg_textSize, -1);
         textColor = array.getColor(R.styleable.CheckBoxGroup_abg_textColor, -1);
-        textNoSelectColor = array.getColor(R.styleable.CheckBoxGroup_abg_textColor, -1);
+        textNoSelectColor = array.getColor(R.styleable.CheckBoxGroup_abg_textNoSelectColor, -1);
         array.recycle();
         setTexts(text);
     }
