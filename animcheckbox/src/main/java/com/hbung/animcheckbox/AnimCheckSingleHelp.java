@@ -16,6 +16,7 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
 
     List<AnimCheckBox> boxs;
     private ArrayList<OnSingleSelectListener> onSingleSelectListener = new ArrayList<>();
+    private int mSelectIndex = -1;
 
     public AnimCheckSingleHelp() {
     }
@@ -42,7 +43,7 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
 
     @Override
     public void onChange(AnimCheckBox checkBox, boolean checked) {
-        int selectIndex = -1;
+        mSelectIndex = -1;
         if (checked && getSize() > 2) {
             checkBox.setAutoSelect(false);
         }
@@ -53,7 +54,7 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
                     item.setAutoSelect(true);
                     item.setChecked(false);
                 } else {
-                    selectIndex = i;
+                    mSelectIndex = i;
                 }
             }
         } else if (getSize() == 2) {
@@ -61,14 +62,14 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
                 AnimCheckBox item = boxs.get(i);
                 if (item != checkBox) {
                     item.setChecked(true);
-                    selectIndex = i;
+                    mSelectIndex = i;
                 }
             }
         }
 
-        if (selectIndex >= 0) {
+        if (mSelectIndex >= 0) {
             for (int j = 0; j < onSingleSelectListener.size(); j++) {
-                onSingleSelectListener.get(j).onSingleSelect(checkBox, selectIndex);
+                onSingleSelectListener.get(j).onSingleSelect(checkBox, mSelectIndex);
             }
         }
     }
@@ -83,6 +84,10 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
         if (boxs != null)
             return boxs.size();
         return 0;
+    }
+
+    public int getSelectIndex() {
+        return mSelectIndex;
     }
 
     public void addOnSingleSelectListener(OnSingleSelectListener onSingleSelectListener) {

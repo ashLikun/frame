@@ -192,7 +192,7 @@ public class CheckBoxGroup extends ViewGroup {
     }
 
     public int getSelectIndex() {
-        return mSelectIndex;
+        return mSelectIndex = singleHelp.getSelectIndex();
     }
 
     public void addOnSingleSelectListener(AnimCheckSingleHelp.OnSingleSelectListener onSingleSelectListener) {
