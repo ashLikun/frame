@@ -182,6 +182,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
             webView.setVisibility(GONE);
             errorRl.setVisibility(VISIBLE);
             progressBar.setVisibility(GONE);
+            swvMessageView.setText(errorInfo.description);
         }
         //加载错误
         if (listener != null) {
@@ -217,6 +218,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
             webView.setVisibility(VISIBLE);
             progressBar.setVisibility(VISIBLE);
             errorRl.setVisibility(GONE);
+            swvMessageView.setText("");
         }
         //加载开始
         if (listener != null) {

@@ -12,7 +12,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -368,6 +367,7 @@ public class XWebView extends WebView {
 
     public static abstract class WebViewListener implements IWebViewListener {
         //在点击请求的是连接是才会调用，重写此方法返回true表明点击网页里面的链接还是在当前的webView里跳转，不跳到浏览器里边
+        @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
@@ -379,20 +379,24 @@ public class XWebView extends WebView {
         }
 
         //加载完成
+        @Override
         public void onPageFinished(WebView view, String url, boolean isSuccess) {
         }
 
         //加载开始
+        @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
         }
 
         //页面标题
+        @Override
         public void onReceivedTitle(WebView view, String title) {
 
         }
 
         //进度改变
+        @Override
         public void onProgressChanged(WebView view, int newProgress) {
 
         }

@@ -14,11 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.hbung.supertoobar.SupperToolBar>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:background="@color/black"></View>
 
     <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/actionButton"
@@ -45,4 +40,9 @@
         app:abg_select_index="2"
         app:abg_space="@dimen/dp_10"
         app:abg_texts="啊|2222|3"></com.hbung.animcheckbox.CheckBoxGroup>
+
+    <com.hbung.superwebview.SuperWebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.hbung.superwebview.SuperWebView>
 </LinearLayout>
