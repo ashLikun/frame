@@ -6,7 +6,6 @@
     <attr name="SwipeRefreshLayout_Color4" format="color"></attr>
     <!-- ****************************************主题 开始************************************Theme.AppCompat.Light.NoActionBar**-->
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -52,17 +51,22 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
     </style>
 
-    <style name="OtherAnimation">
-
-        <item name="android:windowEnterAnimation">@anim/activity_open_enter</item>
-        <item name="android:windowExitAnimation">@anim/activity_colse_exit</item>
+    <style name="OtherAnimation" parent="@android:style/Animation.Translucent">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_open_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_colse_exit</item>
     </style>
 
-    <style name="MainAnimation">
+    <!--当我们从 A1 启动 A2 时，A1 从屏幕上消失，这个动画叫做 android:activityOpenExitAnimation-->
+    <!--当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation-->
+    <!--当我们从 A2 退出回到 A1 时，A2 从屏幕上消失，这个叫做 android:activityCloseExitAnimation-->
+    <!--当我们从 A2 退出回到 A1 时，A1 出现在屏幕上，这个叫做 android:activityCloseEnterAnimation-->
+    <style name="MainAnimation" parent="@android:style/Animation.Translucent">
         <!--<item name="android:activityOpenEnterAnimation">@null</item>-->
         <!--<item name="android:activityOpenExitAnimation">@null</item>-->
         <!--<item name="android:windowEnterAnimation">@anim/activity_open_enter</item>-->
         <!--<item name="android:windowExitAnimation">@anim/activity_colse_exit</item>-->
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
     </style>
 
 

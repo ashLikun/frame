@@ -1,6 +1,7 @@
 package utils.hbung.com.utils;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             @Override
             public void onClick(View v) {
                 webView.loadUrl("https://www.baidu.com/");
+                Intent intent = new Intent(MainActivity.this, RxJavaTestActivity.class);
+                startActivity(intent);
             }
         });
     }
