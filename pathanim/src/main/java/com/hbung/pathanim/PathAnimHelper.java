@@ -1,4 +1,4 @@
-package com.hbung.pathanim;
+package com.ashlikun.pathanim;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

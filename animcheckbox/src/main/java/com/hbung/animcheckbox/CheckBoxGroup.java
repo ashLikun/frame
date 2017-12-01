@@ -1,4 +1,4 @@
-package com.hbung.animcheckbox;
+package com.ashlikun.animcheckbox;
 
 import android.content.Context;
 import android.content.res.TypedArray;

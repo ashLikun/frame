@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hbung.http.download;
+package com.ashlikun.http.download;
 
 import android.text.TextUtils;
 
@@ -36,7 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-import static com.hbung.http.download.DownloadManager.defaultFilePath;
+import static com.ashlikun.http.download.DownloadManager.defaultFilePath;
 
 /**
  * 下载线程

@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.hbung.banner">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ashlikun.banner">
 
     <application android:allowBackup="true"
         android:supportsRtl="true">

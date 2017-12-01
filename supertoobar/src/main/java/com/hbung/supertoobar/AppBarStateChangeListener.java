@@ -1,4 +1,4 @@
-package com.hbung.supertoobar;
+package com.ashlikun.supertoobar;
 
 import android.support.design.widget.AppBarLayout;
 

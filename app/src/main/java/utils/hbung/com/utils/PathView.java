@@ -1,4 +1,4 @@
-package utils.hbung.com.utils;
+package utils.ashlikun.com.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,8 +9,8 @@ import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.hbung.pathanim.PathAnimHelper;
-import com.hbung.pathanim.utils.StringPathUtils;
+import com.ashlikun.pathanim.PathAnimHelper;
+import com.ashlikun.pathanim.utils.StringPathUtils;
 
 import java.text.ParseException;
 

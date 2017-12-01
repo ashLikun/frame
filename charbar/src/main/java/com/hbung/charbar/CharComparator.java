@@ -1,4 +1,4 @@
-package com.hbung.charbar;
+package com.ashlikun.charbar;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;

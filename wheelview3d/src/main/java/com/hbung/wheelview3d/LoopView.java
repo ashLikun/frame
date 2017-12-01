@@ -1,4 +1,4 @@
-package com.hbung.wheelview3d;
+package com.ashlikun.wheelview3d;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,11 +10,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.hbung.wheelview3d.adapter.BaseLoopAdapter;
-import com.hbung.wheelview3d.adapter.ILoopShowData;
-import com.hbung.wheelview3d.adapter.LoopDataObserver;
-import com.hbung.wheelview3d.adapter.LoopShowDataAdapter;
-import com.hbung.wheelview3d.listener.LoopListener;
+import com.ashlikun.wheelview3d.adapter.BaseLoopAdapter;
+import com.ashlikun.wheelview3d.adapter.ILoopShowData;
+import com.ashlikun.wheelview3d.adapter.LoopDataObserver;
+import com.ashlikun.wheelview3d.adapter.LoopShowDataAdapter;
+import com.ashlikun.wheelview3d.listener.LoopListener;
 
 import java.util.List;
 import java.util.concurrent.Executors;

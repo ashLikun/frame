@@ -1,4 +1,4 @@
-package com.hbung.wheelview3d.adapter;
+package com.ashlikun.wheelview3d.adapter;
 
 /**
  * Created by Administrator on 2016/5/4.

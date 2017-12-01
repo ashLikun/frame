@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hbung.scaleimageview">
+    package="com.ashlikun.scaleimageview">
 
     <application
         android:allowBackup="true"

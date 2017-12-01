@@ -1,4 +1,4 @@
-package com.hbung.http.httpquest;
+package com.ashlikun.http.httpquest;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

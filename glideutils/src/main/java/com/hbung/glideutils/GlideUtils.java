@@ -1,4 +1,4 @@
-package com.hbung.glideutils;
+package com.ashlikun.glideutils;
 
 import android.app.Activity;
 import android.app.Application;

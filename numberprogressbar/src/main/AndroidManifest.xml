@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hbung.numberprogressbar">
+    package="com.ashlikun.numberprogressbar">
 
     <application
         android:allowBackup="true"

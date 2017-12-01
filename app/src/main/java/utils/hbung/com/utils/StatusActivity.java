@@ -1,4 +1,4 @@
-package utils.hbung.com.utils;
+package utils.ashlikun.com.utils;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

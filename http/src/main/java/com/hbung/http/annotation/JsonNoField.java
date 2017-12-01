@@ -1,4 +1,4 @@
-package com.hbung.http.annotation;
+package com.ashlikun.http.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

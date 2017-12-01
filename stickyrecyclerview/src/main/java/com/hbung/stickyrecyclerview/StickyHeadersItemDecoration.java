@@ -1,4 +1,4 @@
-package com.hbung.stickyrecyclerview;
+package com.ashlikun.stickyrecyclerview;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;

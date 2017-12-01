@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hbung.segmentcontrol">
+    package="com.ashlikun.segmentcontrol">
 
     <application
         android:allowBackup="true"

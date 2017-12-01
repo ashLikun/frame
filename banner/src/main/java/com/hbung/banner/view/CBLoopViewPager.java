@@ -1,4 +1,4 @@
-package com.hbung.banner.view;
+package com.ashlikun.banner.view;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -6,8 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.hbung.banner.adapter.CBPageAdapter;
-import com.hbung.banner.listener.OnItemClickListener;
+import com.ashlikun.banner.adapter.CBPageAdapter;
+import com.ashlikun.banner.listener.OnItemClickListener;
 
 public class CBLoopViewPager extends ViewPager {
     OnPageChangeListener mOuterPageChangeListener;

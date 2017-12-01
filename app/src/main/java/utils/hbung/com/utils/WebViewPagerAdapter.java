@@ -1,4 +1,4 @@
-package utils.hbung.com.utils;
+package utils.ashlikun.com.utils;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

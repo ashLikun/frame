@@ -1,4 +1,4 @@
-package com.hbung.animcheckbox;
+package com.ashlikun.animcheckbox;
 
 import java.util.ArrayList;
 import java.util.Arrays;

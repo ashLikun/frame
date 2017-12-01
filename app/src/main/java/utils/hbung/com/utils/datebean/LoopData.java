@@ -1,6 +1,6 @@
-package utils.hbung.com.utils.datebean;
+package utils.ashlikun.com.utils.datebean;
 
-import com.hbung.wheelview3d.adapter.ILoopShowData;
+import com.ashlikun.wheelview3d.adapter.ILoopShowData;
 
 /**
  * 作者　　: 李坤

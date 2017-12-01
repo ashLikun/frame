@@ -1,10 +1,10 @@
-package com.hbung.http;
+package com.ashlikun.http;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.hbung.http.annotation.JsonNoField;
+import com.ashlikun.http.annotation.JsonNoField;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hbung.supergridlayout">
+    package="com.ashlikun.supergridlayout">
 
     <application
         android:allowBackup="true"

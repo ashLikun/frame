@@ -1,4 +1,4 @@
-package com.hbung.http.httpquest;
+package com.ashlikun.http.httpquest;
 
 /**
  * Created by Administrator on 2016/8/3.

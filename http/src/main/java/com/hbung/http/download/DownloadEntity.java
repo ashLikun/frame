@@ -1,7 +1,7 @@
-package com.hbung.http.download;
+package com.ashlikun.http.download;
 
 
-import com.hbung.http.db.LiteOrmUtil;
+import com.ashlikun.http.db.LiteOrmUtil;
 import com.litesuits.orm.db.annotation.Column;
 import com.litesuits.orm.db.annotation.PrimaryKey;
 import com.litesuits.orm.db.annotation.Table;

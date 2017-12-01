@@ -1,4 +1,4 @@
-package com.hbung.http.httpquest;
+package com.ashlikun.http.httpquest;
 
 import java.io.File;
 import java.util.HashMap;

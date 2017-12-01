@@ -1,4 +1,4 @@
-package com.hbung.supergridlayout;
+package com.ashlikun.supergridlayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;

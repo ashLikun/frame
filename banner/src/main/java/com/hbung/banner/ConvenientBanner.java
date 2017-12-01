@@ -1,4 +1,4 @@
-package com.hbung.banner;
+package com.ashlikun.banner;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,11 +15,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.hbung.banner.adapter.CBPageAdapter;
-import com.hbung.banner.holder.CBViewHolderCreator;
-import com.hbung.banner.listener.CBPageChangeListener;
-import com.hbung.banner.listener.OnItemClickListener;
-import com.hbung.banner.view.CBLoopViewPager;
+import com.ashlikun.banner.adapter.CBPageAdapter;
+import com.ashlikun.banner.holder.CBViewHolderCreator;
+import com.ashlikun.banner.listener.CBPageChangeListener;
+import com.ashlikun.banner.listener.OnItemClickListener;
+import com.ashlikun.banner.view.CBLoopViewPager;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;

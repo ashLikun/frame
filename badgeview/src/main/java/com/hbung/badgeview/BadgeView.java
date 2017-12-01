@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package com.hbung.badgeview;
+package com.ashlikun.badgeview;
 
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;

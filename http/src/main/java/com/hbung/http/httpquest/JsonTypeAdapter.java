@@ -1,4 +1,4 @@
-package com.hbung.http.httpquest;
+package com.ashlikun.http.httpquest;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

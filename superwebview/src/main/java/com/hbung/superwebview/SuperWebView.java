@@ -1,4 +1,4 @@
-package com.hbung.superwebview;
+package com.ashlikun.superwebview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hbung.flatbutton.FlatButton;
+import com.ashlikun.flatbutton.FlatButton;
 
 /**
  * 作者　　: 李坤

@@ -1,4 +1,4 @@
-package com.hbung.http.mode;
+package com.ashlikun.http.mode;
 
 /**
  * 作者　　: 李坤

@@ -1,4 +1,4 @@
-package utils.hbung.com.utils.datebean;
+package utils.ashlikun.com.utils.datebean;
 
 /**
  * 作者　　: 李坤

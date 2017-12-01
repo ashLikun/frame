@@ -1,4 +1,4 @@
-package com.hbung.supergridlayout;
+package com.ashlikun.supergridlayout;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

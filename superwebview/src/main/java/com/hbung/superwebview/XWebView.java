@@ -1,6 +1,8 @@
-package com.hbung.superwebview;
+package com.ashlikun.superwebview;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -98,6 +100,14 @@ public class XWebView extends WebView {
     public void goBack() {
         clean();
         super.goBack();
+    }
+
+    public void onBackPressed(Activity activity) {
+        if (canGoBack()) {
+            goBack();
+        } else {
+            activity.finish();
+        }
     }
 
     /**
@@ -402,6 +412,7 @@ public class XWebView extends WebView {
         }
     }
 
+    @SuppressLint("JavascriptInterface")
     @Override
     public void addJavascriptInterface(Object object, String name) {
         super.addJavascriptInterface(object, name);

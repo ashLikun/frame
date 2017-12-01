@@ -1,10 +1,10 @@
-package com.hbung.http.mode;
+package com.ashlikun.http.mode;
 
 import android.text.TextUtils;
 
-import com.hbung.http.httpquest.Callback;
-import com.hbung.http.httpquest.HttpSubscription;
-import com.hbung.http.httpquest.RequestParam;
+import com.ashlikun.http.httpquest.Callback;
+import com.ashlikun.http.httpquest.HttpSubscription;
+import com.ashlikun.http.httpquest.RequestParam;
 
 import java.util.Map;
 

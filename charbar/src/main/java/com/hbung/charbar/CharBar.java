@@ -1,4 +1,4 @@
-package com.hbung.charbar;
+package com.ashlikun.charbar;
 
 
 import android.content.Context;

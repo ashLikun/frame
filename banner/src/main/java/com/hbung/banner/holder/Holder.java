@@ -1,4 +1,4 @@
-package com.hbung.banner.holder;
+package com.ashlikun.banner.holder;
 
 /**
  * Created by Sai on 15/12/14.
@@ -9,7 +9,7 @@ package com.hbung.banner.holder;
 import android.content.Context;
 import android.view.View;
 
-import com.hbung.banner.ConvenientBanner;
+import com.ashlikun.banner.ConvenientBanner;
 
 public interface Holder<T> {
     View createView(ConvenientBanner banner, Context context);

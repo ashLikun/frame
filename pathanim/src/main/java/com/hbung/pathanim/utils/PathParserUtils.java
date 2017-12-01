@@ -1,4 +1,4 @@
-package com.hbung.pathanim.utils;
+package com.ashlikun.pathanim.utils;
 
 import android.content.Context;
 import android.graphics.Path;

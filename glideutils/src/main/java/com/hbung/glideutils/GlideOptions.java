@@ -1,4 +1,4 @@
-package com.hbung.glideutils;
+package com.ashlikun.glideutils;
 
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;

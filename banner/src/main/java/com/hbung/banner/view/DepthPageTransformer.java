@@ -1,4 +1,4 @@
-package com.hbung.banner.view;
+package com.ashlikun.banner.view;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

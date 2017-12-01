@@ -1,4 +1,4 @@
-package com.hbung.stickyrecyclerview;
+package com.ashlikun.stickyrecyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

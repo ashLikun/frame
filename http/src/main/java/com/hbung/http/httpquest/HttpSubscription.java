@@ -1,8 +1,8 @@
-package com.hbung.http.httpquest;
+package com.ashlikun.http.httpquest;
 
 
-import com.hbung.http.GsonHelper;
-import com.hbung.http.mode.BaseHttpResponse;
+import com.ashlikun.http.GsonHelper;
+import com.ashlikun.http.mode.BaseHttpResponse;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

@@ -1,4 +1,4 @@
-package com.hbung.numberprogressbar;
+package com.ashlikun.numberprogressbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;

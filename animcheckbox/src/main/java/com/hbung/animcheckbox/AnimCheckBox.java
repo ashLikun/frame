@@ -1,4 +1,4 @@
-package com.hbung.animcheckbox;
+package com.ashlikun.animcheckbox;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

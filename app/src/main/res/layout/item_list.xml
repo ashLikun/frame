@@ -5,11 +5,11 @@
 
         <variable
             name="data"
-            type="com.hbung.wheelview3d.adapter.LoopViewData"></variable>
+            type="com.ashlikun.wheelview3d.adapter.LoopViewData"></variable>
 
         <import
             alias="aaaa"
-            type="com.hbung.wheelview3d.adapter.LoopViewData"></import>
+            type="com.ashlikun.wheelview3d.adapter.LoopViewData"></import>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

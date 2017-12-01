@@ -1,4 +1,4 @@
-package com.hbung.wheelview3d.view;
+package com.ashlikun.wheelview3d.view;
 
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -19,9 +19,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.hbung.wheelview3d.R;
-import com.hbung.wheelview3d.listener.OnItemSelectListener;
-import com.hbung.wheelview3d.listener.OnPositiveClickListener;
+import com.ashlikun.wheelview3d.R;
+import com.ashlikun.wheelview3d.listener.OnItemSelectListener;
+import com.ashlikun.wheelview3d.listener.OnPositiveClickListener;
 
 /**
  * 作者　　: 李坤

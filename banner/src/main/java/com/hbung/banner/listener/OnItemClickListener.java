@@ -1,4 +1,4 @@
-package com.hbung.banner.listener;
+package com.ashlikun.banner.listener;
 
 /**
  * Created by Sai on 15/11/13.

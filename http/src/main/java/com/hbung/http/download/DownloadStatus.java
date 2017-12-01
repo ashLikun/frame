@@ -1,4 +1,4 @@
-package com.hbung.http.download;
+package com.ashlikun.http.download;
 
 /**
  * description the download status

@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.hbung.flatbutton">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ashlikun.flatbutton">
 
     <application android:allowBackup="true"
         android:supportsRtl="true">

@@ -1,4 +1,4 @@
-package com.hbung.banner;
+package com.ashlikun.banner;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

@@ -1,4 +1,4 @@
-package com.hbung.segmentcontrol;
+package com.ashlikun.segmentcontrol;
 
 import android.content.Context;
 import android.content.res.TypedArray;

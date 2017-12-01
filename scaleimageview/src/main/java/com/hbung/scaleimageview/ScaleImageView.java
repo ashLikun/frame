@@ -1,4 +1,4 @@
-package com.hbung.scaleimageview;
+package com.ashlikun.scaleimageview;
 
 import android.content.Context;
 import android.content.res.TypedArray;

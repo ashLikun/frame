@@ -1,13 +1,13 @@
-package com.hbung.banner.adapter;
+package com.ashlikun.banner.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hbung.banner.ConvenientBanner;
-import com.hbung.banner.holder.CBViewHolderCreator;
-import com.hbung.banner.holder.Holder;
-import com.hbung.banner.view.CBLoopViewPager;
+import com.ashlikun.banner.ConvenientBanner;
+import com.ashlikun.banner.holder.CBViewHolderCreator;
+import com.ashlikun.banner.holder.Holder;
+import com.ashlikun.banner.view.CBLoopViewPager;
 
 import java.util.List;
 

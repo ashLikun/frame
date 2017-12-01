@@ -1,4 +1,4 @@
-package com.hbung.http.httpquest;
+package com.ashlikun.http.httpquest;
 
 /**
  * 作者　　: 李坤

@@ -1,4 +1,4 @@
-package com.hbung.banner.holder;
+package com.ashlikun.banner.holder;
 
 /**
  * @ClassName :  ViewHolderCreator

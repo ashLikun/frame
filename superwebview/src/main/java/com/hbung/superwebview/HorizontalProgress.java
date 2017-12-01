@@ -1,4 +1,4 @@
-package com.hbung.superwebview;
+package com.ashlikun.superwebview;
 
 import android.content.Context;
 import android.content.res.TypedArray;

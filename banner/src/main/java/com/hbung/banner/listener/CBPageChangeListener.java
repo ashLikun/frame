@@ -1,4 +1,4 @@
-package com.hbung.banner.listener;
+package com.ashlikun.banner.listener;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

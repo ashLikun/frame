@@ -1,4 +1,4 @@
-package com.hbung.wheelview3d.adapter;
+package com.ashlikun.wheelview3d.adapter;
 
 /**
  * 作者　　: 李坤

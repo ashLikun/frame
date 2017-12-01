@@ -1,8 +1,8 @@
-package com.hbung.http;
+package com.ashlikun.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hbung.http.httpquest.JsonTypeAdapter;
+import com.ashlikun.http.httpquest.JsonTypeAdapter;
 
 /**
  * Created by Administrator on 2016/8/4.

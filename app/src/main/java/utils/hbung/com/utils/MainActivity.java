@@ -1,4 +1,4 @@
-package utils.hbung.com.utils;
+package utils.ashlikun.com.utils;
 
 import android.app.Application;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.view.View;
 import com.ashlikun.utils.Utils;
 import com.ashlikun.xrecycleview.OnLoaddingListener;
 import com.ashlikun.xrecycleview.RefreshLayout;
-import com.hbung.superwebview.SuperWebView;
+import com.ashlikun.superwebview.SuperWebView;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         });
         setContentView(R.layout.activity_main);
         final SuperWebView webView = (SuperWebView) findViewById(R.id.webView);
+        webView.addJavascriptInterface();
+
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
