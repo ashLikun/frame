@@ -210,7 +210,6 @@ public class XWebView extends WebView {
         String failingUrl;
 
         public void clean() {
-
             isError = false;
             errorCode = 0;
             description = null;
@@ -253,6 +252,7 @@ public class XWebView extends WebView {
     public ErrorInfo getErrorInfo() {
         return errorInfo;
     }
+
 
     //清空数据，新加载的界面
     private void clean() {
@@ -319,10 +319,10 @@ public class XWebView extends WebView {
             //加载完成
             if (listener != null) {
                 //是否错误
-                if (getErrorInfo().isError) {
-                    listener.onError(view, getErrorInfo());
+                if (errorInfo.isError) {
+                    listener.onError(view, errorInfo);
                 }
-                listener.onPageFinished(view, url, !getErrorInfo().isError);
+                listener.onPageFinished(view, url, !errorInfo.isError);
             }
         }
 

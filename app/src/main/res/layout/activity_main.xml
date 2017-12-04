@@ -33,6 +33,24 @@
         app:strokeColor="@color/red"
         app:strokeWidth="2dp"></com.ashlikun.flatbutton.FlatButton>
 
+    <com.ashlikun.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/actionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionButton"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="重新加载222"
+        android:textColor="#ffff0000"
+        app:clickDelay="200"
+        app:colorPressed="#ffaaaaaa"
+        app:colorPressedText="@color/black"
+        app:cornerRadius="10dp"
+        app:strokeColor="@color/red"
+        app:strokeWidth="2dp"></com.ashlikun.flatbutton.FlatButton>
+
     <com.ashlikun.animcheckbox.CheckBoxGroup
         android:layout_width="10dp"
         android:layout_height="40dp"

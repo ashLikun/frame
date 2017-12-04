@@ -178,12 +178,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     @Override
     public void onError(WebView view, XWebView.ErrorInfo errorInfo) {
-        if (webView != null) {
-            webView.setVisibility(GONE);
-            errorRl.setVisibility(VISIBLE);
-            progressBar.setVisibility(GONE);
-            swvMessageView.setText(errorInfo.description);
-        }
+        setErrorAndSuccess(false, errorInfo.description);
         //加载错误
         if (listener != null) {
             listener.onError(view, errorInfo);
@@ -199,6 +194,9 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
      */
     @Override
     public void onPageFinished(WebView view, String url, boolean isSuccess) {
+        if (webView != null) {
+            setErrorAndSuccess(!webView.getErrorInfo().isError, "");
+        }
         //加载完成
         if (listener != null) {
             listener.onPageFinished(view, url, isSuccess);
@@ -214,12 +212,6 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
      */
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        if (webView != null) {
-            webView.setVisibility(VISIBLE);
-            progressBar.setVisibility(VISIBLE);
-            errorRl.setVisibility(GONE);
-            swvMessageView.setText("");
-        }
         //加载开始
         if (listener != null) {
             listener.onPageStarted(view, url, favicon);
@@ -254,6 +246,24 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         //进度改变
         if (listener != null) {
             listener.onProgressChanged(view, newProgress);
+        }
+    }
+
+    public void setErrorAndSuccess(boolean isSuccess, String msg) {
+        if (webView == null) {
+            return;
+        }
+        if (isSuccess) {
+            webView.setVisibility(VISIBLE);
+            errorRl.setVisibility(GONE);
+            swvMessageView.setText(msg);
+        } else {
+            webView.setVisibility(GONE);
+            errorRl.setVisibility(VISIBLE);
+            progressBar.setVisibility(GONE);
+            if (!TextUtils.isEmpty(msg)) {
+                swvMessageView.setText(msg);
+            }
         }
     }
 
