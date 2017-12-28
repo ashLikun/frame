@@ -1,5 +1,7 @@
 package com.ashlikun.glideutils;
 
+import android.widget.ImageView;
+
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestListener;
@@ -46,16 +48,15 @@ public class GlideOptions {
         return requestListener;
     }
 
-    public Transformation[] getTransformations() {
 
-        Transformation[] temp = new Transformation[transformations == null ? 1 : transformations.size() + 1];
-        temp[0] = new CenterCrop(GlideUtils.getApp());
-        if (transformations != null) {
-            for (int i = 0; i < transformations.size(); i++) {
-                temp[i + 1] = transformations.get(i);
+    public Transformation[] getTransformations(ImageView imageView) {
+        if (imageView != null && imageView.getScaleType() == null) {
+            if (transformations == null) {
+                transformations = new ArrayList<Transformation>();
             }
+            transformations.add(0, new CenterCrop(GlideUtils.getApp()));
         }
-        return temp;
+        return transformations == null ? null : (Transformation[]) transformations.toArray();
     }
 
     public static class Builder {

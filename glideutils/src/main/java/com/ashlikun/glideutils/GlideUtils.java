@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
@@ -95,8 +96,10 @@ public class GlideUtils {
         if (picassoOptions.getPlaceholder() > 0) {
             drawableTypeRequest.placeholder(picassoOptions.getPlaceholder());
         }
-        if (picassoOptions.getTransformations() != null && picassoOptions.getTransformations().length > 0) {
-            drawableTypeRequest.bitmapTransform(picassoOptions.getTransformations());
+        Transformation[] transformations = picassoOptions.getTransformations(view);
+        if (transformations != null && transformations.length > 0) {
+            drawableTypeRequest.bitmapTransform(transformations);
+            drawableTypeRequest.centerCrop();
         }
         if (picassoOptions.getWidth() > 0 && picassoOptions.getHeight() > 0) {
             drawableTypeRequest.override(picassoOptions.getWidth(), picassoOptions.getHeight());
