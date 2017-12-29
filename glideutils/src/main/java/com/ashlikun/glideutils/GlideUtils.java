@@ -4,35 +4,60 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.ViewTarget;
 
 import java.io.File;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 
 /**
- * Created by Administrator on 2016/8/8.
+ * 作者　　: 李坤
+ * 创建时间: 2017/12/29 16:59
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：Glide的封装
+ * Object的参数可以是资源id，网络文件，本地文件，url
  */
 
 public class GlideUtils {
 
-    private static OnNeedListener listener;
+    private static RequestOptions REQUEST_OPTIONS = new RequestOptions();
+    private static final DrawableTransitionOptions TRANSITION_OPTIONS = new DrawableTransitionOptions().crossFade();
+    private static Application application;
+    private static boolean debug;
+    private static String baseUrl;
+
+    {
+        REQUEST_OPTIONS.error(R.drawable.material_default_image_1_1);
+        REQUEST_OPTIONS.placeholder(R.color.glide_placeholder_color);
+        REQUEST_OPTIONS.sizeMultiplier(0.8f);
+        REQUEST_OPTIONS.diskCacheStrategy(DiskCacheStrategy.ALL);
+        REQUEST_OPTIONS.autoClone();
+    }
+
+    /**
+     * 初始化请求参数 默认为上面的
+     * 要全局处理，一次调用
+     */
+    public static void initRequestOptions(RequestOptions requestOptions) {
+        REQUEST_OPTIONS = REQUEST_OPTIONS.apply(requestOptions);
+    }
 
     /**
      * 作者　　: 李坤
@@ -42,77 +67,94 @@ public class GlideUtils {
      * 方法功能：一定要在Application里面调用
      */
 
-    public static void init(OnNeedListener listener) {
-        GlideUtils.listener = listener;
+    public static void init(Application application) {
+        GlideUtils.application = application;
     }
 
+    /**
+     * 是否调试
+     */
+    public static void setDebug(boolean debug) {
+        GlideUtils.debug = debug;
+    }
 
-    public interface OnNeedListener {
-        public Application getApplication();
-
-        public boolean isDebug();
-
-        public String getBaseUrl();
+    /**
+     * 设置域名，当网络文件不是以Http打头的时候会加上
+     *
+     * @param baseUrl
+     */
+    public static void setBaseUrl(String baseUrl) {
+        GlideUtils.baseUrl = baseUrl;
     }
 
     public static Application getApp() {
-        if (listener == null) {
-            throw new RuntimeException("请在Application调用Utils的init方法");
-        } else {
-            return listener.getApplication();
-        }
+        return application;
     }
 
     public static boolean isDebug() {
-        if (listener == null) {
-            throw new RuntimeException("请在Application调用Utils的init方法");
-        } else {
-            return listener.isDebug();
-        }
+        return debug;
     }
 
     public static String getBaseUrl() {
-        if (listener == null) {
-            throw new RuntimeException("请在Application调用Utils的init方法");
+        return baseUrl;
+    }
+
+    /**
+     * 给ImageView 设置网络图片（圆形）
+     */
+    public static void showCircle(View imageView, Object path) {
+        try {
+            GlideUtils.show((ImageView) imageView,
+                    path,
+                    new RequestOptions().circleCrop());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static ViewTarget<ImageView, Drawable> show(ImageView imageView, Object path) {
+        try {
+            return show(imageView, path, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ViewTarget<ImageView, Drawable> show(ImageView view, Object path, RequestOptions requestOptions) {
+        scaleType(view, requestOptions);
+        return getRequestBuilder(getRequest(view.getContext(), path), requestOptions).into(view);
+    }
+
+    public static Target<Drawable> show(Context context, Target view, Object path, RequestOptions requestOptions) {
+        return getRequestBuilder(getRequest(context, path), requestOptions).into(view);
+    }
+
+    public static ViewTarget<ImageView, Drawable> show(Fragment fragment, ImageView view, Object path, RequestOptions requestOptions) {
+        scaleType(view, requestOptions);
+        return getRequestBuilder(getRequest(fragment, path), requestOptions).into(view);
+    }
+
+    public static Target<Drawable> show(Fragment fragment, Target view, Object path, RequestOptions requestOptions) {
+        return getRequestBuilder(getRequest(fragment, path), requestOptions).into(view);
+    }
+
+
+    public static RequestBuilder<Drawable> getRequestBuilder(Fragment fragment, Object path, RequestOptions requestOptions) {
+        return getRequestBuilder(getRequest(fragment, path), requestOptions);
+    }
+
+    public static RequestBuilder<Drawable> getRequestBuilder(RequestBuilder<Drawable> drawableTypeRequest, RequestOptions requestOptions) {
+        if (requestOptions != null) {
+            return drawableTypeRequest.apply(REQUEST_OPTIONS.apply(requestOptions)).transition(TRANSITION_OPTIONS);
         } else {
-            return listener.getBaseUrl();
+            return drawableTypeRequest.apply(REQUEST_OPTIONS).transition(TRANSITION_OPTIONS);
         }
+
     }
 
-    public static void show(ImageView view, String path, GlideOptions picassoOptions) {
-        DrawableTypeRequest drawableTypeRequest = getRequestCreator(view.getContext(), path);
-        show(drawableTypeRequest, view, picassoOptions);
-    }
-
-    public static void show(Fragment fragment, ImageView view, String path, GlideOptions picassoOptions) {
-        DrawableTypeRequest drawableTypeRequest = getRequestCreator(fragment, path);
-        show(drawableTypeRequest, view, picassoOptions);
-    }
-
-    private static void show(DrawableTypeRequest drawableTypeRequest, ImageView view, GlideOptions picassoOptions) {
-        if (picassoOptions.getError() > 0) {
-            drawableTypeRequest.error(picassoOptions.getError());
-        }
-        if (picassoOptions.getPlaceholder() > 0) {
-            drawableTypeRequest.placeholder(picassoOptions.getPlaceholder());
-        }
-        Transformation[] transformations = picassoOptions.getTransformations(view);
-        if (transformations != null && transformations.length > 0) {
-            drawableTypeRequest.bitmapTransform(transformations);
-            drawableTypeRequest.centerCrop();
-        }
-        if (picassoOptions.getWidth() > 0 && picassoOptions.getHeight() > 0) {
-            drawableTypeRequest.override(picassoOptions.getWidth(), picassoOptions.getHeight());
-        }
-        if (picassoOptions.getRequestListener() != null) {
-            drawableTypeRequest.listener(picassoOptions.getRequestListener());
-        }
-        drawableTypeRequest.sizeMultiplier(0.8f)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL).into(view);
-    }
-
-    public static DrawableTypeRequest<String> getRequestCreator(Context context, String path) {
+    public static RequestBuilder<Drawable> getRequest(Context context, Object path) {
         Activity a = getActivity(context);
         if (a != null) {
             if (a instanceof FragmentActivity) {
@@ -125,42 +167,13 @@ public class GlideUtils {
         }
     }
 
-    public static DrawableTypeRequest<String> getRequestCreator(Fragment fragment, String path) {
+    public static RequestBuilder<Drawable> getRequest(Fragment fragment, Object path) {
         return Glide.with(fragment).load(getHttpFileUrl(path));
     }
 
-
-    /**
-     * 给ImageView 设置网络图片（圆形）
-     *
-     * @param imageView
-     * @param path
-     */
-    public static void showCircle(View imageView, String path) {
-        try {
-            GlideUtils.show((ImageView) imageView,
-                    path,
-                    new GlideOptions.Builder().addTransformation(new CropCircleTransformation(getApp())).bulider());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * 给ImageView 设置网络图片
-     *
-     * @param imageView
-     * @param path
-     */
-    public static void show(View imageView, String path) {
-        try {
-            GlideUtils.show((ImageView) imageView,
-                    path,
-                    new GlideOptions.Builder().bulider());
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static void scaleType(ImageView imageView, RequestOptions requestOptions) {
+        if (imageView != null && imageView.getScaleType() == null) {
+            requestOptions.centerCrop();
         }
 
     }
@@ -171,32 +184,23 @@ public class GlideUtils {
      * @param url
      * @param downloadCallbacl
      */
-    public static void downloadOnly(final String url, final OnDownloadCallbacl downloadCallbacl) {
-
-        Observable.create(new ObservableOnSubscribe<File>() {
-            @Override
-            public void subscribe(ObservableEmitter<File> e) throws Exception {
-                File file = Glide.with(getApp()).load(getHttpFileUrl(url))
-                        .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
-                e.onNext(file);
-            }
+    public static void downloadBitmap(final String url, final OnDownloadCallbacl downloadCallbacl) {
+        Observable.create((ObservableEmitter<File> e) -> {
+            File file = Glide.with(getApp()).download(getHttpFileUrl(url))
+                    .submit().get();
+            e.onNext(file);
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<File>() {
-                    @Override
-                    public void accept(File file) throws Exception {
-                        downloadCallbacl.onCall(file);
-                    }
+                .subscribe((File file) -> {
+                    downloadCallbacl.onCall(file);
                 });
     }
 
 
-    public static interface OnDownloadCallbacl {
-        void onCall(File file);
-    }
-
     public static Activity getActivity(Context context) {
-        if (context == null) return null;
+        if (context == null) {
+            return null;
+        }
         if (context instanceof Activity) {
             return (Activity) context;
         } else if (context instanceof ContextWrapper) {
@@ -205,23 +209,26 @@ public class GlideUtils {
         return null;
     }
 
-    /*
+    /**
      * 对网络资源文件判断路径 如果是已http开头的就返回这个值 否则在前面加上ORG
      */
-    public static String getHttpFileUrl(String url) {
-        String res = "";
-        if (url != null) {
-            if (url.startsWith("http://") || url.startsWith("https://")) {
-                res = url;
-            } else if (url.startsWith("/storage") || url.startsWith("storage") || url.startsWith("/data") || url.startsWith("data")) {
-                res = url;
-            } else if (url.startsWith("/")) {
-                res = getBaseUrl() + url;
-            } else {
-                res = getBaseUrl() + "/" + url;
+    public static Object getHttpFileUrl(Object url) {
+        if (url instanceof String) {
+            String res = "";
+            if (url != null) {
+                if (((String) url).startsWith("http://") || ((String) url).startsWith("https://")) {
+                    res = (String) url;
+                } else if (((String) url).startsWith("/storage") || ((String) url).startsWith("storage") || ((String) url).startsWith("/data") || ((String) url).startsWith("data")) {
+                    res = (String) url;
+                } else if (((String) url).startsWith("/")) {
+                    res = getBaseUrl() + url;
+                } else {
+                    res = getBaseUrl() + "/" + url;
+                }
             }
+            return res;
         }
-        return res;
+        return url;
     }
 
 }

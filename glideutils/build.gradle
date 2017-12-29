@@ -16,12 +16,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 dependencies {
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'jp.wasabeef:glide-transformations:2.0.1'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.y.z'
-    compile rootProject.ext.v4Version
+    compile 'com.github.bumptech.glide:glide:4.4.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:4.4.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    provided 'jp.wasabeef:glide-transformations:3.0.1'
+    provided 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    provided 'io.reactivex.rxjava2:rxjava:2.y.z'
 }
 apply from: '../maven.gradle'

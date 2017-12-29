@@ -1,16 +1,20 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
@@ -18,12 +22,13 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.3"
-    designVersion = "com.android.support:design:25.3.1"
-    v4Version = "com.android.support:support-v4:25.3.1"
-    frameVersion = "1.4.0"
-    targetSdkVersion = 19
+    superVersion = "25.3.1"
+    compileSdkVersion = 26
+    buildToolsVersion = "26.0.2"
+    designVersion = "com.android.support:design:" + superVersion
+    v4Version = "com.android.support:support-v4:" + superVersion
+    v7AppCompat = "com.android.support:appcompat-v7:" + superVersion
+    targetSdkVersion = 24
     minSdkVersion = 14
     versionCode = 1
     versionName = "0.0.1"
