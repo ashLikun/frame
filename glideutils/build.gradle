@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -23,11 +22,10 @@ android {
 }
 dependencies {
     compile 'com.github.bumptech.glide:glide:4.4.0'
-    compile 'com.github.bumptech.glide:okhttp3-integration:4.4.0'
-    //使用GlideApp，需要添加annotationProcessor 的依赖
-    //annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     provided 'jp.wasabeef:glide-transformations:3.0.1'
     provided 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    provided 'io.reactivex.rxjava2:rxjava:2.y.z'
+    provided 'io.reactivex.rxjava2:rxjava:2.x.y'
+    provided 'com.squareup.okhttp3:okhttp:3.9.1'
 }
 apply from: '../maven.gradle'

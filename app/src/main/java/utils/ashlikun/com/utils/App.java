@@ -16,7 +16,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        GlideUtils.init(this);
         GlideUtils.setDebug(true);
         GlideUtils.setBaseUrl("");
     }
