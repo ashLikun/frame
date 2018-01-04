@@ -28,10 +28,9 @@ public class MyAppGlideModule extends AppGlideModule {
     public void registerComponents(Context context, Glide glide, Registry registry) {
         try {
             registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory());
-        } catch (Exception e) {
+        } catch (NoClassDefFoundError e) {
             e.printStackTrace();
         }
-
     }
 
     //是否读取清单文件配置，4.0后就不需要了

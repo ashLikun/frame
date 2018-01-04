@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile project(':flatbutton')
+    implementation project(':flatbutton')
 }
 
 apply from: '../maven.gradle'

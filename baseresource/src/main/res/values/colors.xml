@@ -54,4 +54,5 @@
     <color name="blue">#ff399be6</color>
     <color name="red">#ff0000</color>
     <color name="photo_browse">#cc252429</color>
+    <color name="design_textinput_error_color_light">#ffff3131</color>
 </resources>

@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile rootProject.ext.designVersion
+    implementation rootProject.ext.designVersion
 }
 
 apply from: '../maven.gradle'

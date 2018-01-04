@@ -31,7 +31,7 @@ android {
 
 dependencies {
     compile 'com.google.android:flexbox:0.1.2'
-    compile 'com.github.ashLikun.CommonAdapter:adapter:1.1.7'
+    implementation 'com.github.ashLikun.CommonAdapter:adapter:1.1.9'
 
 }
 
