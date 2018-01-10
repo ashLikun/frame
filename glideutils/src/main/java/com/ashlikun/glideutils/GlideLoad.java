@@ -44,6 +44,11 @@ public final class GlideLoad {
     private Object path;
     private ProgressListener progressListener;
     private RequestListener requestListener;
+    /**
+     * 当imageView没设置scaleType得时候是否要设置centerCrop
+     * 默认为true
+     */
+    private boolean isNeedCenterCrop = true;
 
     private GlideLoad() {
     }
@@ -84,6 +89,11 @@ public final class GlideLoad {
         return this;
     }
 
+    public GlideLoad noNeedCenterCrop() {
+        this.isNeedCenterCrop = false;
+        return this;
+    }
+
     public GlideLoad progressListener(ProgressListener progressListener) {
         this.progressListener = progressListener;
         return this;
@@ -101,7 +111,9 @@ public final class GlideLoad {
 
     public ViewTarget<ImageView, Drawable> show(ImageView view) {
         this.imageView = view;
-        requestOptions = scaleType(imageView);
+        if (isNeedCenterCrop) {
+            requestOptions = scaleType(imageView);
+        }
         RequestBuilder<Drawable> requestBuilder = show();
         return requestBuilder.into(view);
     }
@@ -170,6 +182,6 @@ public final class GlideLoad {
             }
             return requestOptions.centerCrop();
         }
-        return null;
+        return requestOptions;
     }
 }
