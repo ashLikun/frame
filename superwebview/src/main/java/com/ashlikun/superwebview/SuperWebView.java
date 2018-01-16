@@ -2,11 +2,13 @@ package com.ashlikun.superwebview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -46,6 +48,9 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
     }
 
     private void initView(Context context, AttributeSet attrs) {
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SuperWebView);
+        int error_icon = ta.getResourceId(R.styleable.SuperWebView_webview_error_icon, R.mipmap.error_webview);
+        ta.recycle();
         LayoutInflater.from(context).inflate(R.layout.super_webview, this);
         errorRl = (RelativeLayout) findViewById(R.id.swvErrorRl);
         progressBar = (HorizontalProgress) findViewById(R.id.swvProgressBar);
@@ -60,6 +65,9 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
                 reload();
             }
         });
+        if (swvImageView != null) {
+            swvImageView.setImageResource(error_icon);
+        }
     }
 
     /**
@@ -98,6 +106,10 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     public XWebView getWebView() {
         return webView;
+    }
+
+    public WebSettings getSettings() {
+        return webView.getSettings();
     }
 
     public TextView getMessageView() {
@@ -178,7 +190,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
 
     @Override
     public void onError(WebView view, XWebView.ErrorInfo errorInfo) {
-        setErrorAndSuccess(false, errorInfo.description);
+        setErrorAndSuccess(false, errorInfo);
         //加载错误
         if (listener != null) {
             listener.onError(view, errorInfo);
@@ -195,7 +207,7 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
     @Override
     public void onPageFinished(WebView view, String url, boolean isSuccess) {
         if (webView != null) {
-            setErrorAndSuccess(!webView.getErrorInfo().isError, "");
+            setErrorAndSuccess(!webView.getErrorInfo().isError, webView.getErrorInfo());
         }
         //加载完成
         if (listener != null) {
@@ -249,21 +261,30 @@ public class SuperWebView extends FrameLayout implements XWebView.IWebViewListen
         }
     }
 
-    public void setErrorAndSuccess(boolean isSuccess, String msg) {
+    public void setErrorAndSuccess(boolean isSuccess, XWebView.ErrorInfo errorInfo) {
         if (webView == null) {
             return;
         }
         if (isSuccess) {
             webView.setVisibility(VISIBLE);
             errorRl.setVisibility(GONE);
-            swvMessageView.setText(msg);
+            swvMessageView.setText("");
         } else {
             webView.setVisibility(GONE);
             errorRl.setVisibility(VISIBLE);
             progressBar.setVisibility(GONE);
-            if (!TextUtils.isEmpty(msg)) {
-                swvMessageView.setText(msg);
+            StringBuilder sb = new StringBuilder();
+            if (errorInfo.errorCode == 404) {
+                sb.append("~~小页迷路了~~");
+            } else if (errorInfo.errorCode == 500) {
+                sb.append("~~页面加载失败~~");
+            } else if (!TextUtils.isEmpty(errorInfo.description)) {
+                sb.append(errorInfo.description);
             }
+            if (errorInfo.errorCode != 0) {
+                sb.append("\n" + errorInfo.errorCode);
+            }
+            swvMessageView.setText(sb);
         }
     }
 

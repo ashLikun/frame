@@ -15,7 +15,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true">
         <activity
-            android:name=".GlideActivity"
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

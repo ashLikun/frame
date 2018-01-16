@@ -154,8 +154,9 @@ public class ConvenientBanner<T> extends LinearLayout {
      */
     public void notifyDataSetChanged() {
         viewPager.getAdapter().notifyDataSetChanged();
-        if (page_indicatorId != null)
+        if (page_indicatorId != null) {
             setPageIndicator(page_indicatorId);
+        }
     }
 
     /**
@@ -177,7 +178,9 @@ public class ConvenientBanner<T> extends LinearLayout {
         loPageTurningPoint.removeAllViews();
         mPointViews.clear();
         this.page_indicatorId = page_indicatorId;
-        if (mDatas == null) return this;
+        if (mDatas == null) {
+            return this;
+        }
         LinearLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(space, 0, space, 0);
         for (int count = 0; count < mDatas.size(); count++) {

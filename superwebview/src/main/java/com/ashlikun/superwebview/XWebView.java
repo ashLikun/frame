@@ -14,6 +14,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -59,9 +60,19 @@ public class XWebView extends WebView {
         WebSettings webSett = getSettings();
         webSett.setJavaScriptEnabled(true);
         webSett.setLoadWithOverviewMode(true);
+        //dom Storage  缓存
+        webSett.setDomStorageEnabled(true);
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         errorInfo = new ErrorInfo();
+    }
+
+    public void setAppCache(boolean isOpen) {
+        WebSettings webSett = getSettings();
+        webSett.setAppCacheEnabled(isOpen);
+        final String cachePath = getContext().getApplicationContext().getDir("cache", Context.MODE_PRIVATE).getPath();
+        webSett.setAppCachePath(cachePath);
+        webSett.setAppCacheMaxSize(5 * 1024 * 1024);
     }
 
     @Override
@@ -311,6 +322,19 @@ public class XWebView extends WebView {
             }
         }
 
+        // 这个方法在6.0才出现
+        @TargetApi(Build.VERSION_CODES.M)
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse error) {
+            super.onReceivedHttpError(view, request, error);
+            if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
+                //加载错误
+                errorInfo.isError = true;
+                errorInfo.errorCode = error.getStatusCode();
+                errorInfo.failingUrl = request.getUrl().toString();
+            }
+        }
+
         @Override
         public void onPageFinished(WebView view, String url) {
             if (!titleIsCall) {//标题没有回掉过
@@ -340,6 +364,24 @@ public class XWebView extends WebView {
         public void onReceivedTitle(WebView view, String title) {
             XWebView.this.title = title;
             titleIsCall = true;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                if (title != null) {
+                    if (title.contains("404")) {
+                        errorInfo.errorCode = 404;
+                        errorInfo.isError = true;
+                        errorInfo.failingUrl = view.getUrl();
+                    } else if (title.contains("500")) {
+                        errorInfo.errorCode = 500;
+                        errorInfo.isError = true;
+                        errorInfo.failingUrl = view.getUrl();
+                    } else if (title.toUpperCase().contains("ERROR")) {
+                        errorInfo.errorCode = 0;
+                        errorInfo.description = "页面加载失败";
+                        errorInfo.isError = true;
+                        errorInfo.failingUrl = view.getUrl();
+                    }
+                }
+            }
             //页面标题
             if (listener != null) {
                 listener.onReceivedTitle(view, title);

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.loadUrl("https://www.baiddau.com/");
+                webView.loadUrl("https://test1.miaofun.com/xiamai/indssssex.html#/home?");
 //                Intent intent = new Intent(MainActivity.this, RxJavaTestActivity.class);
 //                startActivity(intent);
             }
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         findViewById(R.id.actionButton2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.loadUrl("https://www.baidu.com/");
+                webView.loadUrl("https://test1.miaofun.com/xiamai/index.html#/home?");
 //                Intent intent = new Intent(MainActivity.this, RxJavaTestActivity.class);
 //                startActivity(intent);
             }
