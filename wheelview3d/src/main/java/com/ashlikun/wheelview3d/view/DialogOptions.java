@@ -11,12 +11,12 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.ashlikun.wheelview3d.R;
@@ -35,9 +35,8 @@ import com.ashlikun.wheelview3d.listener.OnPositiveClickListener;
 public class DialogOptions extends Dialog implements View.OnClickListener {
 
     private ViewGroup rootView;
-    private ViewGroup pickeroptions;
-    private Button negativeButton;
-    private Button positiveButton;
+    private TextView negativeButton;
+    private TextView positiveButton;
     private TextView titleTextView;
     private LoopOptions loopOptions;
     //动画属性ID
@@ -139,29 +138,39 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
     private void initView() {
         getWindow().setGravity(gravity);
 
-        negativeButton = (Button) findViewById(R.id.negativeButton);
-        positiveButton = (Button) findViewById(R.id.positiveButton);
+        negativeButton = (TextView) findViewById(R.id.negativeButton);
+        positiveButton = (TextView) findViewById(R.id.positiveButton);
         titleTextView = (TextView) findViewById(R.id.titleTv);
 
-        if (negativeText != null && negativeText.length() > 0)
-            negativeButton.setText(negativeText);
-        if (negativeTextSize > 0)
-            negativeButton.setTextSize(negativeTextSize);
-        negativeButton.setBackgroundDrawable(createRipple(0x00000000, 0xff999999));
-        if (positiveText != null && positiveText.length() > 0)
-            positiveButton.setText(positiveText);
-        if (positiveTextSize > 0)
-            positiveButton.setTextSize(positiveTextSize);
-        positiveButton.setBackgroundDrawable(createRipple(0x00000000, 0xff999999));
+        if (negativeButton != null) {
+            if (!TextUtils.isEmpty(negativeText)) {
+                negativeButton.setText(negativeText);
+            }
+            if (negativeTextSize > 0) {
+                negativeButton.setTextSize(negativeTextSize);
+            }
+            negativeButton.setBackgroundDrawable(createRipple(0x00000000, 0xff999999));
+            negativeButton.setOnClickListener(this);
+        }
 
-        if (titleText != null && titleText.length() > 0)
-            titleTextView.setText(titleText);
-        if (titleSize > 0)
-            titleTextView.setTextSize(titleSize);
-
-        negativeButton.setOnClickListener(this);
-        positiveButton.setOnClickListener(this);
-
+        if (positiveButton != null) {
+            if (!TextUtils.isEmpty(positiveText)) {
+                positiveButton.setText(positiveText);
+            }
+            if (positiveTextSize > 0) {
+                positiveButton.setTextSize(positiveTextSize);
+            }
+            positiveButton.setBackgroundDrawable(createRipple(0x00000000, 0xff999999));
+            positiveButton.setOnClickListener(this);
+        }
+        if (titleTextView != null) {
+            if (!TextUtils.isEmpty(titleText)) {
+                titleTextView.setText(titleText);
+            }
+            if (titleSize > 0) {
+                titleTextView.setTextSize(titleSize);
+            }
+        }
     }
 
     @Override
