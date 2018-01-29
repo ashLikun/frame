@@ -119,7 +119,6 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         loopOptions.setDividerColor(dividerColor);
         loopOptions.setNoSelectTextColor(dividerColor);
         loopOptions.setSelectTextColor(dividerColor);
-        loopOptions.setMode(builder.mode);
         loopOptions.setInitPosition(builder.initPosition);
     }
 
@@ -218,7 +217,6 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
         private boolean isLinkage = true;
         private boolean isLoop = true;
         private int gravity = Gravity.BOTTOM;
-        private LoopOptions.Mode mode = LoopOptions.Mode.THREE;
         private int initPosition = 0;
 
         public Builder(Context context) {
@@ -327,11 +325,6 @@ public class DialogOptions extends Dialog implements View.OnClickListener {
 
         public Builder gravity(int gravity) {
             this.gravity = gravity;
-            return this;
-        }
-
-        public Builder mode(LoopOptions.Mode mode) {
-            this.mode = mode;
             return this;
         }
 
