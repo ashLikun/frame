@@ -108,7 +108,7 @@ public class GlideUtils {
      * @param url
      * @param downloadCallbacl
      */
-    public static void downloadBitmap(Context context, final String url, final OnDownloadCallbacl downloadCallbacl) {
+    public static void downloadBitmap(final Context context, final String url, final OnDownloadCallbacl downloadCallbacl) {
         Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> e) throws Exception {
