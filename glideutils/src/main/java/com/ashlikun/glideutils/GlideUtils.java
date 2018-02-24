@@ -15,7 +15,9 @@ import java.io.File;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -107,14 +109,22 @@ public class GlideUtils {
      * @param downloadCallbacl
      */
     public static void downloadBitmap(Context context, final String url, final OnDownloadCallbacl downloadCallbacl) {
-        Observable.create((ObservableEmitter<File> e) -> {
-            File file = Glide.with(context).download(getHttpFileUrl(url))
-                    .submit().get();
-            e.onNext(file);
+        Observable.create(new ObservableOnSubscribe<File>() {
+            @Override
+            public void subscribe(ObservableEmitter<File> e) throws Exception {
+                File file = Glide.with(context).download(getHttpFileUrl(url))
+                        .submit().get();
+                e.onNext(file);
+            }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((File file) ->
-                        downloadCallbacl.onCall(file));
+                .subscribe(new Consumer<File>() {
+                    @Override
+                    public void accept(File file) throws Exception {
+                        downloadCallbacl.onCall(file);
+                    }
+                });
+
     }
 
     /**
