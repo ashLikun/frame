@@ -90,6 +90,7 @@ public abstract class ImlHttpInterface implements HttpInterface {
     }
 
 
+    @Override
     public <T> Subscription get(Callback<T> subscriber,
                                 Map<String, String> maps) {
 
@@ -97,6 +98,7 @@ public abstract class ImlHttpInterface implements HttpInterface {
                 new HttpSubscription<T>(subscriber));
     }
 
+    @Override
     public <T> Subscription get(Callback<T> subscriber,
                                 RequestParam param) {
         if (param.isHavaHeader()) {
