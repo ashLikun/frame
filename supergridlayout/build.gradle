@@ -16,11 +16,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    /**
+     * aar文件的编译
+     */
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+        maven {
+            url "https://jitpack.io"
+        }
+    }
 }
 
 dependencies {
-    compile project(':adapterDatabind')
     compile 'com.google.android:flexbox:0.1.2'
+    implementation 'com.github.ashLikun.CommonAdapter:adapter:1.1.9'
+
 }
 
 apply from: '../maven.gradle'

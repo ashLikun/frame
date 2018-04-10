@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -16,12 +15,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
+    }
 }
 dependencies {
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'jp.wasabeef:glide-transformations:2.0.1'
-    compile 'io.reactivex:rxjava:x.y.z'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile rootProject.ext.v4Version
+    compile 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'
+    compileOnly 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compileOnly 'io.reactivex.rxjava2:rxjava:2.x.y'
+    compileOnly 'com.squareup.okhttp3:okhttp:3.9.1'
 }
 apply from: '../maven.gradle'

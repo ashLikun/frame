@@ -5,12 +5,11 @@
     <attr name="SwipeRefreshLayout_Color3" format="color"></attr>
     <attr name="SwipeRefreshLayout_Color4" format="color"></attr>
     <!-- ****************************************主题 开始************************************Theme.AppCompat.Light.NoActionBar**-->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/gray_text</item>
+        <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:buttonStyle">@null</item>
         <item name="android:windowBackground">@color/activity_backgound</item>
@@ -25,41 +24,49 @@
         <item name="SwipeRefreshLayout_Color4">#ffFBBC05</item>
     </style>
 
-    <style name="AppTheme.Fullscreen" parent="AppTheme">
+    <!--其他使用者可自定义-->
+    <style name="AppTheme" parent="BaseTheme"></style>
+
+    <style name="AppTheme.Fullscreen">
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="AppTheme.Translucent" parent="AppTheme">
+    <style name="AppTheme.Translucent">
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="AppTheme.MainTheme" parent="AppTheme">
+    <style name="AppTheme.MainTheme">
         <item name="android:windowAnimationStyle">@style/MainAnimation</item>
     </style>
 
 
-    <style name="AppTheme.OtherTheme" parent="AppTheme">
+    <style name="AppTheme.OtherTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/OtherAnimation</item>
     </style>
 
-    <style name="AppTheme.PhotoBrowse" parent="AppTheme">
+    <style name="AppTheme.PhotoBrowse">
         <item name="android:windowBackground">@color/photo_browse</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
     </style>
 
-    <style name="OtherAnimation">
-
-        <item name="android:windowEnterAnimation">@anim/activity_open_enter</item>
-        <item name="android:windowExitAnimation">@anim/activity_colse_exit</item>
+    <style name="OtherAnimation" parent="@android:style/Animation.Translucent">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_open_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_colse_exit</item>
     </style>
 
-    <style name="MainAnimation">
+    <!--当我们从 A1 启动 A2 时，A1 从屏幕上消失，这个动画叫做 android:activityOpenExitAnimation-->
+    <!--当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation-->
+    <!--当我们从 A2 退出回到 A1 时，A2 从屏幕上消失，这个叫做 android:activityCloseExitAnimation-->
+    <!--当我们从 A2 退出回到 A1 时，A1 出现在屏幕上，这个叫做 android:activityCloseEnterAnimation-->
+    <style name="MainAnimation" parent="@android:style/Animation.Translucent">
         <!--<item name="android:activityOpenEnterAnimation">@null</item>-->
         <!--<item name="android:activityOpenExitAnimation">@null</item>-->
         <!--<item name="android:windowEnterAnimation">@anim/activity_open_enter</item>-->
         <!--<item name="android:windowExitAnimation">@anim/activity_colse_exit</item>-->
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
     </style>
 
 
@@ -71,27 +78,27 @@
 
     <style name="TextInputLayout.CounterText.White">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_xxm</item>
+        <item name="android:textSize">@dimen/dp_12</item>
     </style>
 
     <style name="TextInputLayout.ErrorText">
         <item name="android:textColor">@color/red</item>
-        <item name="android:textSize">@dimen/text_xxm</item>
+        <item name="android:textSize">@dimen/dp_12</item>
     </style>
 
     <style name="TextInputLayout.CounterOverflowText">
         <item name="android:textColor">@color/red</item>
-        <item name="android:textSize">@dimen/text_xxm</item>
+        <item name="android:textSize">@dimen/dp_12</item>
     </style>
 
     <style name="TextInputLayout.CounterText">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/text_xxm</item>
+        <item name="android:textSize">@dimen/dp_12</item>
     </style>
 
     <style name="TextInputLayout.CounterText.MainColor">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/text_xxm</item>
+        <item name="android:textSize">@dimen/dp_12</item>
     </style>
 
     <style name="Theme.TextInputLayout" parent="AppTheme">
@@ -99,14 +106,16 @@
     </style>
 
 
-    <style name="Theme.TextInputLayout.Login" parent="Theme.TextInputLayout">
+    <style name="Theme.TextInputLayout.Primary" parent="Theme.TextInputLayout">
         <!--线的颜色-->
         <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
 
     <style name="Theme.TextInputLayout.White" parent="Theme.TextInputLayout">
         <!--线的颜色-->
         <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
 
     <style name="TextInputLayout">
@@ -117,10 +126,10 @@
         <item name="android:theme">@style/Theme.TextInputLayout</item>
     </style>
 
-    <style name="TextInputLayout.LogIn" parent="TextInputLayout">
+    <style name="TextInputLayout.Primary" parent="TextInputLayout">
         <item name="counterTextAppearance">@style/TextInputLayout.CounterText.MainColor</item>
         <item name="errorTextAppearance">@style/TextInputLayout.ErrorText</item>
-        <item name="android:theme">@style/Theme.TextInputLayout.Login</item>
+        <item name="android:theme">@style/Theme.TextInputLayout.Primary</item>
     </style>
 
     <style name="TextInputLayout.White" parent="TextInputLayout">

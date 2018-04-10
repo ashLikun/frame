@@ -6,4 +6,7 @@
         <attr name="hp_default_color" format="color" />
         <attr name="hp_progress_color" format="color" />
     </declare-styleable>
+    <declare-styleable name="SuperWebView">
+        <attr name="webview_error_icon" format="reference" />
+    </declare-styleable>
 </resources>

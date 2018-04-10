@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.hbung.superwebview.XWebView
+    <com.ashlikun.superwebview.XWebView
         android:id="@+id/swvXwebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"></com.hbung.superwebview.XWebView>
+        android:visibility="visible"></com.ashlikun.superwebview.XWebView>
 
     <RelativeLayout
         android:id="@+id/swvErrorRl"
@@ -32,30 +32,31 @@
             android:layout_centerInParent="true"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="15dp"
+            android:gravity="center"
             android:text="加载失败"
             android:textColor="@color/webview_progress_message_color" />
 
-        <com.hbung.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.ashlikun.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/actionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/swvMessageView"
             android:layout_centerHorizontal="true"
-            android:paddingBottom="10dp"
+            android:paddingBottom="8dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:paddingTop="10dp"
+            android:paddingTop="8dp"
             android:text="重新加载"
             android:textColor="@color/webview_progress_button_default_color"
             app:clickDelay="200"
             app:colorPressed="#ffaaaaaa"
             app:cornerRadius="4dp"
             app:strokeColor="@color/webview_progress_button_stroke_color"
-            app:strokeWidth="1dp"></com.hbung.flatbutton.FlatButton>
+            app:strokeWidth="1dp"></com.ashlikun.flatbutton.FlatButton>
 
     </RelativeLayout>
 
-    <com.hbung.superwebview.HorizontalProgress xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.ashlikun.superwebview.HorizontalProgress xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/swvProgressBar"
         android:layout_width="match_parent"
         android:layout_height="2dp"

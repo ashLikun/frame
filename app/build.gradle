@@ -6,16 +6,22 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
-        applicationId "utils.hbung.com.utils"
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        applicationId "utils.ashlikun.com.utils"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
     }
     dataBinding {
         enabled true
@@ -26,36 +32,51 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-
+/**
+ * aar文件的编译
+ */
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile rootProject.ext.designVersion
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.afollestad.material-dialogs:core:0.9.4.3'
-    compile project(':xrecycleview')
-    compile project(':stickyrecyclerview')
-    compile project(':flatbutton')
-    compile project(':loadingandretrymanager')
-    compile project(':numberprogressbar')
-    compile project(':segmentcontrol')
-    compile project(':supergridlayout')
-    compile project(':banner')
-    compile project(':charbar')
-    compile project(':supertoobar')
-    compile project(':scaleimageview')
-    compile project(':wheelview3d')
-    compile project(':animcheckbox')
-    compile project(':badgeview')
-    compile project(':baseresource')
-    compile project(':pathanim')
-    compile project(':okhttputils')
+    implementation rootProject.ext.designVersion
+    implementation 'com.github.ashLikun:CommonUtils:1.0.7'
+    implementation 'com.alibaba:arouter-api:1.2.1.1'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
+    implementation 'com.afollestad.material-dialogs:core:0.9.4.3'
+    implementation 'com.github.ashLikun:XRecycleView:1.0.1'
+    implementation project(':stickyrecyclerview')
+    implementation project(':flatbutton')
+    implementation project(':numberprogressbar')
+    implementation project(':segmentcontrol')
+    implementation project(':supergridlayout')
+    implementation project(':banner')
+    implementation project(':charbar')
+    implementation project(':supertoobar')
+    implementation project(':scaleimageview')
+    implementation project(':wheelview3d')
+    implementation project(':animcheckbox')
+    implementation project(':badgeview')
+    implementation project(':baseresource')
+    implementation project(':pathanim')
+    implementation project(':superwebview')
     //  compile project(':http')
-    compile project(':utils')
     compile project(':glideutils')
-    compile project(':customdialog')
-    compile project(':adapterDatabind')
-    compile project(':superwebview')
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.x.y'
+    //implementation 'com.squareup.okhttp3:okhttp:3.9.1'
 }
+

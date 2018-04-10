@@ -3,6 +3,7 @@
 
     <declare-styleable name="FlatButton">
         <attr name="android:background" />
+        <attr name="android:textColor" />
         <attr name="colorPressed" format="color" />
         <attr name="colorNormal" format="color" />
         <attr name="colorPressedText" format="color" />
@@ -13,5 +14,6 @@
         <attr name="strokeWidth" format="dimension" />
         <attr name="cornerRadius" format="dimension" />
         <attr name="clickDelay" format="integer" />
+        <attr name="isUseTextColorList" format="boolean" />
     </declare-styleable>
 </resources>

@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="activity_backgound">#ffeeeeee</color>
-    <color name="text_color">#ff676767</color>
+    <color name="colorPrimary">#ff1094f0</color>
+    <color name="colorPrimaryDark">#ff1161f0</color>
+    <color name="colorAccent">#ff2655f0</color>
+    <color name="pickerview_topbar_button_positive">#ff1094f0</color>
+    <color name="black_33">#ff333333</color>
+    <color name="button_ing">#fffa8210</color>
+    <color name="activity_backgound">#ffefefef</color>
+    <color name="color_8e9a9d">#ff8e9a9d</color>
+    <color name="black_203b53">#ff203b53</color>
+    <color name="money">#fff02727</color>
+    <color name="color_14325a">#ff14325a</color>
+    <color name="color_06c59c">#ff06c59c</color>
+    <color name="black_001b33">#ff001b33</color>
+
+    <color name="text_color">#ff666666</color>
     <color name="black">#ff000000</color>
     <color name="black_t20">#44000000</color>
     <color name="black_t10">#10000000</color>
@@ -19,10 +29,12 @@
     <color name="gray_ee_t90">#e5eeeeee</color>
     <color name="gray">#ffcccccc</color>
     <color name="gray_99">#ff999999</color>
+    <color name="gray_80">#ff808080</color>
     <color name="gray_66">#ff666666</color>
     <color name="gray_33">#ff333333</color>
     <color name="gray_ee">#ffeeeeee</color>
     <color name="gray_f0">#fff0eff5</color>
+    <color name="gray_f1">#fff0eff5</color>
     <color name="gray_f2">#fff2f2f2</color>
     <color name="gray_f8">#fff8f8f8</color>
     <color name="gray_fb">#fffbfbfb</color>
@@ -33,6 +45,7 @@
     <color name="gray_text">#ff777777</color>
     <color name="gray_e8">#ffE8E8E8</color>
     <color name="gray_e0">#ffE0E0E0</color>
+    <color name="gray_aa">#ffaaaaaa</color>
     <color name="gray_a5">#ffa5a5a5</color>
     <color name="translucent_60">#60000000</color>
     <color name="translucent">#00000000</color>
@@ -40,8 +53,6 @@
     <color name="yellow">#FFD30F</color>
     <color name="blue">#ff399be6</color>
     <color name="red">#ff0000</color>
-
     <color name="photo_browse">#cc252429</color>
-
-
+    <color name="design_textinput_error_color_light">#ffff3131</color>
 </resources>

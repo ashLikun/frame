@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.hbung.banner.view.CBLoopViewPager
+    <com.ashlikun.banner.view.CBLoopViewPager
         android:id="@+id/cbLoopViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
