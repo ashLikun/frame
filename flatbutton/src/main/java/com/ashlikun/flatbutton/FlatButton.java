@@ -41,7 +41,7 @@ public class FlatButton extends TextView {
     private int colorEnableText;
     //水波纹颜色
     private int colorRipple;
-    private long clickDelay = 0;
+    private int clickDelay = 200;
     //textColor是否使用ColorStateList
     private boolean isUseTextColorList = true;
 
@@ -77,7 +77,7 @@ public class FlatButton extends TextView {
         colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
-        clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
+        clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, clickDelay);
         isUseTextColorList = attr.getBoolean(R.styleable.FlatButton_isUseTextColorList, isUseTextColorList);
         setClickable(true);//默认可以点击
         if (!isUseBackground) {
@@ -176,7 +176,7 @@ public class FlatButton extends TextView {
 
     //背景  设置默认的颜色
     public void setColorNormal(@ColorRes int colorNormal) {
-        if(colorNormal <= 0) return;
+        if (colorNormal <= 0) return;
         this.colorNormal = getColor(colorNormal);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -185,7 +185,7 @@ public class FlatButton extends TextView {
 
     //背景   设置按下的颜色
     public void setColorPressed(@ColorRes int colorPressed) {
-        if(colorPressed <= 0) return;
+        if (colorPressed <= 0) return;
         this.colorPressed = getColor(colorPressed);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -194,7 +194,7 @@ public class FlatButton extends TextView {
 
     //背景，设置不可用的颜色
     public void setColorEnable(@ColorRes int colorEnable) {
-        if(colorEnable <= 0) return;
+        if (colorEnable <= 0) return;
         this.colorEnable = getColor(colorEnable);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -203,7 +203,7 @@ public class FlatButton extends TextView {
 
     //设置水波纹颜色
     public void setColorRipple(@ColorRes int colorRipple) {
-        if(colorRipple <= 0) return;
+        if (colorRipple <= 0) return;
         this.colorRipple = getColor(colorRipple);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -212,7 +212,7 @@ public class FlatButton extends TextView {
 
     //设置圆角
     public void setCornerRadius(@DimenRes int cornerRadius) {
-        if(cornerRadius <= 0) return;
+        if (cornerRadius <= 0) return;
         this.cornerRadius = getDimension(cornerRadius);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -221,7 +221,7 @@ public class FlatButton extends TextView {
 
     //设置边框颜色
     public void setStrokeColor(@ColorRes int strokeColor) {
-        if(strokeColor <= 0) return;
+        if (strokeColor <= 0) return;
         this.strokeColor = getColor(strokeColor);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -230,7 +230,7 @@ public class FlatButton extends TextView {
 
     //设置边框大小
     public void setStrokeWidth(@DimenRes int strokeWidth) {
-        if(strokeWidth <= 0) return;
+        if (strokeWidth <= 0) return;
         this.strokeWidth = getDimension(strokeWidth);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
@@ -241,14 +241,14 @@ public class FlatButton extends TextView {
 
     @Override
     public void setTextColor(@ColorRes int textColor) {
-        if(textColor <= 0) return;
+        if (textColor <= 0) return;
         this.textColor = getColor(textColor);
         super.setTextColor(this.textColor);
     }
 
     //设置文字按下的颜色
     public void setColorPressedText(@ColorRes int colorPressedText) {
-        if(colorPressedText <= 0) return;
+        if (colorPressedText <= 0) return;
         this.colorPressedText = getColor(colorPressedText);
         if (isUseTextColorList)
             setTextColor(getColorStateList());
@@ -256,7 +256,7 @@ public class FlatButton extends TextView {
 
     //设置按钮不可用 时候  文字颜色
     public void setColorEnableText(@ColorRes int colorEnableText) {
-        if(colorEnableText <= 0) return;
+        if (colorEnableText <= 0) return;
         this.colorEnableText = getColor(colorEnableText);
         if (isUseTextColorList)
             setTextColor(getColorStateList());
@@ -275,7 +275,7 @@ public class FlatButton extends TextView {
     }
 
 
-    public void setClickDelay(long clickDelay) {
+    public void setClickDelay(int clickDelay) {
         this.clickDelay = clickDelay;
     }
 
