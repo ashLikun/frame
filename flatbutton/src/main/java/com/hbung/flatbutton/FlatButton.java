@@ -38,7 +38,7 @@ public class FlatButton extends TextView {
     private int colorEnableText;
     //水波纹颜色
     private int colorRipple;
-    private long clickDelay = 0;
+    private int clickDelay = 200;
 
 
     private long lastClickTime = 0;
@@ -71,7 +71,7 @@ public class FlatButton extends TextView {
         colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
-        clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, (int) clickDelay);
+        clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, clickDelay);
         setClickable(true);//默认可以点击
         if (!isUseBackground) {
             if (!isInEditMode()) {
@@ -270,5 +270,9 @@ public class FlatButton extends TextView {
         } else {
             return false;
         }
+    }
+
+    public void setClickDelay(int clickDelay) {
+        this.clickDelay = clickDelay;
     }
 }
