@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -50,16 +49,24 @@
         app:strokeColor="@color/red"
         app:strokeWidth="2dp"></com.ashlikun.flatbutton.FlatButton>
 
-    <com.ashlikun.animcheckbox.CheckBoxGroup
-        android:layout_width="10dp"
-        android:layout_height="40dp"
-        android:orientation="vertical"
-        app:abg_select_index="2"
-        app:abg_space="@dimen/dp_10"
-        app:abg_texts="啊|2222|3"></com.ashlikun.animcheckbox.CheckBoxGroup>
+    <com.ashlikun.animcheckbox.AnimCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:padding="@dimen/dp_10"
+        app:ab_circleColor="#ff3333"
+        app:ab_hookColor="@color/white"
+        app:ab_isSelect="true"
+        app:ab_noSelectStrokeColor="#999999"
+        app:ab_selectStrokeColor="#ccff3333"
+        app:ab_text="全选"
+        app:ab_textColor="#333333"
+        app:ab_textSize="13dp" />
 
     <com.ashlikun.superwebview.SuperWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.ashlikun.superwebview.SuperWebView>
+
+
 </LinearLayout>

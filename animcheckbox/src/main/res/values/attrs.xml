@@ -2,8 +2,9 @@
 <resources>
     <declare-styleable name="AnimCheckBox">
         <attr name="ab_strokeWidth" format="dimension" />
-        <attr name="ab_strokeColor" format="color" />
-        <attr name="ab_outColor" format="color" />
+        <attr name="ab_selectStrokeColor" format="color" />
+        <attr name="ab_noSelectStrokeColor" format="color" />
+        <attr name="ab_hookColor" format="color" />
         <attr name="ab_circleColor" format="color" />
         <attr name="ab_isSelect" format="boolean" />
         <attr name="ab_isCircle" format="boolean" />
@@ -12,6 +13,7 @@
         <attr name="ab_textSize" format="dimension" />
         <attr name="ab_textColor" format="color" />
         <attr name="ab_textNoSelectColor" format="color" />
+        <attr name="ab_textSpace" format="dimension" />
     </declare-styleable>
     <declare-styleable name="CheckBoxGroup">
         <attr name="abg_texts" format="string|reference" />

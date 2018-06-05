@@ -36,7 +36,7 @@ import java.util.List;
 public class AnimCheckBox extends View {
     private final String TAG = "AnimCheckBox";
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private int radius;
+    private float radius;
     private RectF mRectF = new RectF();
     private RectF mInnerRectF = new RectF();
     private Path mPath = new Path();
@@ -48,12 +48,12 @@ public class AnimCheckBox extends View {
     private float mBaseRightHookOffset;
     private float mEndLeftHookOffset;
     private float mEndRightHookOffset;
-    private int size;
+    private float size;
     private boolean mChecked = false;
     private float mHookOffset;
     private float mHookSize;
     private int mInnerCircleAlpha = 0XFF;
-    private int mStrokeWidth = 2;
+    private float mStrokeWidth = 2;
     private final int mDuration = 500;
 
     private Path mBroadPath;
@@ -66,8 +66,18 @@ public class AnimCheckBox extends View {
     private int textColor;
     private int textNoSelectColor;
 
-    private int mStrokeColor;
-    private int mOutCircleColor;
+    /**
+     * 勾的颜色
+     */
+    private int mHookColor;
+    /**
+     * 选中的外边框颜色
+     */
+    private int mSelectStrokeColor;
+    /**
+     * 外边框颜色，没有选中的颜色
+     */
+    private int mNoSelectStrokeColor;
     private int mCircleColor = 0xffeeeeee;
     private final int defaultSize = 40;
     private List<OnCheckedChangeListener> mOnCheckedChangeListener;
@@ -91,8 +101,8 @@ public class AnimCheckBox extends View {
                     android.R.attr.colorPrimary, colorPrimary);
         }
         textColor = colorPrimary;
-        mStrokeColor = colorPrimary;
-        mOutCircleColor = colorPrimary;
+        mSelectStrokeColor = colorPrimary;
+        mNoSelectStrokeColor = colorPrimary;
         init(attrs);
     }
 
@@ -113,10 +123,11 @@ public class AnimCheckBox extends View {
         boolean autoSelect = true;
         if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.AnimCheckBox);
-            mStrokeWidth = (int) array.getDimension(R.styleable.AnimCheckBox_ab_strokeWidth, dip(mStrokeWidth));
-            mStrokeColor = array.getColor(R.styleable.AnimCheckBox_ab_strokeColor, mStrokeColor);
+            mStrokeWidth = (int) array.getDimension(R.styleable.AnimCheckBox_ab_strokeWidth, dip((int) mStrokeWidth));
+            mSelectStrokeColor = array.getColor(R.styleable.AnimCheckBox_ab_selectStrokeColor, mSelectStrokeColor);
             mCircleColor = array.getColor(R.styleable.AnimCheckBox_ab_circleColor, mCircleColor);
-            mOutCircleColor = array.getColor(R.styleable.AnimCheckBox_ab_outColor, mOutCircleColor);
+            mNoSelectStrokeColor = array.getColor(R.styleable.AnimCheckBox_ab_noSelectStrokeColor, mNoSelectStrokeColor);
+            mHookColor = array.getColor(R.styleable.AnimCheckBox_ab_hookColor, mSelectStrokeColor);
             mChecked = array.getBoolean(R.styleable.AnimCheckBox_ab_isSelect, mChecked);
             isCircle = array.getBoolean(R.styleable.AnimCheckBox_ab_isCircle, isCircle);
             autoSelect = array.getBoolean(R.styleable.AnimCheckBox_ab_autoSelect, autoSelect);
@@ -124,14 +135,15 @@ public class AnimCheckBox extends View {
             textSize = array.getDimension(R.styleable.AnimCheckBox_ab_textSize, dip((int) textSize));
             textColor = array.getColor(R.styleable.AnimCheckBox_ab_textColor, textColor);
             textNoSelectColor = array.getColor(R.styleable.AnimCheckBox_ab_textNoSelectColor, textColor);
+            textSpace = array.getDimension(R.styleable.AnimCheckBox_ab_textSpace, dip((int) textSpace));
             array.recycle();
         } else {
-            mStrokeWidth = dip(mStrokeWidth);
+            mStrokeWidth = dip((int) mStrokeWidth);
             textSize = dip((int) textSize);
         }
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setColor(mStrokeColor);
+        mPaint.setColor(mSelectStrokeColor);
         mBroadPath = new Path();
         mPathTemp = new Path();
         setAutoSelect(autoSelect);
@@ -148,7 +160,9 @@ public class AnimCheckBox extends View {
     }
 
     public void setAutoSelect(boolean autoSelect) {
-        if (isAutoSelect == autoSelect) return;
+        if (isAutoSelect == autoSelect) {
+            return;
+        }
         isAutoSelect = autoSelect;
         if (isAutoSelect) {
             setOnClickListener(new OnClickListener() {
@@ -184,7 +198,6 @@ public class AnimCheckBox extends View {
             width = height;
         }
         if (text != null && text.length() != 0) {
-            textSpace = height / 4.0f;
             initDrawTextPaint();
             float textLength = mPaint.measureText(text);
             width = (int) (height + textSpace + textLength);
@@ -204,7 +217,7 @@ public class AnimCheckBox extends View {
         mRectF.set(mStrokeWidth + getPaddingLeft(), mStrokeWidth + getPaddingTop(), size - mStrokeWidth + getPaddingRight(), size - mStrokeWidth + getPaddingBottom());
 
         mInnerRectF.set(mRectF);
-        mInnerRectF.inset(mStrokeWidth / 2, mStrokeWidth / 2);
+        mInnerRectF.inset(mStrokeWidth / 2 - 0.5f, mStrokeWidth / 2 - 0.5f);
         mHookStartY = (float) (size / 2 - (radius * mSin27 + (radius - radius * mSin63)));
         mBaseLeftHookOffset = (float) (radius * (1 - mSin63)) + mStrokeWidth / 2;
         mBaseRightHookOffset = 0f;
@@ -244,8 +257,9 @@ public class AnimCheckBox extends View {
     }
 
     private void drawHook(Canvas canvas) {
-        if (mHookOffset == 0)
+        if (mHookOffset == 0) {
             return;
+        }
         initDrawHookPaint();
 
         mPath.reset();
@@ -271,19 +285,24 @@ public class AnimCheckBox extends View {
         canvas.restore();
     }
 
+    /**
+     * 初始化勾的颜色
+     */
     private void initDrawHookPaint() {
         mPaint.setAlpha(0xFF);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setColor(mStrokeColor);
+        mPaint.setColor(mHookColor);
     }
 
-    //初始化外边框的patint与path
+    /**
+     * 初始化外边框的patint与path
+     */
     private void initDrawStrokeCirclePaintAndPath() {
         mPaint.setAlpha(0xFF);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setColor(mOutCircleColor);
+        mPaint.setColor(mNoSelectStrokeColor);
         // canvas.drawArc(mRectF, 202, mSweepAngle, false, mPaint);
         mBroadPath.reset();
         mPathTemp.reset();
@@ -309,12 +328,13 @@ public class AnimCheckBox extends View {
         }
     }
 
-    //初始化外背景的patint与path
+    /**
+     * 初始化外背景的paint与path
+     */
     private void initDrawAlphaStrokeCirclePaintAndPath() {
         mPaint.setStrokeWidth(mStrokeWidth);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(mStrokeColor);
-        mPaint.setAlpha(0x60);
+        mPaint.setColor(mSelectStrokeColor);
         //canvas.drawArc(mRectF, 202, mSweepAngle - 360, false, mPaint);
         mBroadPath.reset();
         if (isCircle) {
@@ -347,11 +367,13 @@ public class AnimCheckBox extends View {
         return radius;
     }
 
+    /**
+     * 初始化圆形的背景
+     */
     private void initDrawInnerCirclePaintAndPath() {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mCircleColor);
         mPaint.setAlpha(mInnerCircleAlpha);
-        // canvas.drawArc(mInnerRectF, 0, 360, false, mPaint);
         mBroadPath.reset();
         if (isCircle) {
             mBroadPath.addArc(mInnerRectF, 0, 360);
