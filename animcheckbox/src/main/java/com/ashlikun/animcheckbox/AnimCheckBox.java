@@ -80,7 +80,8 @@ public class AnimCheckBox extends View {
     private int mNoSelectStrokeColor;
     private int mCircleColor = 0xffeeeeee;
     private final int defaultSize = 40;
-    private List<OnCheckedChangeListener> mOnCheckedChangeListener;
+    private List<OnCheckedChangeListener> mOnCheckedChangeListeners;
+    private OnCheckedChangeListener onCheckedChangeListener;
 
 
     private boolean isAutoSelect = false;
@@ -169,12 +170,15 @@ public class AnimCheckBox extends View {
                 @Override
                 public void onClick(View v) {
                     if (isAutoSelect) {
-                        setChecked(!mChecked);
-                        if (mOnCheckedChangeListener != null) {
-                            for (int i = 0; i < mOnCheckedChangeListener.size(); i++) {
-                                mOnCheckedChangeListener.get(i).onChange(AnimCheckBox.this, mChecked);
+                        boolean res = onCheckedChangeListener == null ?
+                                false : onCheckedChangeListener.onChange(AnimCheckBox.this, !mChecked);
+                        if (!res) {
+                            setChecked(!mChecked);
+                            if (mOnCheckedChangeListeners != null) {
+                                for (int i = 0; i < mOnCheckedChangeListeners.size(); i++) {
+                                    mOnCheckedChangeListeners.get(i).onChange(AnimCheckBox.this, mChecked);
+                                }
                             }
-
                         }
                     }
                 }
@@ -537,11 +541,23 @@ public class AnimCheckBox extends View {
 
 
     public void addOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        if (mOnCheckedChangeListener == null) mOnCheckedChangeListener = new ArrayList<>();
-        mOnCheckedChangeListener.add(listener);
+        if (mOnCheckedChangeListeners == null) {
+            mOnCheckedChangeListeners = new ArrayList<>();
+        }
+        mOnCheckedChangeListeners.add(listener);
+    }
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener onCheckedChangeListener) {
+        this.onCheckedChangeListener = onCheckedChangeListener;
     }
 
     public interface OnCheckedChangeListener {
-        void onChange(AnimCheckBox checkBox, boolean checked);
+        /**
+         * 当调用{@link AnimCheckBox#setOnCheckedChangeListener}方法设置的监听的时候得有返回值
+         *
+         * @return true :回调已经处理完了，本view不做任何处理
+         * false:没有处理，当前view处理
+         */
+        boolean onChange(AnimCheckBox checkBox, boolean checked);
     }
 }
