@@ -22,14 +22,18 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
     }
 
     public AnimCheckSingleHelp(AnimCheckBox... boxs) {
-        if (boxs == null || boxs.length == 0) return;
+        if (boxs == null || boxs.length == 0) {
+            return;
+        }
         this.boxs = Arrays.asList(boxs);
         single();
     }
 
     //多个AnimChexkBox 得单选
     public void single() {
-        if (boxs == null || boxs.size() <= 1) return;
+        if (boxs == null || boxs.size() <= 1) {
+            return;
+        }
         for (int i = 0; i < boxs.size(); i++) {
             AnimCheckBox item = boxs.get(i);
             item.addOnCheckedChangeListener(this);
@@ -37,12 +41,14 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
     }
 
     public void addAnimCheckBox(AnimCheckBox... box) {
-        if (boxs == null) boxs = new ArrayList<>();
+        if (boxs == null) {
+            boxs = new ArrayList<>();
+        }
         boxs.addAll(Arrays.asList(box));
     }
 
     @Override
-    public void onChange(AnimCheckBox checkBox, boolean checked) {
+    public boolean onChange(AnimCheckBox checkBox, boolean checked) {
         mSelectIndex = -1;
         if (checked && getSize() > 2) {
             checkBox.setAutoSelect(false);
@@ -72,17 +78,20 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
                 onSingleSelectListener.get(j).onSingleSelect(checkBox, mSelectIndex);
             }
         }
+        return false;
     }
 
 
     public void clean() {
-        if (boxs != null)
+        if (boxs != null) {
             boxs.clear();
+        }
     }
 
     public int getSize() {
-        if (boxs != null)
+        if (boxs != null) {
             return boxs.size();
+        }
         return 0;
     }
 
