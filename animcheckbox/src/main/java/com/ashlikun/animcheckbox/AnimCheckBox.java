@@ -220,6 +220,13 @@ public class AnimCheckBox extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        setParams();
+    }
+
+    /**
+     * 设置一些必要的数据
+     */
+    private void setParams() {
         size = getHeight() - getPaddingTop() - getPaddingBottom();
         radius = (size - (2 * mStrokeWidth)) / 2;
         mRectF.set(mStrokeWidth + getPaddingLeft(), mStrokeWidth + getPaddingTop(), size - mStrokeWidth + getPaddingRight(), size - mStrokeWidth + getPaddingBottom());
@@ -499,13 +506,31 @@ public class AnimCheckBox extends View {
 
 
     public void setChecked(boolean checked, boolean animation) {
-        if (checked == this.mChecked) {
+        setChecked(checked, animation, false);
+    }
+
+    /**
+     * @param checked
+     * @param animation
+     * @param compel    是否强制设置,跳过相同的状态与强制动画
+     */
+    public void setChecked(boolean checked, boolean animation, boolean compel) {
+        if (!compel && checked == this.mChecked) {
             return;
         }
         this.mChecked = checked;
+        if ((compel && animation) || (animation && isOnLayout)) {
+            if (!isOnLayout) {
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        startAnim();
+                    }
+                });
+            } else {
+                startAnim();
+            }
 
-        if (animation && isOnLayout) {
-            startAnim();
         } else {
             if (mChecked) {
                 mInnerCircleAlpha = 0xFF;
