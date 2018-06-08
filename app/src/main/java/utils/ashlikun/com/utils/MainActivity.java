@@ -54,13 +54,22 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         recycleView.setAdapter(adapter = new RecyclerView.Adapter<MyHolder>() {
             @Override
             public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                return new MyHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.anim_checkbox_item, parent,false));
+                return new MyHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.anim_checkbox_item, parent, false));
             }
 
             @Override
             public void onBindViewHolder(MyHolder holder, int position) {
-                holder.checkBox.setChecked(listData.get(position), true, true);
+                holder.checkBox.setChecked(listData.get(position), true);
             }
+
+//            @Override
+//            public void onBindViewHolder(MyHolder holder, int position, List<Object> payloads) {
+//                if (payloads.isEmpty()) {
+//                    onBindViewHolder(holder, position);
+//                } else {
+//                    holder.checkBox.setChecked(listData.get(position), true);
+//                }
+//            }
 
             @Override
             public int getItemCount() {
@@ -73,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 for (int i = 0; i < 10; i++) {
                     listData.set(i, !listData.get(i));
                 }
-                adapter.notifyItemRangeChanged(0, 10);
+                adapter.notifyItemRangeChanged(0, 10, "aaa");
             }
         });
     }

@@ -505,21 +505,17 @@ public class AnimCheckBox extends View {
     }
 
 
-    public void setChecked(boolean checked, boolean animation) {
-        setChecked(checked, animation, false);
-    }
 
     /**
      * @param checked
      * @param animation
-     * @param compel    是否强制设置,跳过相同的状态与强制动画
      */
-    public void setChecked(boolean checked, boolean animation, boolean compel) {
-        if (!compel && checked == this.mChecked) {
+    public void setChecked(boolean checked, boolean animation) {
+        if (checked == this.mChecked) {
             return;
         }
         this.mChecked = checked;
-        if ((compel && animation) || (animation && isOnLayout)) {
+        if (animation) {
             if (!isOnLayout) {
                 post(new Runnable() {
                     @Override
