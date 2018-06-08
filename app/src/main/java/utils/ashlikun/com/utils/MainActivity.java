@@ -3,9 +3,13 @@ package utils.ashlikun.com.utils;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.ashlikun.superwebview.SuperWebView;
+import com.ashlikun.animcheckbox.AnimCheckBox;
 import com.ashlikun.utils.Utils;
 import com.ashlikun.wheelview3d.listener.OnItemSelectListener;
 import com.ashlikun.wheelview3d.view.DialogOptions;
@@ -18,6 +22,10 @@ import java.util.List;
 import utils.ashlikun.com.utils.datebean.LoopData;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
+
+    RecyclerView recycleView;
+    List<Boolean> listData = new ArrayList<>();
+    RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +41,46 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 return true;
             }
         });
+        for (int i = 0; i < 100; i++) {
+            listData.add(true);
+        }
         setContentView(R.layout.activity_main);
-        final SuperWebView webView = (SuperWebView) findViewById(R.id.webView);
+        recycleView = findViewById(R.id.recycleView);
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        recycleView.setAdapter(adapter = new RecyclerView.Adapter<MyHolder>() {
+            @Override
+            public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return new MyHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.anim_checkbox_item, null));
+            }
 
+            @Override
+            public void onBindViewHolder(MyHolder holder, int position) {
+                holder.checkBox.setChecked(listData.get(position));
+            }
+
+            @Override
+            public int getItemCount() {
+                return listData.size();
+            }
+        });
         findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.loadUrl("https://test1.miaofun.com/xiamai/indssssex.html#/home?");
-//                Intent intent = new Intent(MainActivity.this, RxJavaTestActivity.class);
-//                startActivity(intent);
+                for (int i = 0; i < 10; i++) {
+                    listData.set(i, !listData.get(i));
+                }
+                adapter.notifyItemRangeChanged(0, 10);
             }
         });
-        findViewById(R.id.actionButton2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                webView.loadUrl("https://test1.miaofun.com/xiamai/index.html#/home?");
-//                Intent intent = new Intent(MainActivity.this, RxJavaTestActivity.class);
-//                startActivity(intent);
-                showLoopView();
-            }
-        });
+    }
+
+    class MyHolder extends RecyclerView.ViewHolder {
+        AnimCheckBox checkBox;
+
+        public MyHolder(View itemView) {
+            super(itemView);
+            checkBox = findViewById(R.id.checkbox);
+        }
     }
 
     public void showLoopView() {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.ashlikun.animcheckbox.AnimCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:padding="@dimen/dp_10"
+        app:ab_circleColor="#ff3333"
+        app:ab_hookColor="@color/white"
+        app:ab_isSelect="true"
+        app:ab_noSelectStrokeColor="#999999"
+        app:ab_selectStrokeColor="#ccff3333"
+        app:ab_text="全选"
+        app:ab_textColor="#333333"
+        app:ab_textSize="13dp" />
+</LinearLayout>
