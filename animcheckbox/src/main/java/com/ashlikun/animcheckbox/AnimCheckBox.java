@@ -214,12 +214,15 @@ public class AnimCheckBox extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+        isOnLayout = true;
+    }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
         size = getHeight() - getPaddingTop() - getPaddingBottom();
         radius = (size - (2 * mStrokeWidth)) / 2;
-
         mRectF.set(mStrokeWidth + getPaddingLeft(), mStrokeWidth + getPaddingTop(), size - mStrokeWidth + getPaddingRight(), size - mStrokeWidth + getPaddingBottom());
-
         mInnerRectF.set(mRectF);
         mInnerRectF.inset(mStrokeWidth / 2 - 0.5f, mStrokeWidth / 2 - 0.5f);
         mHookStartY = (float) (size / 2 - (radius * mSin27 + (radius - radius * mSin63)));
@@ -229,8 +232,6 @@ public class AnimCheckBox extends View {
         mEndRightHookOffset = mBaseRightHookOffset + (size / 3 + mHookStartY) * 0.38f;
         mHookSize = size - (mEndLeftHookOffset + mEndRightHookOffset);
         mHookOffset = mChecked ? mHookSize + mEndLeftHookOffset - mBaseLeftHookOffset : 0;
-
-        isOnLayout = true;
     }
 
     @Override
