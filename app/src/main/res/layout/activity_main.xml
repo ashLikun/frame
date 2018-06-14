@@ -56,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:padding="@dimen/dp_10"
         app:ab_circleColor="#ff3333"
         app:ab_hookColor="@color/white"
         app:ab_isSelect="true"
@@ -66,10 +65,10 @@
         app:ab_textColor="#333333"
         app:ab_textSize="13dp" />
 
-    <com.ashlikun.superwebview.SuperWebView
-        android:id="@+id/webView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.ashlikun.superwebview.SuperWebView>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>
