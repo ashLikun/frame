@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ashlikun.animcheckbox.AnimCheckBox;
+import com.ashlikun.supertoobar.SupperToolBar;
 import com.ashlikun.utils.Utils;
 import com.ashlikun.wheelview3d.listener.OnItemSelectListener;
 import com.ashlikun.wheelview3d.view.DialogOptions;
@@ -25,6 +26,7 @@ import utils.ashlikun.com.utils.datebean.LoopData;
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
     RecyclerView recycleView;
+    SupperToolBar supperToolBar;
     List<Boolean> listData = new ArrayList<>();
     RecyclerView.Adapter adapter;
 
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         }
         setContentView(R.layout.activity_main);
         recycleView = findViewById(R.id.recycleView);
+        supperToolBar = findViewById(R.id.toolBar);
+        supperToolBar.setBack(this);
         DefaultItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setChangeDuration(0);
         recycleView.setItemAnimator(itemAnimator);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleBarView">
+        <attr name="stb_titleColor" format="color" />
+        <attr name="stb_titleSize" format="dimension" />
+        <attr name="stb_title" format="string" />
+        <attr name="stb_rightIcon" format="reference" />
+        <attr name="stb_backImgColor" format="color" />
+        <attr name="stb_bottonLineColor" format="color" />
+        <attr name="stb_bottonLineHeight" format="dimension" />
+        <attr name="stb_backImg" format="reference" />
+        <attr name="stb_notification_bagColor" format="color" />
+        <attr name="stb_notification_textColor" format="color" />
+    </declare-styleable>
+</resources>

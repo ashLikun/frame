@@ -8,9 +8,12 @@
 
     <com.ashlikun.supertoobar.SupperToolBar
         android:id="@+id/toolBar"
-        style="@style/Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.ashlikun.supertoobar.SupperToolBar>
+        android:layout_height="wrap_content"
+        app:stb_backImgColor="@color/white">
+
+
+    </com.ashlikun.supertoobar.SupperToolBar>
 
 
     <com.ashlikun.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
