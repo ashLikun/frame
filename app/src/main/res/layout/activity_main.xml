@@ -9,8 +9,7 @@
     <com.ashlikun.supertoobar.SupperToolBar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:stb_backImgColor="@color/white">
+        android:layout_height="wrap_content">
 
 
     </com.ashlikun.supertoobar.SupperToolBar>

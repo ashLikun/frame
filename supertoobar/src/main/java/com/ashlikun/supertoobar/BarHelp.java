@@ -106,6 +106,19 @@ class BarHelp {
                 v.setText("");
             }
         }
+    }
 
+    /**
+     * 这个颜色是不是深色的
+     *
+     * @param color
+     * @return
+     */
+    public static boolean isColorDrak(int color) {
+        //int t = (color >> 24) & 0xFF;
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        return r * 0.299 + g * 0.578 + b * 0.114 <= 192;
     }
 }

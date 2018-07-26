@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ public class SupperToolBar extends FrameLayout {
      * 是否设置了状态栏透明
      */
     protected boolean setTranslucentStatusBarPaddingTop = false;
+    public static final int DEFAULT_BACKIMAGE = R.drawable.material_back;
     /**
      * 3个主要的Layout
      */
@@ -43,7 +45,7 @@ public class SupperToolBar extends FrameLayout {
     protected TextView titleView;
     protected ImageView backButton;
     protected int titleColor = 0xff333333;
-    protected int backImage = R.drawable.material_back;
+    protected int backImage = DEFAULT_BACKIMAGE;
     protected float titleSize = 18;
     protected CharSequence title;
     protected @DrawableRes
@@ -57,7 +59,8 @@ public class SupperToolBar extends FrameLayout {
     protected int bottonLineColor = 0xffededed;
     protected int notificationBagColor = 0xffff6600;
     protected int notificationTextColor = 0xffffffff;
-    protected int backImgColor = -1;
+    protected int backImgColor = 0;
+    protected boolean isSetBackImgColor = false;
     protected int bottonLineHeight = dip2px(0.5f);
 
 
@@ -79,7 +82,6 @@ public class SupperToolBar extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY) {
             int barHeightT = MeasureSpec.getSize(heightMeasureSpec);
             if (barHeightT > barHeight) {
@@ -113,7 +115,8 @@ public class SupperToolBar extends FrameLayout {
             linePaint.setColor(bottonLineColor);
             canvas.drawRect(0, getHeight() - bottonLineHeight, getWidth(), getHeight(), linePaint);
         }
-        if (setTranslucentStatusBarPaddingTop) {
+        //绘制半透明状态栏
+        if (setTranslucentStatusBarPaddingTop && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             linePaint.setColor(0x88aaaaaa);
             canvas.drawRect(0, 0, getWidth(), statusHeight, linePaint);
         }
@@ -139,6 +142,9 @@ public class SupperToolBar extends FrameLayout {
         titleSize = a.getDimension(R.styleable.TitleBarView_stb_titleSize, dip2px(titleSize));
         title = a.getString(R.styleable.TitleBarView_stb_title);
         rightIconId = a.getResourceId(R.styleable.TitleBarView_stb_rightIcon, 0);
+        if (a.hasValue(R.styleable.TitleBarView_stb_backImgColor)) {
+            isSetBackImgColor = true;
+        }
         backImgColor = a.getColor(R.styleable.TitleBarView_stb_backImgColor, backImgColor);
         bottonLineColor = a.getColor(R.styleable.TitleBarView_stb_bottonLineColor, bottonLineColor);
         notificationBagColor = a.getColor(R.styleable.TitleBarView_stb_notification_bagColor, notificationBagColor);
@@ -281,53 +287,45 @@ public class SupperToolBar extends FrameLayout {
      *                                           设置左边的控件
      ********************************************************************************************/
     /**
+     * 设置返回图片
+     */
+    public void setBackImage(@DrawableRes int backImage) {
+        this.backImage = backImage;
+        if (backButton != null) {
+            //自动计算返回键颜色
+            if (backImage == DEFAULT_BACKIMAGE && !isSetBackImgColor && getBackground() instanceof ColorDrawable) {
+                int color = ((ColorDrawable) getBackground()).getColor();
+                backImgColor = BarHelp.isColorDrak(color) ? 0xffffffff : 0xff000000;
+            }
+            if (isSetBackImgColor) {
+                backButton.setImageDrawable(BarHelp.getTintDrawable(getResources().getDrawable(backImage), backImgColor));
+            } else {
+                backButton.setImageResource(backImage);
+            }
+        }
+    }
+
+    /**
      * 设置返回
      */
     public void setBack(final Activity activity) {
         if (backButton == null) {
             backButton = new ImageView(getContext());
-            if (backImgColor != -1) {
-                backButton.setImageDrawable(BarHelp.getTintDrawable(getResources().getDrawable(backImage), backImgColor));
-            } else {
-                backButton.setImageResource(backImage);
-            }
             backButton.setPadding(dip2px(12), 0,
                     dip2px(12), 0);
             FrameLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
             params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
             leftLayout.addView(backButton, params);
         }
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.onBackPressed();
-            }
-        });
-    }
-
-    /**
-     * 设置左边icon
-     *
-     * @param iconId
-     */
-    public void setLeftIcon(@DrawableRes int iconId) {
-        if (backButton == null) {
-            backButton = new ImageView(getContext());
-            backButton.setImageResource(iconId);
-            backButton.setPadding(dip2px(12), 0,
-                    dip2px(12), 0);
-            FrameLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-            params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
-            leftLayout.addView(backButton, params);
-        }
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (leftClickListener != null) {
-                    leftClickListener.onLeftClick(backButton);
+        setBackImage(backImage);
+        if (activity != null) {
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activity.onBackPressed();
                 }
-            }
-        });
+            });
+        }
     }
 
     /********************************************************************************************
@@ -450,12 +448,12 @@ public class SupperToolBar extends FrameLayout {
      * @return
      */
     public SupperToolBar setTranslucentStatusBarPaddingTop() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTranslucentStatusBarPaddingTop = true;
             statusHeight = getStatusHeight();
             setPadding(getPaddingLeft(), statusHeight, getPaddingRight(), getPaddingBottom());
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                //5.0以下绘制半透明
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                //6.0以下绘制半透明,因为不能设置状态栏颜色
                 setWillNotDraw(false);
             }
             requestLayout();
