@@ -10,7 +10,6 @@
 
     <com.ashlikun.supertoobar.SupperToolBar
         android:id="@+id/toolBar"
-        style="@style/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.ashlikun.supertoobar.SupperToolBar>
 

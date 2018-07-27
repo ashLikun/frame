@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ashlikun.animcheckbox.AnimCheckBox;
+import com.ashlikun.supertoobar.ImageAction;
 import com.ashlikun.supertoobar.SupperToolBar;
+import com.ashlikun.supertoobar.TextAction;
 import com.ashlikun.utils.Utils;
+import com.ashlikun.utils.ui.ToastUtils;
 import com.ashlikun.wheelview3d.listener.OnItemSelectListener;
 import com.ashlikun.wheelview3d.view.DialogOptions;
 import com.ashlikun.xrecycleview.OnLoaddingListener;
@@ -89,6 +92,26 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 adapter.notifyItemRangeChanged(0, 10, "aaa");
             }
         });
+
+        supperToolBar.setTitle("标题");
+
+
+        supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock));
+
+
+        supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
+                .set());
+        supperToolBar.setNotification(1, 7);
+
+
+        supperToolBar.addAction(new TextAction(supperToolBar, "分享")
+                .setNotificationStrokeColor(0xff458788)
+                .setNotification(10)
+                .set());
+
+        supperToolBar.setOnActionClickListener((index, action) ->
+                ToastUtils.showShort(getApplicationContext(), "aaaaaaa" + index));
+
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

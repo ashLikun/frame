@@ -15,9 +15,13 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -29,6 +33,9 @@ import android.widget.TextView;
  */
 
 public class SupperToolBar extends FrameLayout {
+
+    public static final String ACTION_LAYOUT = "ACTION_LAYOUT";
+    public static final int CLICK_COLOR = 0x88aaaaaa;
     /**
      * 是否设置了状态栏透明
      */
@@ -48,8 +55,6 @@ public class SupperToolBar extends FrameLayout {
     protected int backImage = DEFAULT_BACKIMAGE;
     protected float titleSize = 18;
     protected CharSequence title;
-    protected @DrawableRes
-    int rightIconId;
     protected Paint linePaint;
     /**
      * 底部的线
@@ -57,15 +62,18 @@ public class SupperToolBar extends FrameLayout {
      * @param context
      */
     protected int bottonLineColor = 0xffededed;
-    protected int notificationBagColor = 0xffff6600;
+    protected int notificationBagColor = 0xffff0000;
     protected int notificationTextColor = 0xffffffff;
+    protected int notificationStrokeColor = 0xffffffff;
+    protected int actionTextColor = 0xffffffff;
     protected int backImgColor = 0;
     protected boolean isSetBackImgColor = false;
     protected int bottonLineHeight = dip2px(0.5f);
+    protected int actionPadding = dip2px(8f);
 
 
-    private OnRightClickListener rightClickListener;
     private OnLeftClickListener leftClickListener;
+    private Action.OnActionClick onActionClickListener;
 
     public SupperToolBar(@NonNull Context context) {
         this(context, null);
@@ -137,20 +145,22 @@ public class SupperToolBar extends FrameLayout {
         }
         TypedArray a = context.obtainStyledAttributes(
                 attrs,
-                R.styleable.TitleBarView);
-        titleColor = a.getColor(R.styleable.TitleBarView_stb_titleColor, titleColor);
-        titleSize = a.getDimension(R.styleable.TitleBarView_stb_titleSize, dip2px(titleSize));
-        title = a.getString(R.styleable.TitleBarView_stb_title);
-        rightIconId = a.getResourceId(R.styleable.TitleBarView_stb_rightIcon, 0);
-        if (a.hasValue(R.styleable.TitleBarView_stb_backImgColor)) {
+                R.styleable.SupperToolBar);
+        titleColor = a.getColor(R.styleable.SupperToolBar_stb_titleColor, titleColor);
+        titleSize = a.getDimension(R.styleable.SupperToolBar_stb_titleSize, dip2px(titleSize));
+        title = a.getString(R.styleable.SupperToolBar_stb_title);
+        if (a.hasValue(R.styleable.SupperToolBar_stb_backImgColor)) {
             isSetBackImgColor = true;
         }
-        backImgColor = a.getColor(R.styleable.TitleBarView_stb_backImgColor, backImgColor);
-        bottonLineColor = a.getColor(R.styleable.TitleBarView_stb_bottonLineColor, bottonLineColor);
-        notificationBagColor = a.getColor(R.styleable.TitleBarView_stb_notification_bagColor, notificationBagColor);
-        notificationTextColor = a.getColor(R.styleable.TitleBarView_stb_notification_textColor, notificationTextColor);
-        bottonLineHeight = (int) a.getDimension(R.styleable.TitleBarView_stb_bottonLineHeight, bottonLineHeight);
-        backImage = a.getResourceId(R.styleable.TitleBarView_stb_backImg, backImage);
+        backImgColor = a.getColor(R.styleable.SupperToolBar_stb_backImgColor, backImgColor);
+        bottonLineColor = a.getColor(R.styleable.SupperToolBar_stb_bottonLineColor, bottonLineColor);
+        notificationBagColor = a.getColor(R.styleable.SupperToolBar_stb_notificationBagColor, notificationBagColor);
+        notificationTextColor = a.getColor(R.styleable.SupperToolBar_stb_notificationTextColor, notificationTextColor);
+        bottonLineHeight = (int) a.getDimension(R.styleable.SupperToolBar_stb_bottonLineHeight, bottonLineHeight);
+        backImage = a.getResourceId(R.styleable.SupperToolBar_stb_backImg, backImage);
+        actionTextColor = a.getColor(R.styleable.SupperToolBar_stb_actionTextColor, actionTextColor);
+        actionPadding = (int) a.getDimension(R.styleable.SupperToolBar_stb_actionPadding, actionPadding);
+        notificationStrokeColor = a.getColor(R.styleable.SupperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
         a.recycle();
 
         linePaint = new Paint();
@@ -197,10 +207,6 @@ public class SupperToolBar extends FrameLayout {
      */
     protected void initRightLayout() {
         rightLayout.removeAllViews();
-        //只有icon存在才去添加
-        if (rightIconId > 0) {
-            setRightImageViewIcon(rightIconId);
-        }
     }
 
     /**
@@ -218,27 +224,7 @@ public class SupperToolBar extends FrameLayout {
         addView(centerLayout, centerParams);
         LayoutParams rightParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         rightParams.gravity = Gravity.RIGHT;
-        BarHelp.setForeground(0xffaaaaaa, rightLayout);
-        BarHelp.setForeground(0xffaaaaaa, centerLayout);
-        BarHelp.setForeground(0xffaaaaaa, leftLayout);
         addView(rightLayout, rightParams);
-
-        rightLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (rightClickListener != null) {
-                    rightClickListener.onRightClick(v);
-                }
-            }
-        });
-        leftLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (leftClickListener != null) {
-                    leftClickListener.onLeftClick(v);
-                }
-            }
-        });
     }
 
     public FrameLayout getLeftLayout() {
@@ -251,6 +237,18 @@ public class SupperToolBar extends FrameLayout {
 
     public FrameLayout getRightLayout() {
         return rightLayout;
+    }
+
+    public LinearLayout getActionLayout() {
+        LinearLayout actionLayout = rightLayout.findViewWithTag(ACTION_LAYOUT);
+        if (actionLayout == null) {
+            actionLayout = new LinearLayout(getContext());
+            actionLayout.setOrientation(LinearLayout.HORIZONTAL);
+            actionLayout.setTag(ACTION_LAYOUT);
+            rightLayout.setPadding(0, 0, dip2px(5), 0);
+            rightLayout.addView(actionLayout, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+        }
+        return actionLayout;
     }
 
     /**
@@ -342,100 +340,105 @@ public class SupperToolBar extends FrameLayout {
     }
 
     /********************************************************************************************
-     *                                           设置右边的控件
+     *                                           设置右边的控件(Action)
      ********************************************************************************************/
     /**
-     * 设置右边文字
+     * 移除全部action
      */
-    public SupperToolBar setRightTextView(CharSequence sequence) {
-        return setRightTextView(sequence, 0xff333333);
+    public void removeAllActions() {
+        getActionLayout().removeAllViews();
     }
 
     /**
-     * 设置右边文字
+     * 移除指定的action
      */
-    public SupperToolBar setRightTextView(CharSequence sequence, int color) {
-        TextView rightTextView = rightLayout.findViewWithTag("rightTextView");
-        if (rightTextView == null) {
-            rightTextView = new TextView(getContext());
-            rightTextView.setTextSize(15);
-            rightTextView.setGravity(Gravity.CENTER);
-            rightTextView.setCompoundDrawablePadding(dip2px(6));
+    public void removeActionAt(int index) {
+        getActionLayout().removeViewAt(index);
+    }
+
+    /**
+     * 移除指定的action
+     */
+    public void removeAction(Action action) {
+        View view = getViewByAction(action);
+        if (view != null) {
+            getActionLayout().removeView(view);
         }
-        rightTextView.setTextColor(color);
-        rightTextView.setText(sequence);
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        params.setMargins(0, 0, dip2px(4), 0);
-        rightLayout.addView(rightTextView, params);
-        return this;
     }
 
+    /**
+     * 获取action的个数
+     */
+    public int getActionCount() {
+        return getActionLayout().getChildCount();
+    }
 
     /**
-     * @author　　: 李坤
-     * 创建时间: 2018/7/6 10:56
-     * 邮箱　　：496546144@qq.com
-     * <p>
-     * 方法功能：设置右边icon按钮
+     * 添加一个Action view
      */
-
-    public SupperToolBar setRightImageViewIcon(@DrawableRes int iconId) {
-        //不占用主类的成员变量
-        ImageView rightIcon = rightLayout.findViewWithTag("rightIcon");
-        if (rightIcon == null) {
-            rightIcon = new ImageView(getContext());
-            rightIcon.setImageResource(iconId);
-            int dp8 = dip2px(8);
-            rightIcon.setPadding(dp8, dp8, dp8, dp8);
-            LayoutParams titleParams = new LayoutParams(dip2px(38), LayoutParams.MATCH_PARENT);
-            titleParams.gravity = Gravity.CENTER;
-            rightLayout.addView(rightIcon, titleParams);
+    public Action addAction(final Action action, final int index) {
+        if (action.getActionView() == null) {
+            action.set();
         }
-        rightIcon.setImageResource(iconId);
-        return this;
-    }
-
-    /**
-     * 获取右边文本
-     *
-     * @return
-     */
-    public TextView getRightTextView() {
-        TextView rightTextView = rightLayout.findViewWithTag("rightTextView");
-        if (rightTextView == null) {
-            setRightTextView("");
+        action.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onActionClickListener != null) {
+                    onActionClickListener.onActionClick(index, action);
+                }
+            }
+        });
+        if (action.getActionView().getLayoutParams() == null) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            action.getActionView().setLayoutParams(params);
         }
-        return rightTextView;
+        getActionLayout().addView(action.getActionView(), index);
+        return action;
     }
 
     /**
-     * 右边消息的参数
-     *
-     * @return
+     * 添加多个actionView
      */
-    private LayoutParams getRightNumberParams() {
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, dip2px(18));
-        params.setMargins(0, dip2px(4),
-                dip2px(4), 0);
-        params.gravity = Gravity.RIGHT | Gravity.TOP;
-        return params;
-    }
-
-    /**
-     * 设置右边的消息数目
-     */
-    public SupperToolBar setRightNumber(int number) {
-        return setRightNumber(number, 99);
-    }
-
-    public SupperToolBar setRightNumber(int number, int max) {
-        TextView rightNumber = rightLayout.findViewWithTag("rightNumber");
-        if (rightNumber == null) {
-            rightNumber = createNotification(notificationTextColor, notificationBagColor);
-            rightLayout.addView(rightNumber, getRightNumberParams());
+    public void addActions(ArrayList<Action> actionList) {
+        int actions = actionList.size();
+        for (int i = 0; i < actions; i++) {
+            addAction(actionList.get(i), i);
         }
-        BarHelp.setNotification(rightNumber, number, max);
-        return this;
+    }
+
+    public Action addAction(Action action) {
+        final int index = getActionLayout().getChildCount();
+        return addAction(action, index);
+    }
+
+    public View getViewByAction(Action action) {
+        return getActionLayout().findViewWithTag(action);
+    }
+
+    public Action getAction(int index) {
+        if (index < getActionCount()) {
+            View view = getActionLayout().getChildAt(index);
+            return (Action) view.getTag();
+        }
+        return null;
+    }
+
+    public void setNotificationMax(int max) {
+        int maxCount = getActionCount();
+        for (int index = 0; index < maxCount; index++) {
+            Action action = getAction(index);
+            if (action != null) {
+                action.setNotificationMax(max);
+            }
+        }
+    }
+
+    public void setNotification(int index, int number) {
+        Action action = getAction(index);
+        if (action != null) {
+            action.setNotification(number);
+        }
     }
 
 
@@ -453,7 +456,7 @@ public class SupperToolBar extends FrameLayout {
             statusHeight = getStatusHeight();
             setPadding(getPaddingLeft(), statusHeight, getPaddingRight(), getPaddingBottom());
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                //6.0以下绘制半透明,因为不能设置状态栏颜色
+                //6.0以下绘制半透明,因为不能设置状态栏字体颜色
                 setWillNotDraw(false);
             }
             requestLayout();
@@ -461,31 +464,10 @@ public class SupperToolBar extends FrameLayout {
         return this;
     }
 
-    /**
-     * 创建一个消息的文本，红点提示
-     */
-    public TextView createNotification(int notificationTextColor, int notificationBagColor) {
-        TextView view = new TextView(getContext());
-        view.setTextSize(8);
-        view.setBackground(BarHelp.getTintDrawable(getResources().getDrawable(R.drawable.supper_toolbar_notification),
-                notificationBagColor));
-        view.setGravity(Gravity.CENTER);
-        view.setMinWidth(dip2px(17));
-        view.setPadding(dip2px(2), 0,
-                dip2px(2), 0);
-        view.setTextColor(notificationTextColor);
-        return view;
-    }
+
     /********************************************************************************************
      *                                           事件
      ********************************************************************************************/
-    /**
-     * 设置右边点击事件监听
-     */
-    public void setRightClickListener(OnRightClickListener rightClickListener) {
-        this.rightClickListener = rightClickListener;
-    }
-
     /**
      * 设置左边点击事件监听
      */
@@ -493,13 +475,14 @@ public class SupperToolBar extends FrameLayout {
         this.leftClickListener = leftClickListener;
     }
 
+    public void setOnActionClickListener(Action.OnActionClick onActionClickListener) {
+        this.onActionClickListener = onActionClickListener;
+    }
+
+
     /********************************************************************************************
      *                                           接口
      ********************************************************************************************/
-
-    public interface OnRightClickListener {
-        void onRightClick(View view);
-    }
 
     public interface OnLeftClickListener {
         void onLeftClick(View view);
