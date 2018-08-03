@@ -62,7 +62,6 @@ dependencies {
     implementation project(':numberprogressbar')
     implementation project(':segmentcontrol')
     implementation project(':supergridlayout')
-    implementation project(':banner')
     implementation project(':charbar')
     implementation project(':supertoobar')
     implementation project(':scaleimageview')

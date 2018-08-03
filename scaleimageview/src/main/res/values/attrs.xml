@@ -3,11 +3,6 @@
     <!-- ScaleImageView -->
 
     <declare-styleable name="ScaleImageView">
-        <attr name="widthScale" format="integer"></attr>
-        <attr name="heightScale" format="integer"></attr>
-        <attr name="primary">
-            <enum name="width" value="1" />
-            <enum name="height" value="2" />
-        </attr>
+        <attr name="sci_ratio" format="integer"></attr>
     </declare-styleable>
 </resources>
