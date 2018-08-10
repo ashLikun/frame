@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
@@ -239,7 +240,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //背景  设置默认的颜色
+    /**
+     * 背景  设置默认的颜色
+     *
+     * @param colorNormal
+     */
     public void setColorNormal(@ColorRes int colorNormal) {
         if (colorNormal == 0) {
             return;
@@ -270,7 +275,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //背景   设置按下的颜色
+    /**
+     * 背景   设置按下的颜色
+     *
+     * @param colorPressed
+     */
     public void setColorPressed(@ColorRes int colorPressed) {
         if (colorPressed == 0) {
             return;
@@ -301,7 +310,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //背景，设置不可用的颜色
+    /**
+     * 背景，设置不可用的颜色
+     *
+     * @param colorEnable
+     */
     public void setColorEnable(@ColorRes int colorEnable) {
         if (colorEnable == 0) {
             return;
@@ -368,7 +381,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //设置水波纹颜色
+    /**
+     * 设置水波纹颜色
+     *
+     * @param colorRipple
+     */
     public void setColorRipple(@ColorRes int colorRipple) {
         if (colorRipple == 0) {
             return;
@@ -379,7 +396,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //设置圆角
+    /**
+     * 设置圆角
+     *
+     * @param cornerRadius
+     */
     public void setCornerRadius(@DimenRes int cornerRadius) {
         if (cornerRadius == 0) {
             return;
@@ -390,7 +411,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //设置边框颜色
+    /**
+     * 设置边框颜色
+     *
+     * @param strokeColor
+     */
     public void setStrokeColor(@ColorRes int strokeColor) {
         if (strokeColor == 0) {
             return;
@@ -401,7 +426,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //设置边框大小
+    /**
+     * 设置边框大小
+     *
+     * @param strokeWidth
+     */
     public void setStrokeWidth(@DimenRes int strokeWidth) {
         if (strokeWidth == 0) {
             return;
@@ -412,17 +441,22 @@ public class FlatButton extends TextView {
         }
     }
 
-    //默认文字颜色
+    /**
+     * 默认文字颜色
+     *
+     * @param textColor
+     */
     @Override
-    public void setTextColor(@ColorRes int textColor) {
-        if (textColor == 0) {
-            return;
-        }
-        this.textColor = getColor(textColor);
+    public void setTextColor(@ColorInt int textColor) {
+        this.textColor = textColor;
         super.setTextColor(this.textColor);
     }
 
-    //设置文字按下的颜色
+    /**
+     * 设置文字按下的颜色
+     *
+     * @param colorPressedText
+     */
     public void setColorPressedText(@ColorRes int colorPressedText) {
         if (colorPressedText == 0) {
             return;
@@ -433,7 +467,11 @@ public class FlatButton extends TextView {
         }
     }
 
-    //设置按钮不可用 时候  文字颜色
+    /**
+     * 设置按钮不可用 时候  文字颜色
+     *
+     * @param colorEnableText
+     */
     public void setColorEnableText(@ColorRes int colorEnableText) {
         if (colorEnableText == 0) {
             return;
@@ -445,6 +483,11 @@ public class FlatButton extends TextView {
     }
 
 
+    /**
+     * textColor是否使用ColorStatusList
+     *
+     * @param useTextColorList
+     */
     public void setUseTextColorList(boolean useTextColorList) {
         isUseTextColorList = useTextColorList;
         if (isUseTextColorList) {
@@ -452,13 +495,21 @@ public class FlatButton extends TextView {
         }
     }
 
-    //设置是否使用外部设置的background
+    /**
+     * 设置是否使用外部设置的background
+     *
+     * @param useBackground
+     */
     public void setUseBackground(boolean useBackground) {
         isUseBackground = useBackground;
         setBackgroundCompat(getStateListDrawable());
     }
 
-
+    /**
+     * 点击延迟
+     *
+     * @param clickDelay
+     */
     public void setClickDelay(int clickDelay) {
         this.clickDelay = clickDelay;
     }
