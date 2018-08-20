@@ -136,12 +136,12 @@ public class SupperToolBar extends FrameLayout {
     }
 
     private void initView(Context context, AttributeSet attrs) {
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         barHeight = dip2px(45);
         if (getBackground() == null) {
             //默认colorPrimary颜色
-            setBackgroundColor(typedValue.data);
+//            TypedValue typedValue = new TypedValue();
+//            context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            setBackgroundColor(getResources().getColor(R.color.supertoolbar_backgroung_color));
         }
         TypedArray a = context.obtainStyledAttributes(
                 attrs,
