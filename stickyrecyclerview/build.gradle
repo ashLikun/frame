@@ -31,7 +31,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.designVersion
+    compileOnly rootProject.ext.designVersion
 
 }
 
