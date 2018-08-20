@@ -52,6 +52,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.designVersion
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
     implementation 'com.github.ashLikun:CommonUtils:1.0.7'
     implementation 'com.alibaba:arouter-api:1.2.1.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
