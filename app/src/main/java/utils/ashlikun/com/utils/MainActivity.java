@@ -11,20 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ashlikun.animcheckbox.AnimCheckBox;
+import com.ashlikun.glideutils.GlideUtils;
 import com.ashlikun.supertoobar.ImageAction;
 import com.ashlikun.supertoobar.SupperToolBar;
 import com.ashlikun.supertoobar.TextAction;
 import com.ashlikun.utils.Utils;
 import com.ashlikun.utils.ui.ToastUtils;
-import com.ashlikun.wheelview3d.listener.OnItemSelectListener;
-import com.ashlikun.wheelview3d.view.DialogOptions;
 import com.ashlikun.xrecycleview.OnLoaddingListener;
 import com.ashlikun.xrecycleview.RefreshLayout;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import utils.ashlikun.com.utils.datebean.LoopData;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
@@ -32,8 +30,10 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     SupperToolBar supperToolBar;
     List<Boolean> listData = new ArrayList<>();
     RecyclerView.Adapter adapter;
+    private String image = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1535434196&di=584361192dd507b1778369caf125650b&src=http://pic31.nipic.com/20130723/7447430_105434565000_2.jpg";
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.init(new Utils.OnNeedListener() {
@@ -69,30 +69,11 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 holder.checkBox.setChecked(listData.get(position), true);
             }
 
-//            @Override
-//            public void onBindViewHolder(MyHolder holder, int position, List<Object> payloads) {
-//                if (payloads.isEmpty()) {
-//                    onBindViewHolder(holder, position);
-//                } else {
-//                    holder.checkBox.setChecked(listData.get(position), true);
-//                }
-//            }
-
             @Override
             public int getItemCount() {
                 return listData.size();
             }
         });
-        findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < 10; i++) {
-                    listData.set(i, !listData.get(i));
-                }
-                adapter.notifyItemRangeChanged(0, 10, "aaa");
-            }
-        });
-
         supperToolBar.setTitle("标题");
 
 
@@ -112,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         supperToolBar.setOnActionClickListener((index, action) ->
                 ToastUtils.showShort(getApplicationContext(), "aaaaaaa" + index));
 
+        RequestOptions options = new RequestOptions();
+        options.circleCrop();
+        GlideUtils.show(findViewById(R.id.imageView), image, options);
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
@@ -121,22 +105,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkbox);
         }
-    }
-
-    public void showLoopView() {
-        new DialogOptions.Builder(this)
-                .layoutId(R.layout.view_pickerview_options)
-                .onItemSelectListener(new OnItemSelectListener<LoopData, LoopData, LoopData>() {
-                    @Override
-                    public List<LoopData> getOneData() {
-                        List<LoopData> data = new ArrayList<>();
-                        for (int i = 0; i < 100; i++) {
-                            data.add(new LoopData());
-                        }
-                        return data;
-                    }
-                })
-                .builder().show();
     }
 
     @Override

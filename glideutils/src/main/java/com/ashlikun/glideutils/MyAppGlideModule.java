@@ -20,7 +20,7 @@ import java.io.InputStream;
  * 创建时间: 2017/12/29　17:42
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：GlideModule
  */
 @GlideModule
 public class MyAppGlideModule extends AppGlideModule {
@@ -33,7 +33,11 @@ public class MyAppGlideModule extends AppGlideModule {
         }
     }
 
-    //是否读取清单文件配置，4.0后就不需要了
+    /**
+     * 是否读取清单文件配置，4.0后就不需要了
+     *
+     * @return
+     */
     @Override
     public boolean isManifestParsingEnabled() {
         return false;

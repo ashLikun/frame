@@ -14,24 +14,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 
 /**
- * The entry point for interacting with Glide for Applications
- * <p>
- * <p>Includes all generated APIs from all
- * {@link com.bumptech.glide.annotation.GlideExtension}s in source and dependent libraries.
- * <p>
- * <p>This class is generated and should not be modified
+ * @author　　: 李坤
+ * 创建时间: 2018/8/28 14:44
+ * 邮箱　　：496546144@qq.com
  *
- * @see Glide
+ * 功能介绍：
  */
 public final class GlideLoad {
-    private static final DrawableTransitionOptions TRANSITION_OPTIONS = new DrawableTransitionOptions().crossFade();
 
 
     private Context context;
@@ -154,16 +149,14 @@ public final class GlideLoad {
             }
         }
         if (requestOptions != null) {
-            return requestBuilder.apply(requestOptions).transition(TRANSITION_OPTIONS);
+            return requestBuilder.apply(requestOptions);
         } else {
-            return requestBuilder.transition(TRANSITION_OPTIONS);
+            return requestBuilder;
         }
     }
 
     private RequestBuilder<Drawable> getRequest() {
-        if (imageView != null) {
-            return Glide.with(imageView).load(GlideUtils.getHttpFileUrl(path));
-        } else if (activityF != null) {
+        if (activityF != null) {
             return Glide.with(activityF).load(GlideUtils.getHttpFileUrl(path));
         } else if (activity != null) {
             return Glide.with(activity).load(GlideUtils.getHttpFileUrl(path));
@@ -171,6 +164,8 @@ public final class GlideLoad {
             return Glide.with(fragment).load(GlideUtils.getHttpFileUrl(path));
         } else if (context != null) {
             return Glide.with(context).load(GlideUtils.getHttpFileUrl(path));
+        } else if (imageView != null) {
+            return Glide.with(imageView).load(GlideUtils.getHttpFileUrl(path));
         }
         return null;
     }
