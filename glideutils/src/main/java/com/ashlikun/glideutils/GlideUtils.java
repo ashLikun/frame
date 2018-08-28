@@ -6,7 +6,8 @@ import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
@@ -19,6 +20,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 
 /**
@@ -34,8 +36,6 @@ public class GlideUtils {
 
     private static boolean debug;
     private static String baseUrl;
-    private static final DrawableTransitionOptions TRANSITION_OPTIONS = new DrawableTransitionOptions().crossFade();
-
 
     /**
      * 是否调试
@@ -66,7 +66,7 @@ public class GlideUtils {
      * 给ImageView 设置网络图片（圆形）
      */
     public static ViewTarget<ImageView, Drawable> showCircle(ImageView imageView, Object path) {
-        return show(imageView, path, new RequestOptions().circleCrop());
+        return show(imageView, path, getCircleOptions());
     }
 
     public static ViewTarget<ImageView, Drawable> show(ImageView imageView, Object path) {
@@ -149,5 +149,24 @@ public class GlideUtils {
         return url;
     }
 
+    /**
+     * 获取中间裁剪的圆角图
+     *
+     * @return
+     */
+    public static RequestOptions getRoundedOptions(int radius) {
+        return new RequestOptions().transforms(new CenterCrop(),
+                new RoundedCornersTransformation(radius, 0));
+    }
+
+    /**
+     * 获取中间裁剪的圆形
+     *
+     * @return
+     */
+    public static RequestOptions getCircleOptions() {
+        return new RequestOptions().transforms(new CenterCrop(),
+                new CircleCrop());
+    }
 
 }

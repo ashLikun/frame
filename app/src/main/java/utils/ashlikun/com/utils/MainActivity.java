@@ -26,8 +26,6 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
     RecyclerView recycleView;
@@ -70,9 +68,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
             @Override
             public void onBindViewHolder(MyHolder holder, int position) {
-                RequestOptions options = RequestOptions.centerCropTransform();
-                options.transform(new RoundedCornersTransformation(DimensUtils.dip2px(getBaseContext(), 12), 0));
-                GlideUtils.show(holder.imageView, image, options);
+                GlideUtils.showCircle(holder.imageView, image);
             }
 
             @Override
