@@ -105,7 +105,6 @@ public final class GlideLoad {
 
     public ViewTarget<ImageView, Drawable> show(ImageView view) {
         this.imageView = view;
-        requestOptions = scaleType(imageView);
         RequestBuilder<Drawable> requestBuilder = show();
         return requestBuilder.into(view);
     }
