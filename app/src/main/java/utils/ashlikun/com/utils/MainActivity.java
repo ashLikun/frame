@@ -9,20 +9,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.ashlikun.animcheckbox.AnimCheckBox;
 import com.ashlikun.glideutils.GlideUtils;
 import com.ashlikun.supertoobar.ImageAction;
 import com.ashlikun.supertoobar.SupperToolBar;
 import com.ashlikun.supertoobar.TextAction;
 import com.ashlikun.utils.Utils;
+import com.ashlikun.utils.other.DimensUtils;
 import com.ashlikun.utils.ui.ToastUtils;
 import com.ashlikun.xrecycleview.OnLoaddingListener;
 import com.ashlikun.xrecycleview.RefreshLayout;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
@@ -61,12 +65,14 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         recycleView.setAdapter(adapter = new RecyclerView.Adapter<MyHolder>() {
             @Override
             public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                return new MyHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.anim_checkbox_item, parent, false));
+                return new MyHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.imageview_item, parent, false));
             }
 
             @Override
             public void onBindViewHolder(MyHolder holder, int position) {
-                holder.checkBox.setChecked(listData.get(position), true);
+                RequestOptions options = RequestOptions.centerCropTransform();
+                options.transform(new RoundedCornersTransformation(DimensUtils.dip2px(getBaseContext(), 12), 0));
+                GlideUtils.show(holder.imageView, image, options);
             }
 
             @Override
@@ -94,16 +100,17 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 ToastUtils.showShort(getApplicationContext(), "aaaaaaa" + index));
 
         RequestOptions options = new RequestOptions();
-        options.circleCrop();
+        options.transform(new RoundedCorners(DimensUtils.dip2px(this, 6)));
         GlideUtils.show(findViewById(R.id.imageView), image, options);
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        AnimCheckBox checkBox;
+        ImageView imageView;
 
         public MyHolder(View itemView) {
             super(itemView);
-            checkBox = itemView.findViewById(R.id.checkbox);
+            imageView = itemView.findViewById(R.id.imageView);
+
         }
     }
 

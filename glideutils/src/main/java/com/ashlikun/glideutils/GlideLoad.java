@@ -13,17 +13,24 @@ import com.ashlikun.glideutils.okhttp.ProgressManage;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CenterInside;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * @author　　: 李坤
  * 创建时间: 2018/8/28 14:44
  * 邮箱　　：496546144@qq.com
- *
+ * <p>
  * 功能介绍：
  */
 public final class GlideLoad {
@@ -39,11 +46,7 @@ public final class GlideLoad {
     private Object path;
     private ProgressListener progressListener;
     private RequestListener requestListener;
-    /**
-     * 当imageView没设置scaleType得时候是否要设置centerCrop
-     * 默认为true
-     */
-    private boolean isNeedCenterCrop = true;
+
 
     private GlideLoad() {
     }
@@ -84,10 +87,6 @@ public final class GlideLoad {
         return this;
     }
 
-    public GlideLoad noNeedCenterCrop() {
-        this.isNeedCenterCrop = false;
-        return this;
-    }
 
     public GlideLoad progressListener(ProgressListener progressListener) {
         this.progressListener = progressListener;
@@ -106,9 +105,7 @@ public final class GlideLoad {
 
     public ViewTarget<ImageView, Drawable> show(ImageView view) {
         this.imageView = view;
-        if (isNeedCenterCrop) {
-            requestOptions = scaleType(imageView);
-        }
+        requestOptions = scaleType(imageView);
         RequestBuilder<Drawable> requestBuilder = show();
         return requestBuilder.into(view);
     }
@@ -170,13 +167,41 @@ public final class GlideLoad {
         return null;
     }
 
-    private RequestOptions scaleType(ImageView imageView) {
-        if (imageView != null && imageView.getScaleType() == null) {
-            if (requestOptions == null) {
-                requestOptions = new RequestOptions();
-            }
-            return requestOptions.centerCrop();
+    public RequestOptions scaleType(ImageView imageView) {
+        if (imageView == null || imageView.getScaleType() == null || requestOptions == null) {
+            return requestOptions;
         }
+        Transformation scaleTypeTf = null;
+        switch (imageView.getScaleType()) {
+            case CENTER_CROP:
+                scaleTypeTf = new CenterCrop();
+                break;
+            case CENTER_INSIDE:
+                scaleTypeTf = new CenterInside();
+                break;
+            case FIT_CENTER:
+            case FIT_START:
+            case FIT_END:
+                scaleTypeTf = new FitCenter();
+                break;
+            case FIT_XY:
+                scaleTypeTf = new CenterInside();
+                break;
+            case CENTER:
+            case MATRIX:
+                break;
+        }
+        if (scaleTypeTf == null) {
+            return requestOptions;
+        }
+        Map<Class<?>, Transformation<?>> map = requestOptions.getTransformations();
+        ArrayList<Transformation> arrayList = new ArrayList<>();
+        arrayList.add(scaleTypeTf);
+        for (Map.Entry<Class<?>, Transformation<?>> a : map.entrySet()) {
+            arrayList.add(a.getValue());
+        }
+        requestOptions.getTransformations().clear();
+        requestOptions.transforms(arrayList.toArray(new Transformation[0]));
         return requestOptions;
     }
 }
