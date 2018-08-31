@@ -78,16 +78,10 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         supperToolBar.setTitle("标题");
-
-
         supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock));
-
-
         supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
                 .set());
         supperToolBar.setNotification(1, 7);
-
-
         supperToolBar.addAction(new TextAction(supperToolBar, "分享")
                 .setNotificationStrokeColor(0xff458788)
                 .setNotification(10)
@@ -123,5 +117,14 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
     public void onStickClick(View view) {
         startActivity(new Intent(this, StickRecyclerViewActivity.class));
+    }
+
+    public void onClick(View view) {
+        supperToolBar.setBackImgColor(0xffff0000);
+        ImageAction action = supperToolBar.getAction(0);
+        action.setTintColor(0xffff0000);
+        action.setNotification(100);
+        TextAction textAction = supperToolBar.getAction(2);
+        textAction.setNotification(101);
     }
 }

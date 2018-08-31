@@ -8,7 +8,7 @@
 
     <com.ashlikun.supertoobar.SupperToolBar
         android:id="@+id/toolBar"
-        style="@style/SupperToolBar.White"
+        style="@style/SupperToolBar.Black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,10 +22,16 @@
         android:orientation="horizontal">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
             android:onClick="onStickClick"
             android:text="stick" />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:onClick="onClick"
+            android:text="onClick" />
 
     </LinearLayout>
 

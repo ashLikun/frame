@@ -239,6 +239,11 @@ public class SupperToolBar extends FrameLayout {
         return rightLayout;
     }
 
+    /**
+     * 获取actionLayou
+     *
+     * @return
+     */
     public LinearLayout getActionLayout() {
         LinearLayout actionLayout = rightLayout.findViewWithTag(ACTION_LAYOUT);
         if (actionLayout == null) {
@@ -324,6 +329,15 @@ public class SupperToolBar extends FrameLayout {
                 }
             });
         }
+    }
+
+    /**
+     * 获取返回view
+     *
+     * @return
+     */
+    public ImageView getBackButton() {
+        return backButton;
     }
 
     /********************************************************************************************
@@ -416,10 +430,17 @@ public class SupperToolBar extends FrameLayout {
         return getActionLayout().findViewWithTag(action);
     }
 
-    public Action getAction(int index) {
+    /**
+     * 获取某个Action
+     *
+     * @param index
+     * @param <T>
+     * @return
+     */
+    public <T extends Action> T getAction(int index) {
         if (index < getActionCount()) {
             View view = getActionLayout().getChildAt(index);
-            return (Action) view.getTag();
+            return (T) view.getTag();
         }
         return null;
     }
@@ -464,6 +485,15 @@ public class SupperToolBar extends FrameLayout {
         return this;
     }
 
+    /**
+     * 设置返回键颜色
+     *
+     * @param backImgColor
+     */
+    public void setBackImgColor(int backImgColor) {
+        this.backImgColor = backImgColor;
+        setBackImage(backImage);
+    }
 
     /********************************************************************************************
      *                                           事件

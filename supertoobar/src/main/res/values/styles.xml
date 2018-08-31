@@ -10,12 +10,14 @@
         <item name="stb_backImgColor">#ffffff</item>
         <item name="stb_actionTextColor">#ffffff</item>
         <item name="stb_titleColor">#ffffff</item>
+        <item name="android:background">#000000</item>
     </style>
 
     <style name="SupperToolBar.Black">
         <item name="stb_backImgColor">#000000</item>
         <item name="stb_actionTextColor">#000000</item>
         <item name="stb_titleColor">#000000</item>
+        <item name="android:background">#ffffff</item>
     </style>
 
 
