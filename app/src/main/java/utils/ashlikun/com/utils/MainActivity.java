@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         supperToolBar.setTitle("标题");
-        supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock));
+        supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
+                .set());
         supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
                 .set());
         supperToolBar.setNotification(1, 7);
