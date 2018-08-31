@@ -3,7 +3,6 @@ package com.ashlikun.stickyrecyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -13,228 +12,142 @@ public class HeaderStore {
 
     private final RecyclerView parent;
     private final StickyHeadersAdapter adapter;
-    private final HashMap<Long, View> headersViewByHeadersIds;
-    private final HashMap<Long, Boolean> wasHeaderByItemId;
-    private final ArrayList<Boolean> isHeaderByItemPosition;
-    private final HashMap<Long, Integer> headersHeightsByItemsIds;
-    private boolean isSticky;
-    private int headerSize;
-    private int footerSize;
+    /**
+     * 头部Position对应于的View
+     */
+    private final HashMap<Integer, View> headersViewByHeadersIds;
 
-    public ArrayList<Boolean> getIsHeaderByItemPosition() {
-        return isHeaderByItemPosition;
-    }
+    /**
+     * 保存头部view的高度
+     */
+    private final HashMap<Integer, Integer> headersHeightsByItemsIds;
+    private boolean isSticky;
+    protected int headerSize;
+    protected int footerSize;
+
 
     public HeaderStore(RecyclerView parent, StickyHeadersAdapter adapter, boolean isSticky) {
         this.parent = parent;
         this.adapter = adapter;
         this.isSticky = isSticky;
-        this.headersViewByHeadersIds = new HashMap<Long, View>();
-        this.wasHeaderByItemId = new HashMap<Long, Boolean>();
-        this.isHeaderByItemPosition = new ArrayList<Boolean>();
-        this.headersHeightsByItemsIds = new HashMap<Long, Integer>();
-        addHeader();
+        this.headersViewByHeadersIds = new HashMap();
+        this.headersHeightsByItemsIds = new HashMap();
+    }
+
+    /**
+     * 获取这个Holder对应的头部view
+     *
+     * @param itemHolder
+     * @return
+     */
+    public View getHeaderViewByItem(int position) {
+        if (position < 0) {
+            return null;
+        }
+        if (!headersViewByHeadersIds.containsKey(position)) {
+            RecyclerView.ViewHolder headerViewHolder = adapter.onCreateViewHolder(parent);
+            adapter.onBindViewHolder(headerViewHolder, position);
+            layoutHeader(headerViewHolder.itemView);
+            headersViewByHeadersIds.put(position, headerViewHolder.itemView);
+        }
+        return headersViewByHeadersIds.get(position);
     }
 
     public View getHeaderViewByItem(RecyclerView.ViewHolder itemHolder) {
+        return getHeaderViewByItem(findHeaderViewHolderPosition(itemHolder));
+    }
+
+    /**
+     * 不是头部就找到之前有的,实现粘性
+     *
+     * @return
+     */
+    public int findHeaderViewHolderPosition(RecyclerView.ViewHolder itemHolder) {
         int itemPosition = getPosition(itemHolder);
-
-        if (itemPosition < 0)
-            return null;
-
-        long headerId = adapter.getHeaderId(itemPosition);
-
-        if (!headersViewByHeadersIds.containsKey(headerId)) {
-            RecyclerView.ViewHolder headerViewHolder = adapter.onCreateViewHolder(parent);
-
-            adapter.onBindViewHolder(headerViewHolder, itemPosition);
-            layoutHeader(headerViewHolder.itemView);
-
-            headersViewByHeadersIds.put(headerId, headerViewHolder.itemView);
+        boolean isFind = false;
+        //不是头部就找到之前有的,实现粘性
+        if (!isHeader(itemHolder)) {
+            if (isSticky()) {
+                for (int i = itemPosition; i >= 0; i--) {
+                    if (adapter.isHeader(i)) {
+                        itemPosition = i;
+                        isFind = true;
+                        break;
+                    }
+                }
+            }
+            if (!isFind) {
+                return -1;
+            }
         }
-
-        return headersViewByHeadersIds.get(headerId);
-
+        return itemPosition;
     }
 
-    public long getHeaderId(int itemPosition) {
-        return adapter.getHeaderId(itemPosition);
-    }
 
+    /**
+     * 获取头部view的高度
+     *
+     * @param itemHolder
+     * @return
+     */
     public int getHeaderHeight(RecyclerView.ViewHolder itemHolder) {
-
-        if (!headersHeightsByItemsIds.containsKey(itemHolder.getItemId())) {
-            View header = getHeaderViewByItem(itemHolder);
-            headersHeightsByItemsIds.put(itemHolder.getItemId(), header.getVisibility() == View.GONE ? 0 : header.getMeasuredHeight());
+        int itemPosition = getPosition(itemHolder);
+        if (itemPosition < 0) {
+            return 0;
         }
-
-        return headersHeightsByItemsIds.get(itemHolder.getItemId());
+        if (!headersHeightsByItemsIds.containsKey(itemPosition)) {
+            View header = getHeaderViewByItem(itemHolder);
+            if (header == null) {
+                return 0;
+            }
+            headersHeightsByItemsIds.put(itemPosition, header.getVisibility() == View.GONE ? 0 : header.getMeasuredHeight());
+        }
+        return headersHeightsByItemsIds.get(itemPosition);
     }
 
+    /**
+     * 这个Position是否是头部,如果是就会绘制
+     * 那当前的item于
+     *
+     * @param itemHolder
+     * @return
+     */
     public boolean isHeader(RecyclerView.ViewHolder itemHolder) {
         int itemPosition = getPosition(itemHolder);
         if (itemPosition < 0) {
             return false;
         }
-        if (isHeaderByItemPosition.size() <= itemPosition) {
-            isHeaderByItemPosition.ensureCapacity(itemPosition + 1);
-            for (int i = isHeaderByItemPosition.size(); i <= itemPosition; i++) {
-                isHeaderByItemPosition.add(null);
-            }
-        }
-        if (isHeaderByItemPosition.get(itemPosition) == null) {
-            isHeaderByItemPosition.set(itemPosition, itemPosition == 0 || adapter.getHeaderId(itemPosition) != adapter.getHeaderId(itemPosition - 1));
-        }
-
-        return isHeaderByItemPosition.get(itemPosition);
+        return adapter.isHeader(itemPosition);
     }
 
-    public void addHeader() {
-        if (parent.getAdapter() == null) {
-            return;
-        }
-        int size = parent.getAdapter().getItemCount() - headerSize - footerSize;
-        isHeaderByItemPosition.ensureCapacity(size);
-        for (int i = 0; i < size; i++) {
-            isHeaderByItemPosition.add(i == 0 || adapter.getHeaderId(i) != adapter.getHeaderId(i - 1));
-        }
-    }
 
-    public boolean wasHeader(RecyclerView.ViewHolder itemHolder) {
-        if (!wasHeaderByItemId.containsKey(itemHolder.getItemId())) {
-            int itemPosition = getPosition(itemHolder);
-
-            if (itemPosition == -1) { // we are deleting the last item
-                return false;
-            }
-
-            wasHeaderByItemId.put(itemHolder.getItemId(), itemPosition == 0 || adapter.getHeaderId(itemPosition) != adapter.getHeaderId(itemPosition - 1));
-        }
-        return wasHeaderByItemId.get(itemHolder.getItemId());
-    }
-
+    /**
+     * 是否是粘性的
+     *
+     * @return
+     */
     public boolean isSticky() {
         return isSticky;
     }
 
     public void onItemRangeRemoved(int positionStart, int itemCount) {
         headersViewByHeadersIds.clear();
-
-        if (isHeaderByItemPosition.size() > positionStart + itemCount) {
-
-            for (int i = 0; i < itemCount; i++) {
-                RecyclerView.ViewHolder holder = parent.findViewHolderForPosition(positionStart + i);
-                if (holder != null) {
-                    wasHeaderByItemId.put(holder.getItemId(), isHeaderByItemPosition.get(positionStart + i));
-                }
-            }
-
-            isHeaderByItemPosition.set(positionStart + itemCount, null);
-
-            for (int i = 0; i < itemCount; i++) {
-                isHeaderByItemPosition.remove(positionStart);
-            }
-        }
     }
 
     public void onItemRangeInserted(int positionStart, int itemCount) {
         headersViewByHeadersIds.clear();
-
-        if (isHeaderByItemPosition.size() > positionStart) {
-            for (int i = 0; i < itemCount; i++) {
-                isHeaderByItemPosition.add(positionStart, null);
-            }
-        }
-
-
-        if (isHeaderByItemPosition.size() > positionStart + itemCount) {
-            isHeaderByItemPosition.set(positionStart + itemCount, null);
-        }
     }
 
     public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
         headersViewByHeadersIds.clear();
-
-        int min = Math.min(fromPosition, toPosition);
-        int max = Math.max(fromPosition, toPosition);
-        for (int i = min; i <= max; i++) {
-            if (i >= isHeaderByItemPosition.size()) {
-                isHeaderByItemPosition.add(null);
-            }
-        }
-
-        if (fromPosition < toPosition) {
-            if (fromPosition == 0) {
-                isHeaderByItemPosition.set(0, true);
-            } else {
-                long fromPositionId = adapter.getHeaderId(fromPosition);
-                long beforeFromPositionId = adapter.getHeaderId(fromPosition - 1);
-                long afterFromPositionId = adapter.getHeaderId(fromPosition + 1);
-                isHeaderByItemPosition.set(fromPosition, fromPositionId != beforeFromPositionId);
-                isHeaderByItemPosition.set(fromPosition + 1, fromPositionId != afterFromPositionId);
-            }
-
-            long toPositionId = adapter.getHeaderId(toPosition);
-            long beforeToPositionId = adapter.getHeaderId(toPosition - 1);
-            isHeaderByItemPosition.set(toPosition, toPositionId != beforeToPositionId);
-            if (toPosition < isHeaderByItemPosition.size() - 1) {
-                long afterToPositionId = adapter.getHeaderId(toPosition + 1);
-                isHeaderByItemPosition.set(toPosition + 1, toPositionId != afterToPositionId);
-            }
-        } else if (fromPosition > toPosition) {
-            if (toPosition == 0) {
-                isHeaderByItemPosition.set(0, true);
-            } else {
-                long toPositionId = adapter.getHeaderId(toPosition);
-                long beforeToPositionId = adapter.getHeaderId(toPosition - 1);
-                long afterToPositionId = adapter.getHeaderId(toPosition + 1);
-                isHeaderByItemPosition.set(toPosition, toPositionId != beforeToPositionId);
-                isHeaderByItemPosition.set(toPosition + 1, toPositionId != afterToPositionId);
-            }
-
-            long fromPositionId = adapter.getHeaderId(fromPosition);
-            long beforeFromPositionId = adapter.getHeaderId(fromPosition - 1);
-            isHeaderByItemPosition.set(fromPosition, fromPositionId != beforeFromPositionId);
-
-            if (fromPosition < isHeaderByItemPosition.size() - 1) {
-                long afterFromPositionId = adapter.getHeaderId(fromPosition + 1);
-                isHeaderByItemPosition.set(fromPosition + 1, fromPositionId != afterFromPositionId);
-            }
-        } else {
-            if (fromPosition == 0) {
-                isHeaderByItemPosition.set(0, true);
-            } else {
-                long fromPositionId = adapter.getHeaderId(fromPosition);
-                long beforeFromPositionId = adapter.getHeaderId(fromPosition - 1);
-                isHeaderByItemPosition.set(fromPosition, fromPositionId != beforeFromPositionId);
-
-                if (fromPosition < isHeaderByItemPosition.size() - 1) {
-                    long afterFromPositionId = adapter.getHeaderId(fromPosition + 1);
-                    isHeaderByItemPosition.set(fromPosition + 1, fromPositionId != afterFromPositionId);
-                }
-            }
-        }
     }
 
     public void onItemRangeChanged(int startPosition, int itemCount) {
         headersViewByHeadersIds.clear();
-
-        if (startPosition >= isHeaderByItemPosition.size()) {
-            return;
-        }
-
-        final int start = Math.min(startPosition, isHeaderByItemPosition.size());
-        // We need to invalidate one additional item after the changed range.
-        final int end = Math.min(startPosition + itemCount + 1, isHeaderByItemPosition.size());
-        for (int i = start; i < end; ++i) {
-            isHeaderByItemPosition.set(i, null);
-        }
     }
 
     public void clear() {
         headersViewByHeadersIds.clear();
-        isHeaderByItemPosition.clear();
-        wasHeaderByItemId.clear();
     }
 
     private void layoutHeader(View header) {

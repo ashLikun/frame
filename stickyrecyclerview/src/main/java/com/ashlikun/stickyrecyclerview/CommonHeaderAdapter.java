@@ -10,9 +10,15 @@ import android.view.ViewGroup;
 import java.util.List;
 
 /**
- * Created by aurel on 24/09/14.
+ * @author　　: 李坤
+ * 创建时间: 2018/8/31 9:27
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：粘性头部的适配器
+ * 1:默认判断是否是头部用数据的hashCode判断
  */
-public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<CommonHeaderAdapter.ViewHolder> {
+
+public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<CommonHeaderAdapter.StickyViewHolder> {
     protected Context mContext;
     protected int mLayoutId;
     protected List<T> mDatas;
@@ -24,31 +30,27 @@ public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<Com
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
-        ViewHolder viewHolder = ViewHolder.get(mContext, null, parent, mLayoutId, -1);
+    public StickyViewHolder onCreateViewHolder(ViewGroup parent) {
+        StickyViewHolder viewHolder = StickyViewHolder.get(mContext, null, parent, mLayoutId, -1);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder headerViewHolder, int position) {
+    public void onBindViewHolder(StickyViewHolder headerViewHolder, int position) {
         headerViewHolder.updatePosition(position);
         convert(headerViewHolder, mDatas.get(position));
     }
 
-    public abstract void convert(ViewHolder holder, T t);
+    public abstract void convert(StickyViewHolder holder, T t);
 
-    @Override
-    public long getHeaderId(int position) {
-        return mDatas.get(position).hashCode();
-    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class StickyViewHolder extends RecyclerView.ViewHolder {
         private SparseArray<View> mViews;
         private int mPosition;
         private Context mContext;
         private int mLayoutId;
 
-        public ViewHolder(Context context, View itemView, int position) {
+        public StickyViewHolder(Context context, View itemView, int position) {
             super(itemView);
             mContext = context;
             mPosition = position;
@@ -57,17 +59,15 @@ public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<Com
         }
 
 
-
-
-        public static ViewHolder get(final Context context, View convertView,
-                                     ViewGroup parent, int layoutId, int position) {
+        public static StickyViewHolder get(final Context context, View convertView,
+                                           ViewGroup parent, int layoutId, int position) {
             if (convertView == null) {
                 View itemView = LayoutInflater.from(context).inflate(layoutId, parent, false);
-                ViewHolder holder = new ViewHolder(context, itemView, position);
+                StickyViewHolder holder = new StickyViewHolder(context, itemView, position);
                 holder.mLayoutId = layoutId;
                 return holder;
             } else {
-                ViewHolder holder = (ViewHolder) convertView.getTag(convertView.getId());
+                StickyViewHolder holder = (StickyViewHolder) convertView.getTag(convertView.getId());
                 holder.mPosition = position;
                 return holder;
             }
@@ -89,21 +89,17 @@ public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<Com
         }
 
 
-
         public void updatePosition(int position) {
             mPosition = position;
         }
 
-        public int getmPosition() {
+        public int getPositionInterior() {
             return mPosition;
         }
 
         public int getLayoutId() {
             return mLayoutId;
         }
-
-
-
     }
 
 }

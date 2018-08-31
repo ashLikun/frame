@@ -2,16 +2,17 @@ package com.ashlikun.stickyrecyclerview;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import java.util.ArrayList;
-
 /**
- * Created by aurel on 22/09/14.
+ * @author　　: 李坤
+ * 创建时间: 2018/8/31 14:30
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：粘性头部的分割线
  */
+
 public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
 
     private final HeaderStore headerStore;
@@ -19,9 +20,6 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
     private boolean overlay;
     private DrawOrder drawOrder;
 
-    public ArrayList<Boolean> getIsHeaderByItemPosition() {
-        return headerStore.getIsHeaderByItemPosition();
-    }
 
     public StickyHeadersItemDecoration(HeaderStore headerStore) {
         this(headerStore, false);
@@ -55,43 +53,38 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
     private void drawHeaders(Canvas c, RecyclerView parent, RecyclerView.State state) {
         final int childCount = parent.getChildCount();
         final RecyclerView.LayoutManager lm = parent.getLayoutManager();
+        //最后一次绘制的y位置
         Float lastY = null;
-
         for (int i = childCount - 1; i >= 0; i--) {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) child.getLayoutParams();
             RecyclerView.ViewHolder holder = parent.getChildViewHolder(child);
+            //过滤掉头部或者底部
             if (isHeadAndFooter(holder)) {
                 continue;
             }
-
             if (!lp.isItemRemoved() && !lp.isViewInvalid()) {
-
-                float translationY = ViewCompat.getTranslationY(child);
-
-                if ((i == 0 && headerStore.isSticky()) || headerStore.isHeader(holder)) {
-
+                float translationY = child.getTranslationY();
+                //只绘制开启粘性后第一个view，或者是头部的view
+                if (headerStore.isHeader(holder) || (headerStore.isSticky() && i == headerStore.headerSize)) {
+                    //获取头部view，计算位置
                     View header = headerStore.getHeaderViewByItem(holder);
-
-                    if (header.getVisibility() == View.VISIBLE) {
-
+                    if (header != null && header.getVisibility() == View.VISIBLE) {
                         int headerHeight = headerStore.getHeaderHeight(holder);
                         float y = getHeaderY(child, lm) + translationY;
-
                         if (headerStore.isSticky() && lastY != null && lastY < y + headerHeight) {
                             y = lastY - headerHeight;
                         }
-
                         c.save();
                         c.translate(0, y);
                         header.draw(c);
                         c.restore();
-
                         lastY = y;
                     }
                 }
             }
         }
+
     }
 
     @Override
@@ -104,19 +97,22 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        boolean isHeader = lp.isItemRemoved() ? headerStore.wasHeader(holder) : headerStore.isHeader(holder);
+        boolean isHeader = lp.isItemRemoved() ? headerStore.isHeader(holder) : headerStore.isHeader(holder);
 
 
-        if (overlay || !isHeader
-                ) {
+        if (overlay || !isHeader) {
             outRect.set(0, 0, 0, 0);
         } else {
-            //TODO: Handle layout direction
             outRect.set(0, headerStore.getHeaderHeight(holder), 0, 0);
         }
     }
 
-    //RecyclerViewWithHeaderAndFooter  viewtype
+    /**
+     * 判断这个holder是否是头部或者底部
+     *
+     * @param holder
+     * @return
+     */
     public boolean isHeadAndFooter(RecyclerView.ViewHolder holder) {
         return holder.getItemViewType() == -900002 || holder.getItemViewType() == -900003 || holder.getItemViewType() == -900004;
     }
@@ -125,6 +121,13 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         adapter.registerAdapterDataObserver(adapterDataObserver);
     }
 
+    /**
+     * 获取这个view的头部
+     *
+     * @param item
+     * @param lm
+     * @return
+     */
     private float getHeaderY(View item, RecyclerView.LayoutManager lm) {
         return headerStore.isSticky() && lm.getDecoratedTop(item) < 0 ? 0 : lm.getDecoratedTop(item);
     }
@@ -138,47 +141,36 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void onChanged() {
             headerStore.clear();
-            headerStore.addHeader();
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
             headerStore.onItemRangeRemoved(positionStart, itemCount);
-            headerStore.addHeader();
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
             headerStore.onItemRangeInserted(positionStart, itemCount);
-            headerStore.addHeader();
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
             headerStore.onItemRangeMoved(fromPosition, toPosition, itemCount);
-            headerStore.addHeader();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
             headerStore.onItemRangeChanged(positionStart, itemCount);
-            headerStore.addHeader();
         }
     }
 
-    public void setSelectPostion(String s, LinearLayoutManager layoutManager) {
-        if (getIsHeaderByItemPosition() == null || s == null) {
-            return;
-        }
+    /**
+     * 滚动到这个position(头部的)
+     *
+     * @param headerPosition
+     */
+    public void scrollToPostion(int headerPosition, RecyclerView recyclerView) {
 
-        for (int i = 0; i < getIsHeaderByItemPosition().size(); i++) {
-            if (getIsHeaderByItemPosition().get(i)) {//是头部
-                if (s.hashCode() == headerStore.getHeaderId(i)) {
-                    layoutManager.scrollToPositionWithOffset(i, 0);
-                }
-
-            }
-        }
     }
 
 }

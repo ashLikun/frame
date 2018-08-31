@@ -1,6 +1,7 @@
 package utils.ashlikun.com.utils;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -118,5 +119,9 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     @Override
     public void onRefresh() {
 
+    }
+
+    public void onStickClick(View view) {
+        startActivity(new Intent(this, StickRecyclerViewActivity.class));
     }
 }

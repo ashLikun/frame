@@ -3,30 +3,37 @@ package com.ashlikun.stickyrecyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+/**
+ * @author　　: 李坤
+ * 创建时间: 2018/8/31 9:29
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：基础的头部适配器
+ */
+
 public interface StickyHeadersAdapter<HeaderViewHolder extends RecyclerView.ViewHolder> {
 
     /**
-     * Create a header {@link RecyclerView.ViewHolder ViewHolder} witch encapsulate the header view
-     * You can either create a View manually or inflate it from an XML layout file.
+     * 创建一个ViewHolder
      *
-     * @param parent the parent {@link ViewGroup ViewGroup}
-     * @return the newly created {@link RecyclerView.ViewHolder ViewHolder}
+     * @param parent
+     * @return
      */
     HeaderViewHolder onCreateViewHolder(ViewGroup parent);
 
     /**
-     * Binds a header view according to the current item data.
+     * 绑定数据源
      *
-     * @param headerViewHolder the ViewHolder containing the view to bind
-     * @param position         the current item position
+     * @param headerViewHolder
+     * @param position
      */
     void onBindViewHolder(HeaderViewHolder headerViewHolder, int position);
 
     /**
-     * Get the header id associated with the specified item position.
+     * 用于区分是否是头部
      *
-     * @param position the current item position
-     * @return the header id for the current item
+     * @param position
+     * @return
      */
-    long getHeaderId(int position);
+    boolean isHeader(int position);
 }

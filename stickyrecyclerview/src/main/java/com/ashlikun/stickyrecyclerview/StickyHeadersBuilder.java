@@ -3,8 +3,13 @@ package com.ashlikun.stickyrecyclerview;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by aurel on 16/10/14.
+ * @author　　: 李坤
+ * 创建时间: 2018/8/31 10:15
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍：RecyclerView粘性头部的构建器
  */
+
 public class StickyHeadersBuilder {
 
     private RecyclerView recyclerView;
@@ -38,9 +43,6 @@ public class StickyHeadersBuilder {
     }
 
     public StickyHeadersBuilder setAdapter(RecyclerView.Adapter adapter) {
-//        if (!adapter.hasStableIds()) {
-//            throw new IllegalArgumentException("Adapter must have stable ids");
-//        }
         this.adapter = adapter;
         return this;
     }
@@ -53,7 +55,6 @@ public class StickyHeadersBuilder {
 
     public StickyHeadersBuilder setSticky(boolean isSticky) {
         this.isSticky = isSticky;
-
         return this;
     }
 
@@ -62,6 +63,7 @@ public class StickyHeadersBuilder {
 
         return this;
     }
+
     public StickyHeadersBuilder setHeaderSize(int headerSize) {
         this.headerSize = headerSize;
         return this;
@@ -71,6 +73,7 @@ public class StickyHeadersBuilder {
         this.footerSize = footerSize;
         return this;
     }
+
     public StickyHeadersItemDecoration build() {
 
         HeaderStore store = new HeaderStore(recyclerView, headersAdapter, isSticky);
@@ -84,7 +87,7 @@ public class StickyHeadersBuilder {
 
         if (headerClickListener != null) {
             StickyHeadersTouchListener touchListener = new StickyHeadersTouchListener(recyclerView, store);
-
+            touchListener.setOverlay(overlay);
             touchListener.setListener(headerClickListener);
 
             recyclerView.addOnItemTouchListener(touchListener);

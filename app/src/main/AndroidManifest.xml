@@ -25,6 +25,9 @@
         <activity
             android:name=".RxJavaTestActivity"
             android:theme="@style/AppTheme.OtherTheme"></activity>
+        <activity
+            android:name=".StickRecyclerViewActivity"
+            android:theme="@style/AppTheme.OtherTheme"></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,11 @@ public class StickyHeadersTouchListener implements RecyclerView.OnItemTouchListe
     private final HeaderStore headerStore;
     private final GestureDetector gestureDetector;
     private OnHeaderClickListener listener;
+    private boolean overlay;
+
+    public void setOverlay(boolean overlay) {
+        this.overlay = overlay;
+    }
 
     public StickyHeadersTouchListener(RecyclerView parent, HeaderStore headerStore) {
         this.headerStore = headerStore;
@@ -48,32 +53,33 @@ public class StickyHeadersTouchListener implements RecyclerView.OnItemTouchListe
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            return findItemHolderUnder(e.getX(), e.getY()) != null;
+            return findItemHolderUnder(e.getX(), e.getY()) != -1;
         }
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
 
-            RecyclerView.ViewHolder holder = findItemHolderUnder(e.getX(), e.getY());
-            if (holder != null) {
-                View headerView = headerStore.getHeaderViewByItem(holder);
-                long headerId = headerStore.getHeaderId(holder.getPosition());
-                listener.onHeaderClick(headerView, headerId);
+            int position = findItemHolderUnder(e.getX(), e.getY());
+            if (position != -1) {
+                View headerView = headerStore.getHeaderViewByItem(position);
+                listener.onHeaderClick(headerView, position);
                 return true;
             }
 
             return false;
         }
 
-        private RecyclerView.ViewHolder findItemHolderUnder(float x, float y) {
+        private int findItemHolderUnder(float x, float y) {
 
             for (int i = parent.getChildCount() - 1; i > 0; i--) {
                 View item = parent.getChildAt(i);
                 RecyclerView.ViewHolder holder = parent.getChildViewHolder(item);
 
                 if (holder != null && headerStore.isHeader(holder)) {
-                    if (y < item.getTop() && item.getTop() - headerStore.getHeaderHeight(holder) < y) {
-                        return holder;
+                    if (!overlay && y < item.getTop() && item.getTop() - headerStore.getHeaderHeight(holder) < y) {
+                        return headerStore.findHeaderViewHolderPosition(holder);
+                    } else if (overlay && y >= item.getTop() && item.getTop() + headerStore.getHeaderHeight(holder) >= y) {
+                        return headerStore.findHeaderViewHolderPosition(holder);
                     }
                 }
             }
@@ -82,15 +88,17 @@ public class StickyHeadersTouchListener implements RecyclerView.OnItemTouchListe
 
             if (firstItem != null) {
                 RecyclerView.ViewHolder holder = parent.getChildViewHolder(firstItem);
-
-                if (holder != null && y < headerStore.getHeaderHeight(holder)) {
-                    if (holder.getPosition() == 0 || headerStore.isSticky()) {
-                        return holder;
+                if (holder != null) {
+                    //找到粘性的position
+                    int position = headerStore.findHeaderViewHolderPosition(holder);
+                    if (position >= 0 && y < headerStore.getHeaderHeight(holder)) {
+                        if (headerStore.getPosition(holder) == 0 || headerStore.isSticky()) {
+                            return headerStore.findHeaderViewHolderPosition(holder);
+                        }
                     }
                 }
             }
-
-            return null;
+            return -1;
         }
     }
 }

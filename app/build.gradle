@@ -62,6 +62,7 @@ dependencies {
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.4.3'
     implementation 'com.github.ashLikun:XRecycleView:1.0.1'
+    implementation 'com.github.ashLikun.CommonAdapter:adapter:1.8.2'
     implementation project(':stickyrecyclerview')
     implementation project(':flatbutton')
     implementation project(':numberprogressbar')
