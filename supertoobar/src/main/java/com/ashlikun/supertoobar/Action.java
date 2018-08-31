@@ -35,18 +35,23 @@ public abstract class Action {
 
     public Action(SupperToolBar toolBar) {
         context = toolBar.getContext();
-        setNotificationBagColor(toolBar.notificationBagColor);
-        setNotificationTextColor(toolBar.notificationTextColor);
-        setNotificationStrokeColor(toolBar.notificationStrokeColor);
-        setActionTextColor(toolBar.actionTextColor);
-        setActionPadding(toolBar.actionPadding);
+        notificationBagColor = toolBar.notificationBagColor;
+        notificationTextColor = toolBar.notificationTextColor;
+        notificationStrokeColor = toolBar.notificationStrokeColor;
+        actionTextColor = toolBar.actionTextColor;
+        actionPadding = toolBar.actionPadding;
+
+        actionView = new FrameLayout(getContext());
+        actionView.setTag(this);
+        BarHelp.setForeground(SupperToolBar.CLICK_COLOR, actionView);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        actionView.setLayoutParams(params);
     }
 
     public Action set() {
-        actionView = inflateAction();
-        if (notificationNumber != -9999) {
-            addNotification(actionView);
-        }
+        actionView.addView(createView());
+        convert(actionView);
         return this;
     }
 
@@ -60,10 +65,10 @@ public abstract class Action {
     }
 
 
-    protected void addNotification(FrameLayout view) {
+    protected void addNotification() {
         if (notificationTextView == null) {
             notificationTextView = createNotification();
-            view.addView(notificationTextView, getRightNumberParams());
+            actionView.addView(notificationTextView, getRightNumberParams());
         }
     }
 
@@ -93,21 +98,6 @@ public abstract class Action {
     protected int dip2px(float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
-    }
-
-    /**
-     * 添加一个action到右边的view
-     */
-    protected FrameLayout inflateAction() {
-        FrameLayout view = new FrameLayout(getContext());
-        view.addView(createView());
-        view.setTag(this);
-        BarHelp.setForeground(SupperToolBar.CLICK_COLOR, view);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        view.setLayoutParams(params);
-        convert(view);
-        return view;
     }
 
 
@@ -142,12 +132,14 @@ public abstract class Action {
      */
     public Action setNotification(int number) {
         notificationNumber = number;
-
+        addNotification();
+        updataNotification();
         return this;
     }
 
     public Action setActionPadding(int actionPadding) {
         this.actionPadding = actionPadding;
+        addNotification();
         updata();
         return this;
     }
@@ -160,16 +152,22 @@ public abstract class Action {
 
     public Action setNotificationTextColor(int notificationTextColor) {
         this.notificationTextColor = notificationTextColor;
+        addNotification();
+        updataNotification();
         return this;
     }
 
     public Action setNotificationBagColor(int notificationBagColor) {
         this.notificationBagColor = notificationBagColor;
+        addNotification();
+        updataNotification();
         return this;
     }
 
     public Action setNotificationStrokeColor(int notificationStrokeColor) {
         this.notificationStrokeColor = notificationStrokeColor;
+        addNotification();
+        updataNotification();
         return this;
     }
     /********************************************************************************************
