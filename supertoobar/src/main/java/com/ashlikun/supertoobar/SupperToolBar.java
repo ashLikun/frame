@@ -353,6 +353,23 @@ public class SupperToolBar extends FrameLayout {
         return this;
     }
 
+    public TextView getTitleView() {
+        return titleView;
+    }
+
+    public void setTitleColor(int titleColor) {
+        this.titleColor = titleColor;
+        if(titleView != null){
+            titleView.setTextColor(titleColor);
+        }
+    }
+
+    public void setTitleSize(float titleSize) {
+        this.titleSize = titleSize;
+        if(titleView != null){
+            titleView.setTextSize(titleSize);
+        }
+    }
     /********************************************************************************************
      *                                           设置右边的控件(Action)
      ********************************************************************************************/
