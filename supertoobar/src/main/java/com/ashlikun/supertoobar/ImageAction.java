@@ -16,8 +16,6 @@ import android.widget.LinearLayout;
  */
 public class ImageAction extends Action {
     private Drawable drawable;
-    @DrawableRes
-    private int drawableId = 0;
     private int tintColor = -1;
 
     private ImageView imageView;
@@ -27,17 +25,29 @@ public class ImageAction extends Action {
         this.drawable = drawable;
     }
 
-    public ImageAction(SupperToolBar toolBar, @DrawableRes int drawable) {
+    public ImageAction(SupperToolBar toolBar, @DrawableRes int drawableId) {
         super(toolBar);
-        this.drawableId = drawable;
+        drawable = context.getResources().getDrawable(drawableId);
     }
 
 
     public Drawable getDrawable() {
-        if (drawableId != 0) {
-            drawable = context.getResources().getDrawable(drawableId);
-        }
         return drawable;
+    }
+
+    public void setDrawable(Drawable drawable) {
+        if (drawable != this.drawable) {
+            this.drawable = drawable;
+            updata();
+        }
+    }
+
+    public void setDrawableId(int drawableId) {
+        Drawable drawable = context.getResources().getDrawable(drawableId);
+        if (drawable != this.drawable) {
+            this.drawable = drawable;
+            updata();
+        }
     }
 
     /**
@@ -46,9 +56,11 @@ public class ImageAction extends Action {
      * @param tintColor
      */
     public void setTintColor(int tintColor) {
-        this.tintColor = tintColor;
-        if (imageView != null) {
-            imageView.setColorFilter(tintColor);
+        if (this.tintColor != tintColor) {
+            this.tintColor = tintColor;
+            if (imageView != null) {
+                imageView.setColorFilter(tintColor);
+            }
         }
     }
 

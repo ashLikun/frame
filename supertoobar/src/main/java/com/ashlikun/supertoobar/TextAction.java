@@ -42,6 +42,11 @@ public class TextAction extends Action {
         return textView;
     }
 
+    public void setText(CharSequence text) {
+        this.text = text;
+        updata();
+    }
+
     /**
      * 获取TextView
      *
