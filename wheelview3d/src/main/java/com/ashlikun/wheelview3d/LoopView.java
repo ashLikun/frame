@@ -101,7 +101,7 @@ public class LoopView extends View implements LoopDataObserver {
     public final void setAdapter(BaseLoopAdapter adapter) {
         this.adapter = adapter;
         adapter.registerDataSetObserver(this);
-        measure();
+        requestLayout();
         invalidate();
     }
 
@@ -120,7 +120,7 @@ public class LoopView extends View implements LoopDataObserver {
     @Override
     public void onChanged() {
         cleanScrollY();
-        measure();
+        requestLayout();
         invalidate();
     }
 
