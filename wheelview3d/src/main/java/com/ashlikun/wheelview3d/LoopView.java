@@ -345,8 +345,8 @@ public class LoopView extends View implements LoopDataObserver {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //l=C/PI   园直径
-        int measuredHeight = (int) ((halfCircumference * 2) / Math.PI);
         measure();
+        int measuredHeight = (int) ((halfCircumference * 2) / Math.PI);
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), measuredHeight);
     }
 
