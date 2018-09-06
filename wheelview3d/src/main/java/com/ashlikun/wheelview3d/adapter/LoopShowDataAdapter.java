@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LoopShowDataAdapter extends SimpleLoopAdapter<ILoopShowData> {
 
-    public LoopShowDataAdapter(List<ILoopShowData> listDatas) {
+    public LoopShowDataAdapter(List listDatas) {
         super(listDatas);
     }
 
