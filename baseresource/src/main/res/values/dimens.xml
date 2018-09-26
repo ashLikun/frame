@@ -1,8 +1,4 @@
 <resources>
-    <!-- v21以下显示的CardView的边界为cardElevation属性值 可以加上margin与V21相同-->
-    <dimen name="CardView_Margin">6dp</dimen>
-    <dimen name="CardView_Margin_4">4dp</dimen>
-    <dimen name="fab_margin_10">0dp</dimen>
     <!--dp大小-->
     <dimen name="dp_0_7">0.7dp</dimen>
     <dimen name="dp_0_3">0.3dp</dimen>
