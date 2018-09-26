@@ -101,20 +101,26 @@ public class LoopView extends View implements LoopDataObserver {
     public final void setAdapter(BaseLoopAdapter adapter) {
         this.adapter = adapter;
         adapter.registerDataSetObserver(this);
-        measure();
+        requestLayout();
         invalidate();
     }
 
-    //设置数据源  数据继承ILoopShowData
-    public final void setILoopShowData(List<ILoopShowData> list) {
+    /**
+     * 设置数据源  数据继承ILoopShowData
+     *
+     * @param list
+     */
+    public final void setILoopShowData(List<? extends ILoopShowData> list) {
         setAdapter(new LoopShowDataAdapter(list));
     }
 
-    //被观察者数据变化
+    /**
+     * 被观察者数据变化
+     */
     @Override
     public void onChanged() {
         cleanScrollY();
-        measure();
+        requestLayout();
         invalidate();
     }
 
@@ -122,20 +128,28 @@ public class LoopView extends View implements LoopDataObserver {
         return selectedItem;
     }
 
-    //手势识别回调
+    /**
+     * 手势识别回调
+     *
+     * @param velocityY
+     */
     protected final void smoothScroll(float velocityY) {
         cancelFuture();
         mFuture = mExecutor.scheduleWithFixedDelay(new LoopTimerTask(this, velocityY), 0, scrollDelay * 2, TimeUnit.MILLISECONDS);
     }
 
-    //实现回弹  固定某个item在最中间
+    /**
+     * 实现回弹  固定某个item在最中间
+     */
     protected void smoothScroll() {
         int offset = (int) (totalScrollY % itemHeight);
         cancelFuture();
         mFuture = mExecutor.scheduleWithFixedDelay(new ScrollTimer(this, offset), 0, scrollDelay, TimeUnit.MILLISECONDS);
     }
 
-    //取消滚动任务
+    /**
+     * 取消滚动任务
+     */
     public void cancelFuture() {
         if (mFuture != null && !mFuture.isCancelled()) {
             mFuture.cancel(true);
@@ -237,7 +251,9 @@ public class LoopView extends View implements LoopDataObserver {
         }
     }
 
-    //计算滑动到的item位置
+    /**
+     * 计算滑动到的item位置
+     */
     private void computeCurrentIndex() {
         if (getItemCount() == 0) {
             preCurrentIndex = 0;
@@ -260,7 +276,11 @@ public class LoopView extends View implements LoopDataObserver {
         }
     }
 
-    //更具preCurrentIndex值计算应该显示的item
+    /**
+     * 更具preCurrentIndex值计算应该显示的item
+     *
+     * @return
+     */
     private Integer[] getShowLoopData() {
         Integer[] visibles = new Integer[showItemCount];
         // 设置数组中每个元素的值
@@ -290,21 +310,27 @@ public class LoopView extends View implements LoopDataObserver {
     }
 
 
-    //设置画笔为绘制选中文本
+    /**
+     * 设置画笔为绘制选中文本
+     */
     private void switchPaintToSelectText() {
         mPaint.setColor(selectTextColor);
         mPaint.setTextScaleX(1.05F);
         mPaint.setTextSize(textSize);
     }
 
-    //设置画笔为未选中文本
+    /**
+     * 设置画笔为未选中文本
+     */
     private void switchPaintToNoSelectText() {
         mPaint.setColor(noSelectTextColor);
         mPaint.setTextScaleX(1F);
         mPaint.setTextSize(textSize);
     }
 
-    //设置画笔为绘制线
+    /**
+     * 设置画笔为绘制线
+     */
     private void switchPaintToLine() {
         mPaint.setColor(dividerColor);
         mPaint.setTextScaleX(1F);
@@ -319,13 +345,15 @@ public class LoopView extends View implements LoopDataObserver {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //l=C/PI   园直径
-        int measuredHeight = (int) ((halfCircumference * 2) / Math.PI);
         measure();
+        int measuredHeight = (int) ((halfCircumference * 2) / Math.PI);
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), measuredHeight);
     }
 
 
-    //测量
+    /**
+     * 测量
+     */
     private void measure() {
         if (adapter == null) {
             return;
@@ -345,7 +373,9 @@ public class LoopView extends View implements LoopDataObserver {
         selectedItem = preCurrentIndex = initPosition;
     }
 
-    //测量文字大小
+    /**
+     * 测量文字大小
+     */
     private void measureTextWidthHeight() {
         switchPaintToSelectText();
         Rect rect = new Rect();
@@ -446,7 +476,11 @@ public class LoopView extends View implements LoopDataObserver {
         }
     }
 
-    //文字大小  sp
+    /**
+     * 文字大小  sp
+     *
+     * @param size
+     */
     public final void setTextSize(float size) {
         if (size > 0.0F) {
             textSize = (int) (getContext().getResources().getDisplayMetrics().density * size);
@@ -461,31 +495,51 @@ public class LoopView extends View implements LoopDataObserver {
     }
 
 
-    //未选择文字颜色
+    /**
+     * 未选择文字颜色
+     *
+     * @param noSelectTextColor
+     */
     public void setNoSelectTextColor(int noSelectTextColor) {
         this.noSelectTextColor = noSelectTextColor;
         invalidate();
     }
 
-    //选择文字颜色
+    /**
+     * 选择文字颜色
+     *
+     * @param selectTextColor
+     */
     public void setSelectTextColor(int selectTextColor) {
         this.selectTextColor = selectTextColor;
         invalidate();
     }
 
-    //线的颜色
+    /**
+     * 线的颜色
+     *
+     * @param dividerColor
+     */
     public void setDividerColor(int dividerColor) {
         this.dividerColor = dividerColor;
         invalidate();
     }
 
-    //线的大小 dp
+    /**
+     * 线的大小 dp
+     *
+     * @param lineWidthDp
+     */
     public void setLineWidth(float lineWidthDp) {
         this.lineWidth = dip2px(getContext(), lineWidth);
         invalidate();
     }
 
-    //行间距
+    /**
+     * 行间距
+     *
+     * @param lineSpacingMultiplier
+     */
     public void setLineSpacingMultiplier(float lineSpacingMultiplier) {
         this.lineSpacingMultiplier = lineSpacingMultiplier;
         invalidate();
