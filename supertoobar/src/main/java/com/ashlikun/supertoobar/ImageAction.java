@@ -64,6 +64,13 @@ public class ImageAction extends Action {
         }
     }
 
+    public void cleanTint() {
+        this.tintColor = -1;
+        if (imageView != null) {
+            imageView.setColorFilter(null);
+        }
+    }
+
     /**
      * 获取ImageView
      *
