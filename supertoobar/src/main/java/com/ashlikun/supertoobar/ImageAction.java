@@ -20,12 +20,12 @@ public class ImageAction extends Action {
 
     private ImageView imageView;
 
-    public ImageAction(SupperToolBar toolBar, Drawable drawable) {
+    public ImageAction(SuperToolBar toolBar, Drawable drawable) {
         super(toolBar);
         this.drawable = drawable;
     }
 
-    public ImageAction(SupperToolBar toolBar, @DrawableRes int drawableId) {
+    public ImageAction(SuperToolBar toolBar, @DrawableRes int drawableId) {
         super(toolBar);
         drawable = context.getResources().getDrawable(drawableId);
     }

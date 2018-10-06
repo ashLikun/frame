@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import com.ashlikun.glideutils.GlideUtils;
 import com.ashlikun.supertoobar.ImageAction;
-import com.ashlikun.supertoobar.SupperToolBar;
+import com.ashlikun.supertoobar.SuperToolBar;
 import com.ashlikun.supertoobar.TextAction;
 import com.ashlikun.utils.Utils;
 import com.ashlikun.utils.other.DimensUtils;
@@ -30,7 +30,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
     RecyclerView recycleView;
-    SupperToolBar supperToolBar;
+    SuperToolBar supperToolBar;
     List<Boolean> listData = new ArrayList<>();
     RecyclerView.Adapter adapter;
     private String image = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1535434196&di=584361192dd507b1778369caf125650b&src=http://pic31.nipic.com/20130723/7447430_105434565000_2.jpg";
