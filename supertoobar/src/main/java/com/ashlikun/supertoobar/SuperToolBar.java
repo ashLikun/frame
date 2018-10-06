@@ -145,22 +145,22 @@ public class SuperToolBar extends FrameLayout {
         }
         TypedArray a = context.obtainStyledAttributes(
                 attrs,
-                R.styleable.SupperToolBar);
-        titleColor = a.getColor(R.styleable.SupperToolBar_stb_titleColor, titleColor);
-        titleSize = a.getDimension(R.styleable.SupperToolBar_stb_titleSize, dip2px(titleSize));
-        title = a.getString(R.styleable.SupperToolBar_stb_title);
-        if (a.hasValue(R.styleable.SupperToolBar_stb_backImgColor)) {
+                R.styleable.SuperToolBar);
+        titleColor = a.getColor(R.styleable.SuperToolBar_stb_titleColor, titleColor);
+        titleSize = a.getDimension(R.styleable.SuperToolBar_stb_titleSize, dip2px(titleSize));
+        title = a.getString(R.styleable.SuperToolBar_stb_title);
+        if (a.hasValue(R.styleable.SuperToolBar_stb_backImgColor)) {
             isSetBackImgColor = true;
         }
-        backImgColor = a.getColor(R.styleable.SupperToolBar_stb_backImgColor, backImgColor);
-        bottonLineColor = a.getColor(R.styleable.SupperToolBar_stb_bottonLineColor, bottonLineColor);
-        notificationBagColor = a.getColor(R.styleable.SupperToolBar_stb_notificationBagColor, notificationBagColor);
-        notificationTextColor = a.getColor(R.styleable.SupperToolBar_stb_notificationTextColor, notificationTextColor);
-        bottonLineHeight = (int) a.getDimension(R.styleable.SupperToolBar_stb_bottonLineHeight, bottonLineHeight);
-        backImage = a.getResourceId(R.styleable.SupperToolBar_stb_backImg, backImage);
-        actionTextColor = a.getColor(R.styleable.SupperToolBar_stb_actionTextColor, actionTextColor);
-        actionPadding = (int) a.getDimension(R.styleable.SupperToolBar_stb_actionPadding, actionPadding);
-        notificationStrokeColor = a.getColor(R.styleable.SupperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
+        backImgColor = a.getColor(R.styleable.SuperToolBar_stb_backImgColor, backImgColor);
+        bottonLineColor = a.getColor(R.styleable.SuperToolBar_stb_bottonLineColor, bottonLineColor);
+        notificationBagColor = a.getColor(R.styleable.SuperToolBar_stb_notificationBagColor, notificationBagColor);
+        notificationTextColor = a.getColor(R.styleable.SuperToolBar_stb_notificationTextColor, notificationTextColor);
+        bottonLineHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_bottonLineHeight, bottonLineHeight);
+        backImage = a.getResourceId(R.styleable.SuperToolBar_stb_backImg, backImage);
+        actionTextColor = a.getColor(R.styleable.SuperToolBar_stb_actionTextColor, actionTextColor);
+        actionPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionPadding, actionPadding);
+        notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
         a.recycle();
 
         linePaint = new Paint();
