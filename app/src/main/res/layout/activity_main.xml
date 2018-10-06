@@ -8,7 +8,7 @@
 
     <com.ashlikun.supertoobar.SuperToolBar
         android:id="@+id/toolBar"
-        style="@style/SupperToolBar.Black"
+        style="@style/SuperToolBar.Black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
