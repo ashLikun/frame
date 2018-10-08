@@ -37,7 +37,6 @@ public class HeaderStore {
     /**
      * 获取这个Holder对应的头部view
      *
-     * @param itemHolder
      * @return
      */
     public View getHeaderViewByItem(int position) {
