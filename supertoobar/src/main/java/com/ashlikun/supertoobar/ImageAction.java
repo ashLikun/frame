@@ -20,12 +20,12 @@ public class ImageAction extends Action {
 
     private ImageView imageView;
 
-    public ImageAction(SupperToolBar toolBar, Drawable drawable) {
+    public ImageAction(SuperToolBar toolBar, Drawable drawable) {
         super(toolBar);
         this.drawable = drawable;
     }
 
-    public ImageAction(SupperToolBar toolBar, @DrawableRes int drawableId) {
+    public ImageAction(SuperToolBar toolBar, @DrawableRes int drawableId) {
         super(toolBar);
         drawable = context.getResources().getDrawable(drawableId);
     }
@@ -61,6 +61,13 @@ public class ImageAction extends Action {
             if (imageView != null) {
                 imageView.setColorFilter(tintColor);
             }
+        }
+    }
+
+    public void cleanTint() {
+        this.tintColor = -1;
+        if (imageView != null) {
+            imageView.setColorFilter(null);
         }
     }
 

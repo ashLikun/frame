@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * 功能介绍：标题栏view，新加的，没有的功能可以扩展
  */
 
-public class SupperToolBar extends FrameLayout {
+public class SuperToolBar extends FrameLayout {
 
     public static final String ACTION_LAYOUT = "ACTION_LAYOUT";
     public static final int CLICK_COLOR = 0x88aaaaaa;
@@ -75,15 +75,15 @@ public class SupperToolBar extends FrameLayout {
     private OnLeftClickListener leftClickListener;
     private Action.OnActionClick onActionClickListener;
 
-    public SupperToolBar(@NonNull Context context) {
+    public SuperToolBar(@NonNull Context context) {
         this(context, null);
     }
 
-    public SupperToolBar(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public SuperToolBar(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SupperToolBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SuperToolBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs);
     }
@@ -145,22 +145,22 @@ public class SupperToolBar extends FrameLayout {
         }
         TypedArray a = context.obtainStyledAttributes(
                 attrs,
-                R.styleable.SupperToolBar);
-        titleColor = a.getColor(R.styleable.SupperToolBar_stb_titleColor, titleColor);
-        titleSize = a.getDimension(R.styleable.SupperToolBar_stb_titleSize, dip2px(titleSize));
-        title = a.getString(R.styleable.SupperToolBar_stb_title);
-        if (a.hasValue(R.styleable.SupperToolBar_stb_backImgColor)) {
+                R.styleable.SuperToolBar);
+        titleColor = a.getColor(R.styleable.SuperToolBar_stb_titleColor, titleColor);
+        titleSize = a.getDimension(R.styleable.SuperToolBar_stb_titleSize, dip2px(titleSize));
+        title = a.getString(R.styleable.SuperToolBar_stb_title);
+        if (a.hasValue(R.styleable.SuperToolBar_stb_backImgColor)) {
             isSetBackImgColor = true;
         }
-        backImgColor = a.getColor(R.styleable.SupperToolBar_stb_backImgColor, backImgColor);
-        bottonLineColor = a.getColor(R.styleable.SupperToolBar_stb_bottonLineColor, bottonLineColor);
-        notificationBagColor = a.getColor(R.styleable.SupperToolBar_stb_notificationBagColor, notificationBagColor);
-        notificationTextColor = a.getColor(R.styleable.SupperToolBar_stb_notificationTextColor, notificationTextColor);
-        bottonLineHeight = (int) a.getDimension(R.styleable.SupperToolBar_stb_bottonLineHeight, bottonLineHeight);
-        backImage = a.getResourceId(R.styleable.SupperToolBar_stb_backImg, backImage);
-        actionTextColor = a.getColor(R.styleable.SupperToolBar_stb_actionTextColor, actionTextColor);
-        actionPadding = (int) a.getDimension(R.styleable.SupperToolBar_stb_actionPadding, actionPadding);
-        notificationStrokeColor = a.getColor(R.styleable.SupperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
+        backImgColor = a.getColor(R.styleable.SuperToolBar_stb_backImgColor, backImgColor);
+        bottonLineColor = a.getColor(R.styleable.SuperToolBar_stb_bottonLineColor, bottonLineColor);
+        notificationBagColor = a.getColor(R.styleable.SuperToolBar_stb_notificationBagColor, notificationBagColor);
+        notificationTextColor = a.getColor(R.styleable.SuperToolBar_stb_notificationTextColor, notificationTextColor);
+        bottonLineHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_bottonLineHeight, bottonLineHeight);
+        backImage = a.getResourceId(R.styleable.SuperToolBar_stb_backImg, backImage);
+        actionTextColor = a.getColor(R.styleable.SuperToolBar_stb_actionTextColor, actionTextColor);
+        actionPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionPadding, actionPadding);
+        notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
         a.recycle();
 
         linePaint = new Paint();
@@ -261,7 +261,7 @@ public class SupperToolBar extends FrameLayout {
      *
      * @param height
      */
-    public SupperToolBar setBottonLine(int height) {
+    public SuperToolBar setBottonLine(int height) {
         //高度大于0就可以绘制
         bottonLineHeight = height;
         if (bottonLineHeight > 0) {
@@ -278,7 +278,7 @@ public class SupperToolBar extends FrameLayout {
      * @param color
      * @return
      */
-    public SupperToolBar setBottonLineColor(int color) {
+    public SuperToolBar setBottonLineColor(int color) {
         bottonLineColor = color;
         if (linePaint != null) {
             linePaint.setColor(bottonLineColor);
@@ -344,7 +344,7 @@ public class SupperToolBar extends FrameLayout {
      *                                           设置中间的控件
      ********************************************************************************************/
 
-    public SupperToolBar setTitle(String title) {
+    public SuperToolBar setTitle(String title) {
         if (title == null) {
             return this;
         }
@@ -488,7 +488,7 @@ public class SupperToolBar extends FrameLayout {
      *
      * @return
      */
-    public SupperToolBar setTranslucentStatusBarPaddingTop() {
+    public SuperToolBar setTranslucentStatusBarPaddingTop() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTranslucentStatusBarPaddingTop = true;
             statusHeight = getStatusHeight();

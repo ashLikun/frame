@@ -3,6 +3,7 @@ package com.ashlikun.supertoobar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,11 @@ public abstract class Action {
     protected int actionTextColor;
     protected int notificationMax = 99;
     protected int notificationNumber = -9999;
+    protected SparseArray<Object> mKeyedTags;
 
     private TextView notificationTextView;
 
-    public Action(SupperToolBar toolBar) {
+    public Action(SuperToolBar toolBar) {
         context = toolBar.getContext();
         notificationBagColor = toolBar.notificationBagColor;
         notificationTextColor = toolBar.notificationTextColor;
@@ -43,7 +45,7 @@ public abstract class Action {
 
         actionView = new FrameLayout(getContext());
         actionView.setTag(this);
-        BarHelp.setForeground(SupperToolBar.CLICK_COLOR, actionView);
+        BarHelp.setForeground(SuperToolBar.CLICK_COLOR, actionView);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         actionView.setLayoutParams(params);
@@ -170,6 +172,25 @@ public abstract class Action {
         updataNotification();
         return this;
     }
+
+    public Action setTag(int key, Object obj) {
+        if (mKeyedTags == null) {
+            mKeyedTags = new SparseArray<>();
+        }
+        mKeyedTags.put(key, obj);
+        return this;
+    }
+
+    public Object getTag(int key) {
+        if (mKeyedTags == null) {
+            mKeyedTags = new SparseArray<>();
+        }
+        if (mKeyedTags != null) {
+            return mKeyedTags.get(key);
+        }
+        return null;
+    }
+
     /********************************************************************************************
      *                                           可以重写的属性
      ********************************************************************************************/

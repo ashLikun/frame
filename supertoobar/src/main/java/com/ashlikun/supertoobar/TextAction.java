@@ -18,7 +18,7 @@ public class TextAction extends Action {
     private CharSequence text = null;
     private TextView textView;
 
-    public TextAction(SupperToolBar toolBar, CharSequence text) {
+    public TextAction(SuperToolBar toolBar, CharSequence text) {
         super(toolBar);
         this.text = text;
     }

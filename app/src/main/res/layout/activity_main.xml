@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.ashlikun.supertoobar.SupperToolBar
+    <com.ashlikun.supertoobar.SuperToolBar
         android:id="@+id/toolBar"
-        style="@style/SupperToolBar.Black"
+        style="@style/SuperToolBar.Black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
-    </com.ashlikun.supertoobar.SupperToolBar>
+    </com.ashlikun.supertoobar.SuperToolBar>
 
 
     <LinearLayout
