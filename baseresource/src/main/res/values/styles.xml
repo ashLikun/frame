@@ -48,11 +48,13 @@
     <style name="AppTheme.PhotoBrowse">
         <item name="android:windowBackground">@color/photo_browse</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
     </style>
 
-    <style name="OtherAnimation" parent="@android:style/Animation.Translucent">
+    <style name="OtherAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/activity_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_colse_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/activity_colse_exit</item>
     </style>
 
@@ -60,17 +62,11 @@
     <!--当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation-->
     <!--当我们从 A2 退出回到 A1 时，A2 从屏幕上消失，这个叫做 android:activityCloseExitAnimation-->
     <!--当我们从 A2 退出回到 A1 时，A1 出现在屏幕上，这个叫做 android:activityCloseEnterAnimation-->
-    <style name="MainAnimation" parent="@android:style/Animation.Translucent">
-        <!--<item name="android:activityOpenEnterAnimation">@null</item>-->
-        <!--<item name="android:activityOpenExitAnimation">@null</item>-->
-        <!--<item name="android:windowEnterAnimation">@anim/activity_open_enter</item>-->
-        <!--<item name="android:windowExitAnimation">@anim/activity_colse_exit</item>-->
-        <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@null</item>
-    </style>
+    <!--主界面不需要动画-->
+    <style name="MainAnimation"></style>
 
 
-    <style name="AnimationPreview">
+    <style name="AnimationPreview" parent="@android:style/Animation.Activity">
         <item name="android:windowEnterAnimation">@anim/popupwindow_animation_in</item>
         <item name="android:windowExitAnimation">@anim/popupwindow_animation_out</item>
     </style>
