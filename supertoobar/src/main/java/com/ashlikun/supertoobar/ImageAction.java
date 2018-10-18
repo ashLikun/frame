@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 public class ImageAction extends Action {
     private Drawable drawable;
     private int tintColor = -1;
+    private boolean isSetTintColor = false;
 
     private ImageView imageView;
 
@@ -55,20 +56,23 @@ public class ImageAction extends Action {
      *
      * @param tintColor
      */
-    public void setTintColor(int tintColor) {
-        if (this.tintColor != tintColor) {
+    public ImageAction setTintColor(int tintColor) {
+        if (!isSetTintColor || this.tintColor != tintColor) {
             this.tintColor = tintColor;
+            isSetTintColor = true;
             if (imageView != null) {
                 imageView.setColorFilter(tintColor);
             }
         }
+        return this;
     }
 
-    public void cleanTint() {
+    public ImageAction cleanTint() {
         this.tintColor = -1;
         if (imageView != null) {
             imageView.setColorFilter(null);
         }
+        return this;
     }
 
     /**
@@ -91,7 +95,7 @@ public class ImageAction extends Action {
             imageView.setId(IMAGE_ID);
             imageView.setImageDrawable(getDrawable());
             imageView.setPadding(actionPadding, actionPadding, actionPadding, actionPadding);
-            if (tintColor != -1) {
+            if (isSetTintColor || tintColor != -1) {
                 imageView.setColorFilter(tintColor);
             }
         }
