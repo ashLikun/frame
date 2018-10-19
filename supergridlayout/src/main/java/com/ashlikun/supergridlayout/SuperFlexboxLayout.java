@@ -81,7 +81,7 @@ public class SuperFlexboxLayout extends FlexboxLayout {
     private void addAllView() {
         removeAllViews();
         for (int i = 0; i < adapter.getItemCount(); i++) {
-            ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), i);
+            ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), adapter);
             View view = holder.itemView;
             view.setTag(view.getId(), holder);
             addView(view);
@@ -96,7 +96,7 @@ public class SuperFlexboxLayout extends FlexboxLayout {
             removeViews(adapter.getItemCount(), getChildCount() - adapter.getItemCount());
         } else if (getChildCount() < adapter.getItemCount()) {
             for (int i = getChildCount(); i < adapter.getItemCount(); i++) {
-                ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), i);
+                ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), adapter);
                 View view = holder.itemView;
                 view.setTag(view.getId(), holder);
                 addView(view);

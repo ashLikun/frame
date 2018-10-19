@@ -33,7 +33,7 @@ dependencies {
     compileOnly 'com.google.android:flexbox:0.1.2'
     compileOnly rootProject.ext.v7AppCompat
     compileOnly rootProject.ext.recyclerview
-    compileOnly 'com.github.ashLikun.CommonAdapter:adapter:1.8.2'
+    compileOnly 'com.github.ashLikun.CommonAdapter:adapter:2.0.1'
 
 }
 
