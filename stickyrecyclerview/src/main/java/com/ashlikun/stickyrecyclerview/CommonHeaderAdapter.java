@@ -29,16 +29,20 @@ public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<Com
         mDatas = datas;
     }
 
+    public void setDatas(List<T> mDatas) {
+        this.mDatas = mDatas;
+    }
+
     @Override
     public StickyViewHolder onCreateViewHolder(ViewGroup parent) {
-        StickyViewHolder viewHolder = StickyViewHolder.get(mContext, null, parent, mLayoutId, -1);
+        StickyViewHolder viewHolder = StickyViewHolder.get(mContext, parent, mLayoutId);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(StickyViewHolder headerViewHolder, int position) {
         headerViewHolder.updatePosition(position);
-        convert(headerViewHolder, mDatas.get(position));
+        convert(headerViewHolder, mDatas.size() > position ? mDatas.get(position) : null);
     }
 
     public abstract void convert(StickyViewHolder holder, T t);
@@ -59,18 +63,11 @@ public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<Com
         }
 
 
-        public static StickyViewHolder get(final Context context, View convertView,
-                                           ViewGroup parent, int layoutId, int position) {
-            if (convertView == null) {
-                View itemView = LayoutInflater.from(context).inflate(layoutId, parent, false);
-                StickyViewHolder holder = new StickyViewHolder(context, itemView, position);
-                holder.mLayoutId = layoutId;
-                return holder;
-            } else {
-                StickyViewHolder holder = (StickyViewHolder) convertView.getTag(convertView.getId());
-                holder.mPosition = position;
-                return holder;
-            }
+        public static StickyViewHolder get(Context context, ViewGroup parent, int layoutId) {
+            View itemView = LayoutInflater.from(context).inflate(layoutId, parent, false);
+            StickyViewHolder holder = new StickyViewHolder(context, itemView, -1);
+            holder.mLayoutId = layoutId;
+            return holder;
         }
 
         /**
