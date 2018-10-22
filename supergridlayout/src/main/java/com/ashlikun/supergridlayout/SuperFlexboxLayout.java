@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.ashlikun.adapter.ViewHolder;
 import com.ashlikun.adapter.recyclerview.BaseAdapter;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -20,7 +19,7 @@ import java.util.List;
  */
 public class SuperFlexboxLayout extends FlexboxLayout {
 
-    BaseAdapter adapter;
+    FlexboxAdapter adapter;
 
     private OnItemClickListener onItemClickListener;
 
@@ -61,7 +60,7 @@ public class SuperFlexboxLayout extends FlexboxLayout {
     }
 
 
-    public void setAdapter(BaseAdapter adapter) {
+    public void setAdapter(FlexboxAdapter adapter) {
         this.adapter = adapter;
         addAllView();
 
@@ -81,7 +80,7 @@ public class SuperFlexboxLayout extends FlexboxLayout {
     private void addAllView() {
         removeAllViews();
         for (int i = 0; i < adapter.getItemCount(); i++) {
-            ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), adapter);
+            FlexViewHolder holder = adapter.onCreateViewHolder(this, 0);
             View view = holder.itemView;
             view.setTag(view.getId(), holder);
             addView(view);
@@ -96,7 +95,7 @@ public class SuperFlexboxLayout extends FlexboxLayout {
             removeViews(adapter.getItemCount(), getChildCount() - adapter.getItemCount());
         } else if (getChildCount() < adapter.getItemCount()) {
             for (int i = getChildCount(); i < adapter.getItemCount(); i++) {
-                ViewHolder holder = new ViewHolder(getContext(), adapter.getItemLayout(this, adapter.getLayoutId()), adapter);
+                FlexViewHolder holder = adapter.onCreateViewHolder(this, 0);
                 View view = holder.itemView;
                 view.setTag(view.getId(), holder);
                 addView(view);
@@ -135,9 +134,9 @@ public class SuperFlexboxLayout extends FlexboxLayout {
         if (width != 0 && getChildCount() > 0) {
             for (int i = 0; i < getChildCount(); i++) {
                 View view = getChildAt(i);
-                if ((view.getTag(-2) == null || !(Boolean) view.getTag(-2)) && view.getTag(view.getId()) instanceof ViewHolder) {
+                if ((view.getTag(-2) == null || !(Boolean) view.getTag(-2)) && view.getTag(view.getId()) instanceof FlexViewHolder) {
                     view.setTag(-2, true);
-                    adapter.convert((ViewHolder) view.getTag(view.getId()), adapter.getItemData(i));
+                    adapter.bindViewHolder((FlexViewHolder) view.getTag(view.getId()), i);
                     if (onItemClickListener != null) {
                         view.setOnClickListener(new MyOnClickListener(i, adapter.getItemData(i)));
                     }
