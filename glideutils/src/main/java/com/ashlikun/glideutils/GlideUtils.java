@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -169,4 +170,52 @@ public class GlideUtils {
                 new CircleCrop());
     }
 
+    /**
+     * 获取Glide造成的缓存大小
+     *
+     * @return CacheSize
+     */
+    public static double getCacheSize(Context context) {
+
+        try {
+            return getFolderSize(getCacheDir(context));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 获取缓存目录
+     *
+     * @param context
+     * @return
+     */
+    public static File getCacheDir(Context context) {
+        return new File(context.getCacheDir() + "/" + InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR);
+    }
+
+    /**
+     * 获取指定文件夹内所有文件大小的和
+     *
+     * @param file file
+     * @return size
+     * @throws Exception
+     */
+    private static long getFolderSize(File file) throws Exception {
+        long size = 0;
+        try {
+            File[] fileList = file.listFiles();
+            for (File aFileList : fileList) {
+                if (aFileList.isDirectory()) {
+                    size = size + getFolderSize(aFileList);
+                } else {
+                    size = size + aFileList.length();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
 }
