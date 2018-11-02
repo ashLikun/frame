@@ -16,7 +16,7 @@
         <!--<item name="android:requiresFadingEdge">vertical</item>-->
         <item name="android:listSelector">@color/translucent</item>
         <item name="android:textCursorDrawable">@drawable/edittext_cursor_main_color</item>
-        <item name="textColorError">@color/design_textinput_error_color_light</item>
+        <item name="colorError">@color/design_textinput_error_color_light</item>
 
         <item name="SwipeRefreshLayout_Color1">@color/colorPrimary</item>
         <item name="SwipeRefreshLayout_Color2">#ffEA4335</item>
@@ -103,7 +103,7 @@
     </style>
 
     <style name="Theme.TextInputLayout" parent="AppTheme">
-        <item name="textColorError">@color/red</item>
+        <item name="colorError">@color/red</item>
     </style>
 
 
