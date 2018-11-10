@@ -94,8 +94,7 @@ public class AnimCheckBox extends View {
     public AnimCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
         //4.4的颜色
-        int colorPrimary = resolveColor(context,
-                R.attr.colorPrimary, 0xff0000);
+        int colorPrimary = 0xff333333;
         //5.0以上的颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorPrimary = resolveColor(context,
@@ -503,7 +502,6 @@ public class AnimCheckBox extends View {
     public void setChecked(boolean checked) {
         setChecked(checked, true);
     }
-
 
 
     /**
