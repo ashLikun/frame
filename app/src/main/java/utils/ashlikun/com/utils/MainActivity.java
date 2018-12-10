@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             @Override
             public void onBindViewHolder(MyHolder holder, int position) {
                 GlideUtils.showCircle(holder.imageView, image);
-                Log.e("aaaa", GlideUtils.isCache(MainActivity.this, image) + "");
             }
 
             @Override

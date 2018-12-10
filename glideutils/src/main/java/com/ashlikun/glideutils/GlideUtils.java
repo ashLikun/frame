@@ -42,9 +42,12 @@ public class GlideUtils {
     private static boolean DEBUG;
     private static String BASE_URL;
 
+
     static DiskLruCacheFactory diskLruCacheFactory = null;
 
-
+    /**
+     * 设置缓存,在application设置
+     */
     public static void setDiskLruCacheFactory(DiskLruCacheFactory diskLruCacheFactory) {
         GlideUtils.diskLruCacheFactory = diskLruCacheFactory;
     }
