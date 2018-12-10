@@ -9,6 +9,7 @@ import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
@@ -46,7 +47,10 @@ public class MyAppGlideModule extends AppGlideModule {
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
         super.applyOptions(context, builder);
-//        builder.setDiskCache(new InternalCacheDiskCacheFactory(context));
+        if (GlideUtils.diskLruCacheFactory == null) {
+            GlideUtils.diskLruCacheFactory = new InternalCacheDiskCacheFactory(context);
+        }
+        builder.setDiskCache(GlideUtils.diskLruCacheFactory);
 //        builder.setMemoryCache(new LruResourceCache())
         RequestOptions REQUEST_OPTIONS = new RequestOptions();
         REQUEST_OPTIONS.error(R.drawable.material_default_image_1_1);

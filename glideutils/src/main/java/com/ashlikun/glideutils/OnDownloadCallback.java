@@ -10,6 +10,6 @@ import java.io.File;
  * 功能介绍：下载回调
  */
 
-public interface OnDownloadCallbacl {
+public interface OnDownloadCallback {
     void onCall(File file);
 }

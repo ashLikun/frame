@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.cache.DiskCache;
+import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -14,6 +17,7 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 
 import java.io.File;
+import java.lang.reflect.Field;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -35,14 +39,21 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class GlideUtils {
 
-    private static boolean debug;
-    private static String baseUrl;
+    private static boolean DEBUG;
+    private static String BASE_URL;
+
+    static DiskLruCacheFactory diskLruCacheFactory = null;
+
+
+    public static void setDiskLruCacheFactory(DiskLruCacheFactory diskLruCacheFactory) {
+        GlideUtils.diskLruCacheFactory = diskLruCacheFactory;
+    }
 
     /**
      * 是否调试
      */
-    public static void setDebug(boolean debug) {
-        GlideUtils.debug = debug;
+    public static void setDEBUG(boolean DEBUG) {
+        GlideUtils.DEBUG = DEBUG;
     }
 
     /**
@@ -51,16 +62,16 @@ public class GlideUtils {
      * @param baseUrl
      */
     public static void setBaseUrl(String baseUrl) {
-        GlideUtils.baseUrl = baseUrl;
+        GlideUtils.BASE_URL = baseUrl;
     }
 
 
-    public static boolean isDebug() {
-        return debug;
+    public static boolean isDEBUG() {
+        return DEBUG;
     }
 
     public static String getBaseUrl() {
-        return baseUrl;
+        return BASE_URL;
     }
 
     /**
@@ -109,7 +120,7 @@ public class GlideUtils {
      * @param url
      * @param downloadCallbacl
      */
-    public static void downloadBitmap(final Context context, final String url, final OnDownloadCallbacl downloadCallbacl) {
+    public static void downloadBitmap(final Context context, final String url, final OnDownloadCallback downloadCallbacl) {
         Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> e) throws Exception {
@@ -121,8 +132,13 @@ public class GlideUtils {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<File>() {
                     @Override
-                    public void accept(File file) throws Exception {
+                    public void accept(File file) {
                         downloadCallbacl.onCall(file);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        downloadCallbacl.onCall(null);
                     }
                 });
 
@@ -176,7 +192,6 @@ public class GlideUtils {
      * @return CacheSize
      */
     public static double getCacheSize(Context context) {
-
         try {
             return getFolderSize(getCacheDir(context));
         } catch (Exception e) {
@@ -192,7 +207,55 @@ public class GlideUtils {
      * @return
      */
     public static File getCacheDir(Context context) {
-        return new File(context.getCacheDir() + "/" + InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR);
+        if (diskLruCacheFactory == null) {
+            diskLruCacheFactory = new InternalCacheDiskCacheFactory(context);
+        }
+        //反射获取私有属性
+        try {
+            Field field = DiskLruCacheFactory.class.getDeclaredField("cacheDirectoryGetter");
+            field.setAccessible(true);
+            DiskLruCacheFactory.CacheDirectoryGetter cacheDirectoryGetter = (DiskLruCacheFactory.CacheDirectoryGetter) field.get(diskLruCacheFactory);
+            return cacheDirectoryGetter.getCacheDirectory();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 这个图片是否有缓存
+     * 只能在子线程
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isCache(Context context, String url) {
+        return getCache(context, url) != null;
+    }
+
+    /**
+     * 获取缓存文件
+     * 只能在子线程
+     * onlyRetrieveFromCache 是否只是从缓存中获取
+     *
+     * @param context
+     * @param url
+     * @return
+     */
+    public static File getCache(Context context, String url) {
+        try {
+            if (diskLruCacheFactory == null) {
+                diskLruCacheFactory = new InternalCacheDiskCacheFactory(context);
+            }
+            DiskCache wrapper = diskLruCacheFactory.build();
+            return wrapper.get(new GlideUrl(url));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -218,4 +281,5 @@ public class GlideUtils {
         }
         return size;
     }
+
 }

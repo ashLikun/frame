@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             @Override
             public void onBindViewHolder(MyHolder holder, int position) {
                 GlideUtils.showCircle(holder.imageView, image);
+                Log.e("aaaa", GlideUtils.isCache(MainActivity.this, image) + "");
             }
 
             @Override
