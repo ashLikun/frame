@@ -2,8 +2,8 @@
 
 buildscript {
     repositories {
-        google()
         jcenter()
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
@@ -13,8 +13,8 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
         jcenter()
+        google()
     }
 }
 
@@ -22,9 +22,9 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    superVersion = "27.1.1"
-    compileSdkVersion = 27
-    buildToolsVersion = "27.0.3"
+    superVersion = "28.+"
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.3"
     designVersion = "com.android.support:design:" + superVersion
     v4Version = "com.android.support:support-v4:" + superVersion
     v7AppCompat = "com.android.support:appcompat-v7:" + superVersion
