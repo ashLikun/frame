@@ -506,13 +506,36 @@ public class AnimCheckBox extends View {
     }
 
 
+    public void setChecked(boolean checked, boolean animation) {
+        setChecked(checked, false, animation);
+    }
+
+    public void setCheckedNotifica(boolean checked) {
+        setCheckedNotifica(checked, true);
+    }
+
+    public void setCheckedNotifica(boolean checked, boolean animation) {
+        setChecked(checked, animation, true);
+    }
+
     /**
      * @param checked
      * @param animation
      */
-    public void setChecked(boolean checked, boolean animation) {
+    public void setChecked(boolean checked, boolean isNotifica, boolean animation) {
         if (checked == this.mChecked) {
             return;
+        }
+        if (isNotifica) {
+            boolean res = onCheckedChangeListener == null ?
+                    false : onCheckedChangeListener.onChange(AnimCheckBox.this, !mChecked);
+            if (!res) {
+                if (mOnCheckedChangeListeners != null) {
+                    for (int i = 0; i < mOnCheckedChangeListeners.size(); i++) {
+                        mOnCheckedChangeListeners.get(i).onChange(AnimCheckBox.this, mChecked);
+                    }
+                }
+            }
         }
         this.mChecked = checked;
         if (animation) {
