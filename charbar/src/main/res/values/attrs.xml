@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- ScaleImageView -->
-
     <declare-styleable name="CharBar">
         <attr name="cb_textColor" format="color"></attr>
         <attr name="cb_selectTextColor" format="color"></attr>
-
     </declare-styleable>
 </resources>

@@ -316,10 +316,10 @@ public class AnimCheckBox extends View {
         mPaint.setColor(mNoSelectStrokeColor);
         // canvas.drawArc(mRectF, 202, mSweepAngle, false, mPaint);
         mBroadPath.reset();
-        mPathTemp.reset();
         if (isCircle) {
             mBroadPath.addArc(mRectF, 202, mSweepAngle);
         } else {
+            mPathTemp.reset();
             float radius = getRadius(mRectF);
             mBroadPath.moveTo(mRectF.left, mRectF.top + mBaseLeftHookOffset + mHookStartY);
             mBroadPath.lineTo(mRectF.left, mRectF.top + radius);
@@ -351,6 +351,7 @@ public class AnimCheckBox extends View {
         if (isCircle) {
             mBroadPath.addArc(mRectF, 202, mSweepAngle - 360);
         } else {
+            mPathTemp.reset();
             float radius = getRadius(mRectF);
             mBroadPath.moveTo(mRectF.left, mRectF.top + mBaseLeftHookOffset + mHookStartY);
             mBroadPath.lineTo(mRectF.left, mRectF.top + radius);
@@ -390,7 +391,8 @@ public class AnimCheckBox extends View {
             mBroadPath.addArc(mInnerRectF, 0, 360);
         } else {
             float radius = getRadius(mInnerRectF);
-            mBroadPath.addRoundRect(mInnerRectF, radius, radius, Path.Direction.CW);//顺时针
+            //顺时针
+            mBroadPath.addRoundRect(mInnerRectF, radius, radius, Path.Direction.CW);
         }
     }
 

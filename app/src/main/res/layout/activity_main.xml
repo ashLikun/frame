@@ -16,6 +16,16 @@
     </com.ashlikun.supertoobar.SuperToolBar>
 
 
+    <com.ashlikun.animcheckbox.AnimCheckBox
+        android:layout_width="wrap_content"
+        app:ab_noSelectStrokeColor="@color/gray_66"
+        app:ab_selectStrokeColor="@color/red"
+        app:ab_circleColor="@color/white"
+        app:ab_strokeWidth="@dimen/dp_1"
+        app:ab_isCircle="false"
+        android:layout_height="wrap_content"
+        style="@style/AnimCheckBox"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
