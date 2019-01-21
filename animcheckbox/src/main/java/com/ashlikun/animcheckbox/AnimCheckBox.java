@@ -526,6 +526,7 @@ public class AnimCheckBox extends View {
         if (checked == this.mChecked) {
             return;
         }
+        this.mChecked = checked;
         if (isNotifica) {
             boolean res = onCheckedChangeListener == null ?
                     false : onCheckedChangeListener.onChange(AnimCheckBox.this, !mChecked);
@@ -537,7 +538,6 @@ public class AnimCheckBox extends View {
                 }
             }
         }
-        this.mChecked = checked;
         if (animation) {
             if (!isOnLayout) {
                 post(new Runnable() {
