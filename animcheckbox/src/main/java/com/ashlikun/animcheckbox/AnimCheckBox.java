@@ -529,7 +529,7 @@ public class AnimCheckBox extends View {
         this.mChecked = checked;
         if (isNotifica) {
             boolean res = onCheckedChangeListener == null ?
-                    false : onCheckedChangeListener.onChange(AnimCheckBox.this, !mChecked);
+                    false : onCheckedChangeListener.onChange(AnimCheckBox.this, mChecked);
             if (!res) {
                 if (mOnCheckedChangeListeners != null) {
                     for (int i = 0; i < mOnCheckedChangeListeners.size(); i++) {
