@@ -72,7 +72,6 @@ public class SuperToolBar extends FrameLayout {
     protected int actionPadding = dip2px(8f);
 
 
-    private OnLeftClickListener leftClickListener;
     private Action.OnActionClick onActionClickListener;
 
     public SuperToolBar(@NonNull Context context) {
@@ -99,6 +98,46 @@ public class SuperToolBar extends FrameLayout {
         int height = barHeight + (setTranslucentStatusBarPaddingTop ? getStatusHeight() : 0);
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        final MarginLayoutParams leftLp = (MarginLayoutParams) leftLayout.getLayoutParams();
+        final MarginLayoutParams rightLp = (MarginLayoutParams) rightLayout.getLayoutParams();
+        final MarginLayoutParams centerLp = (MarginLayoutParams) centerLayout.getLayoutParams();
+        int leftRightSize = leftLayout.getMeasuredWidth() + leftLp.leftMargin + leftLp.rightMargin
+                + rightLayout.getMeasuredWidth() + rightLp.leftMargin + rightLp.rightMargin
+                + getPaddingLeft() + getPaddingRight()
+                + centerLp.leftMargin - centerLp.rightMargin;
+        //如果中间layout放不下,就强制设置成最大值
+        if (centerLayout.getMeasuredWidth() >= getMeasuredWidth() - leftRightSize) {
+            centerLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - leftRightSize, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(centerLayout.getMeasuredHeight(), MeasureSpec.EXACTLY));
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        final MarginLayoutParams leftLp = (MarginLayoutParams) leftLayout.getLayoutParams();
+        final MarginLayoutParams rightLp = (MarginLayoutParams) rightLayout.getLayoutParams();
+        final MarginLayoutParams centerLp = (MarginLayoutParams) centerLayout.getLayoutParams();
+        int leftSize = leftLayout.getMeasuredWidth() + leftLp.leftMargin + leftLp.rightMargin;
+        int rightSize = rightLayout.getMeasuredWidth() + rightLp.leftMargin + rightLp.rightMargin;
+        int leftRightSize = Math.max(leftSize, rightSize) * 2
+                + getPaddingLeft() + getPaddingRight()
+                + centerLp.leftMargin - centerLp.rightMargin;
+        //如果中间layout放不下,就强制设置成最大值
+        if (centerLayout.getMeasuredWidth() >= getMeasuredWidth() - leftRightSize) {
+            int newLeft = 0;
+            int newRight = 0;
+            if (leftSize > rightSize) {
+                //左边大
+                newLeft = leftLayout.getRight() + centerLp.leftMargin;
+                newRight = newLeft + centerLayout.getMeasuredWidth();
+            } else {
+                //右边大
+                newRight = rightLayout.getLeft() - centerLp.rightMargin;
+                newLeft = newRight - centerLayout.getMeasuredWidth();
+            }
+            centerLayout.layout(newLeft, centerLayout.getTop(), newRight, centerLayout.getBottom());
+        }
     }
 
     /**
@@ -192,6 +231,7 @@ public class SuperToolBar extends FrameLayout {
         titleView = new TextView(getContext());
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleSize);
         titleView.setTextColor(titleColor);
+        titleView.setMaxLines(1);
         titleView.setEllipsize(TextUtils.TruncateAt.END);
         titleView.setGravity(Gravity.CENTER);
         if (title != null) {
@@ -359,14 +399,14 @@ public class SuperToolBar extends FrameLayout {
 
     public void setTitleColor(int titleColor) {
         this.titleColor = titleColor;
-        if(titleView != null){
+        if (titleView != null) {
             titleView.setTextColor(titleColor);
         }
     }
 
     public void setTitleSize(float titleSize) {
         this.titleSize = titleSize;
-        if(titleView != null){
+        if (titleView != null) {
             titleView.setTextSize(titleSize);
         }
     }
@@ -515,12 +555,6 @@ public class SuperToolBar extends FrameLayout {
     /********************************************************************************************
      *                                           事件
      ********************************************************************************************/
-    /**
-     * 设置左边点击事件监听
-     */
-    public void setLeftClickListener(OnLeftClickListener leftClickListener) {
-        this.leftClickListener = leftClickListener;
-    }
 
     public void setOnActionClickListener(Action.OnActionClick onActionClickListener) {
         this.onActionClickListener = onActionClickListener;

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,10 +77,11 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 return listData.size();
             }
         });
-        supperToolBar.setTitle("标题");
         supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
+                .setTintColor(0xff000000)
                 .set());
         supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
+                .setTintColor(0xff000000)
                 .set());
         supperToolBar.setNotification(1, 7);
         supperToolBar.addAction(new TextAction(supperToolBar, "分享")
