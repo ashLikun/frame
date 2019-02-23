@@ -13,5 +13,7 @@
         <attr name="stb_notificationTextColor" format="color" />
         <attr name="stb_notificationStrokeColor" format="color" />
         <attr name="stb_actionPadding" format="dimension" />
+        <attr name="stb_actionWidth" format="dimension" />
+        <attr name="stb_actionHeight" format="dimension" />
     </declare-styleable>
 </resources>

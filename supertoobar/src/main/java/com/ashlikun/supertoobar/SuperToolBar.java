@@ -70,7 +70,11 @@ public class SuperToolBar extends FrameLayout {
     protected boolean isSetBackImgColor = false;
     protected int bottonLineHeight = dip2px(0.5f);
     protected int actionPadding = dip2px(8f);
-
+    /**
+     * action的宽高,一般只用于图片
+     */
+    protected int actionWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+    protected int actionHeight = ViewGroup.LayoutParams.MATCH_PARENT;
 
     private Action.OnActionClick onActionClickListener;
 
@@ -199,6 +203,8 @@ public class SuperToolBar extends FrameLayout {
         backImage = a.getResourceId(R.styleable.SuperToolBar_stb_backImg, backImage);
         actionTextColor = a.getColor(R.styleable.SuperToolBar_stb_actionTextColor, actionTextColor);
         actionPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionPadding, actionPadding);
+        actionWidth = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionWidth, actionWidth);
+        actionHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionHeight, actionHeight);
         notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
         a.recycle();
 

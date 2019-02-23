@@ -10,23 +10,24 @@
         android:id="@+id/toolBar"
         style="@style/SuperToolBar.Black"
         android:layout_width="match_parent"
-        app:stb_title="我是少我是少我是少我是少我是少我是少"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:stb_actionWidth="@dimen/dp_40"
+        app:stb_title="我是少我是少我是少我是少我是少我是少">
 
 
     </com.ashlikun.supertoobar.SuperToolBar>
 
 
     <com.ashlikun.animcheckbox.AnimCheckBox
+        style="@style/AnimCheckBox"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:ab_circleColor="@color/white"
+        app:ab_isCircle="false"
         app:ab_noSelectStrokeColor="@color/gray_66"
         app:ab_selectStrokeColor="@color/red"
-        app:ab_circleColor="@color/white"
-        app:ab_strokeWidth="@dimen/dp_1"
-        app:ab_isCircle="false"
-        android:layout_height="wrap_content"
-        style="@style/AnimCheckBox"
-        />
+        app:ab_strokeWidth="@dimen/dp_1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

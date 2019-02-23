@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
             }
         });
         supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
+                .setWidth(DimensUtils.dip2px(this, 30))
                 .setTintColor(0xff000000)
                 .set());
         supperToolBar.addAction(new ImageAction(supperToolBar, R.mipmap.ic_cj_clock)
