@@ -171,7 +171,7 @@ public class SuperToolBar extends FrameLayout {
             canvas.drawRect(0, getHeight() - bottonLineHeight, getWidth(), getHeight(), linePaint);
         }
         //绘制半透明状态栏
-        if (setTranslucentStatusBarPaddingTop && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if (setTranslucentStatusBarPaddingTop && Build.VERSION.SDK_INT < Build.VERSION_CODES.M && androidMTranslucentStatusBar != 0x00000000) {
             linePaint.setColor(androidMTranslucentStatusBar);
             canvas.drawRect(0, 0, getWidth(), statusHeight, linePaint);
         }
@@ -540,11 +540,24 @@ public class SuperToolBar extends FrameLayout {
      * @return
      */
     public SuperToolBar setTranslucentStatusBarPaddingTop() {
+        return setTranslucentStatusBarPaddingTop(false);
+    }
+
+    /**
+     * 设置透明状态栏时候，顶部的padding
+     *
+     * @param isNeedAndroidMHalf 6.0以下是否绘制半透明,因为不能设置状态栏字体颜色
+     * @return
+     */
+    public SuperToolBar setTranslucentStatusBarPaddingTop(boolean isNeedAndroidMHalf) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTranslucentStatusBarPaddingTop = true;
             statusHeight = getStatusHeight();
             setPadding(getPaddingLeft(), statusHeight, getPaddingRight(), getPaddingBottom());
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (isNeedAndroidMHalf) {
+                androidMTranslucentStatusBar = 0x00000000;
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && isNeedAndroidMHalf) {
                 //6.0以下绘制半透明,因为不能设置状态栏字体颜色
                 setWillNotDraw(false);
             }
