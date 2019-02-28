@@ -66,6 +66,10 @@ public class SuperToolBar extends FrameLayout {
     protected int notificationTextColor = 0xffffffff;
     protected int notificationStrokeColor = 0xffffffff;
     protected int actionTextColor = 0xffffffff;
+    /**
+     * 透明状态栏，小于安卓M的状态栏背景
+     */
+    protected int androidMTranslucentStatusBar = 0x66aaaaaa;
     protected int backImgColor = 0;
     protected boolean isSetBackImgColor = false;
     protected int bottonLineHeight = dip2px(0.5f);
@@ -168,7 +172,7 @@ public class SuperToolBar extends FrameLayout {
         }
         //绘制半透明状态栏
         if (setTranslucentStatusBarPaddingTop && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            linePaint.setColor(0x88aaaaaa);
+            linePaint.setColor(androidMTranslucentStatusBar);
             canvas.drawRect(0, 0, getWidth(), statusHeight, linePaint);
         }
     }
@@ -206,6 +210,7 @@ public class SuperToolBar extends FrameLayout {
         actionWidth = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionWidth, actionWidth);
         actionHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionHeight, actionHeight);
         notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
+        androidMTranslucentStatusBar = a.getColor(R.styleable.SuperToolBar_stb_androidMTranslucentStatusBarColor, androidMTranslucentStatusBar);
         a.recycle();
 
         linePaint = new Paint();
