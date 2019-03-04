@@ -5,6 +5,10 @@
         <attr name="stb_titleSize" format="dimension" />
         <attr name="stb_title" format="string" />
         <attr name="stb_backImgColor" format="color" />
+        <!--返回键是否是正方形-->
+        <attr name="stb_backImgSquare" format="boolean" />
+        <!--返回键的内间距-->
+        <attr name="stb_backImgPadding" format="boolean" />
         <attr name="stb_bottonLineColor" format="color" />
         <attr name="stb_actionTextColor" format="color" />
         <attr name="stb_bottonLineHeight" format="dimension" />

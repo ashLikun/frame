@@ -98,8 +98,6 @@ public class FlatButton extends TextView {
         colorPressedOrientation = attr.getInt(R.styleable.FlatButton_colorPressedOrientation, -1);
         colorEnableOrientation = attr.getInt(R.styleable.FlatButton_colorEnableOrientation, -1);
         isUseTextColorList = attr.getBoolean(R.styleable.FlatButton_isUseTextColorList, isUseTextColorList);
-        //默认可以点击
-        setClickable(true);
         if (!isUseBackground) {
             setBackgroundCompat(getStateListDrawable());
         }

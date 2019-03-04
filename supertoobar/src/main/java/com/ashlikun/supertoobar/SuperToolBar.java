@@ -50,7 +50,7 @@ public class SuperToolBar extends FrameLayout {
     protected int barHeight;
     protected int statusHeight;
     protected TextView titleView;
-    protected ImageView backButton;
+    protected BackImageView backButton;
     protected int titleColor = 0xff333333;
     protected int backImage = DEFAULT_BACKIMAGE;
     protected float titleSize = 18;
@@ -67,9 +67,15 @@ public class SuperToolBar extends FrameLayout {
     protected int notificationStrokeColor = 0xffffffff;
     protected int actionTextColor = 0xffffffff;
     protected int backImgColor = 0;
+    //返回键是否是正方形
+    protected boolean backImgSquare = false;
     protected boolean isSetBackImgColor = false;
     protected int bottonLineHeight = dip2px(0.5f);
     protected int actionPadding = dip2px(8f);
+    /**
+     * 返回键的内间距
+     */
+    protected int backPadding = dip2px(12f);
 
 
     private Action.OnActionClick onActionClickListener;
@@ -191,6 +197,8 @@ public class SuperToolBar extends FrameLayout {
         if (a.hasValue(R.styleable.SuperToolBar_stb_backImgColor)) {
             isSetBackImgColor = true;
         }
+        backImgSquare = a.getBoolean(R.styleable.SuperToolBar_stb_backImgSquare, backImgSquare);
+        backPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_backImgPadding, backPadding);
         backImgColor = a.getColor(R.styleable.SuperToolBar_stb_backImgColor, backImgColor);
         bottonLineColor = a.getColor(R.styleable.SuperToolBar_stb_bottonLineColor, bottonLineColor);
         notificationBagColor = a.getColor(R.styleable.SuperToolBar_stb_notificationBagColor, notificationBagColor);
@@ -353,9 +361,10 @@ public class SuperToolBar extends FrameLayout {
      */
     public void setBack(final Activity activity) {
         if (backButton == null) {
-            backButton = new ImageView(getContext());
-            backButton.setPadding(dip2px(12), 0,
-                    dip2px(12), 0);
+            backButton = new BackImageView(getContext());
+            backButton.setPadding(backPadding, 0,
+                    backPadding, 0);
+            backButton.backImgSquare = backImgSquare;
             FrameLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
             params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
             leftLayout.addView(backButton, params);
@@ -378,6 +387,15 @@ public class SuperToolBar extends FrameLayout {
      */
     public ImageView getBackButton() {
         return backButton;
+    }
+
+    /**
+     * 返回键是否是正方形
+     */
+    public void setBackImgSquare(boolean backImgSquare) {
+        if (backButton != null) {
+            backButton.backImgSquare = backImgSquare;
+        }
     }
 
     /********************************************************************************************
