@@ -66,6 +66,10 @@ public class SuperToolBar extends FrameLayout {
     protected int notificationTextColor = 0xffffffff;
     protected int notificationStrokeColor = 0xffffffff;
     protected int actionTextColor = 0xffffffff;
+    /**
+     * 透明状态栏，小于安卓M的状态栏背景
+     */
+    protected int androidMTranslucentStatusBar = 0x66aaaaaa;
     protected int backImgColor = 0;
     //返回键是否是正方形
     protected boolean backImgSquare = false;
@@ -77,6 +81,11 @@ public class SuperToolBar extends FrameLayout {
      */
     protected int backPadding = dip2px(12f);
 
+    /**
+     * action的宽高,一般只用于图片
+     */
+    protected int actionWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+    protected int actionHeight = ViewGroup.LayoutParams.MATCH_PARENT;
 
     private Action.OnActionClick onActionClickListener;
 
@@ -169,8 +178,8 @@ public class SuperToolBar extends FrameLayout {
             canvas.drawRect(0, getHeight() - bottonLineHeight, getWidth(), getHeight(), linePaint);
         }
         //绘制半透明状态栏
-        if (setTranslucentStatusBarPaddingTop && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            linePaint.setColor(0x88aaaaaa);
+        if (setTranslucentStatusBarPaddingTop && Build.VERSION.SDK_INT < Build.VERSION_CODES.M && androidMTranslucentStatusBar != 0x00000000) {
+            linePaint.setColor(androidMTranslucentStatusBar);
             canvas.drawRect(0, 0, getWidth(), statusHeight, linePaint);
         }
     }
@@ -207,7 +216,10 @@ public class SuperToolBar extends FrameLayout {
         backImage = a.getResourceId(R.styleable.SuperToolBar_stb_backImg, backImage);
         actionTextColor = a.getColor(R.styleable.SuperToolBar_stb_actionTextColor, actionTextColor);
         actionPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionPadding, actionPadding);
+        actionWidth = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionWidth, actionWidth);
+        actionHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionHeight, actionHeight);
         notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
+        androidMTranslucentStatusBar = a.getColor(R.styleable.SuperToolBar_stb_androidMTranslucentStatusBarColor, androidMTranslucentStatusBar);
         a.recycle();
 
         linePaint = new Paint();
@@ -547,11 +559,24 @@ public class SuperToolBar extends FrameLayout {
      * @return
      */
     public SuperToolBar setTranslucentStatusBarPaddingTop() {
+        return setTranslucentStatusBarPaddingTop(false);
+    }
+
+    /**
+     * 设置透明状态栏时候，顶部的padding
+     *
+     * @param isNeedAndroidMHalf 6.0以下是否绘制半透明,因为不能设置状态栏字体颜色
+     * @return
+     */
+    public SuperToolBar setTranslucentStatusBarPaddingTop(boolean isNeedAndroidMHalf) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTranslucentStatusBarPaddingTop = true;
             statusHeight = getStatusHeight();
             setPadding(getPaddingLeft(), statusHeight, getPaddingRight(), getPaddingBottom());
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (isNeedAndroidMHalf) {
+                androidMTranslucentStatusBar = 0x00000000;
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && isNeedAndroidMHalf) {
                 //6.0以下绘制半透明,因为不能设置状态栏字体颜色
                 setWillNotDraw(false);
             }

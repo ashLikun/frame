@@ -2,7 +2,6 @@ package com.ashlikun.supertoobar;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,20 +35,41 @@ public class ImageAction extends Action {
         return drawable;
     }
 
-    public void setDrawable(Drawable drawable) {
+    public ImageAction setDrawable(Drawable drawable) {
         if (drawable != this.drawable) {
             this.drawable = drawable;
             updata();
         }
+        return this;
     }
 
-    public void setDrawableId(int drawableId) {
+    public ImageAction setDrawableId(int drawableId) {
         Drawable drawable = context.getResources().getDrawable(drawableId);
         if (drawable != this.drawable) {
             this.drawable = drawable;
             updata();
         }
+        return this;
     }
+
+    public ImageAction setWidth(int width) {
+        this.width = width;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+                height);
+        actionView.setLayoutParams(params);
+        updata();
+        return this;
+    }
+
+    public ImageAction setHeight(int height) {
+        this.height = height;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+                height);
+        actionView.setLayoutParams(params);
+        updata();
+        return this;
+    }
+
 
     /**
      * 设置渲染的颜色
@@ -87,6 +107,7 @@ public class ImageAction extends Action {
 
     @Override
     protected void convert(FrameLayout view) {
+
     }
 
     @Override
@@ -98,6 +119,9 @@ public class ImageAction extends Action {
             if (isSetTintColor || tintColor != -1) {
                 imageView.setColorFilter(tintColor);
             }
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+                    height);
+            imageView.setLayoutParams(params);
         }
     }
 
@@ -108,8 +132,8 @@ public class ImageAction extends Action {
      */
     @Override
     protected ImageView createView() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+                height);
         imageView = new ImageView(getContext());
         updata();
         imageView.setLayoutParams(params);

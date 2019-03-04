@@ -11,6 +11,7 @@
         style="@style/SuperToolBar.Black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:stb_actionWidth="@dimen/dp_40"
         app:stb_title="我是少我是少我是少我是少我是少我是少">
 
 

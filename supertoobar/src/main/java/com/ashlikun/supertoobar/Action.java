@@ -6,7 +6,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,7 +31,11 @@ public abstract class Action {
     protected int notificationMax = 99;
     protected int notificationNumber = -9999;
     protected SparseArray<Object> mKeyedTags;
-
+    /**
+     * 图标宽高
+     */
+    protected int width;
+    protected int height;
     private TextView notificationTextView;
 
     public Action(SuperToolBar toolBar) {
@@ -42,12 +45,13 @@ public abstract class Action {
         notificationStrokeColor = toolBar.notificationStrokeColor;
         actionTextColor = toolBar.actionTextColor;
         actionPadding = toolBar.actionPadding;
+        width = toolBar.actionWidth;
+        height = toolBar.actionHeight;
 
         actionView = new FrameLayout(getContext());
         actionView.setTag(this);
         BarHelp.setForeground(SuperToolBar.CLICK_COLOR, actionView);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
         actionView.setLayoutParams(params);
     }
 
