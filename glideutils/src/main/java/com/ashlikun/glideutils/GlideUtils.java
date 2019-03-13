@@ -41,6 +41,8 @@ public class GlideUtils {
 
     private static boolean DEBUG;
     private static String BASE_URL;
+    private static int errorRes = R.drawable.material_default_image_1_1;
+    private static int placeholderRes = R.color.glide_placeholder_color;
 
 
     static DiskLruCacheFactory diskLruCacheFactory = null;
@@ -75,6 +77,32 @@ public class GlideUtils {
 
     public static String getBaseUrl() {
         return BASE_URL;
+    }
+
+    public static int getErrorRes() {
+        return errorRes;
+    }
+
+    /**
+     * 设置默认的错误图片
+     *
+     * @param errorRes
+     */
+    public static void setErrorRes(int errorRes) {
+        GlideUtils.errorRes = errorRes;
+    }
+
+    public static int getPlaceholderRes() {
+        return placeholderRes;
+    }
+
+    /**
+     * 设置默认的展位图
+     *
+     * @param placeholderRes
+     */
+    public static void setPlaceholderRes(int placeholderRes) {
+        GlideUtils.placeholderRes = placeholderRes;
     }
 
     /**

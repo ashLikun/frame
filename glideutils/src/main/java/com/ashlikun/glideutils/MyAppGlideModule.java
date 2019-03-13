@@ -53,8 +53,8 @@ public class MyAppGlideModule extends AppGlideModule {
         builder.setDiskCache(GlideUtils.diskLruCacheFactory);
 //        builder.setMemoryCache(new LruResourceCache())
         RequestOptions REQUEST_OPTIONS = new RequestOptions();
-        REQUEST_OPTIONS.error(R.drawable.material_default_image_1_1);
-        REQUEST_OPTIONS.placeholder(R.color.glide_placeholder_color);
+        REQUEST_OPTIONS.error(GlideUtils.getErrorRes());
+        REQUEST_OPTIONS.placeholder(GlideUtils.getPlaceholderRes());
         REQUEST_OPTIONS.sizeMultiplier(0.8f);
         REQUEST_OPTIONS.format(DecodeFormat.PREFER_RGB_565);
         REQUEST_OPTIONS.diskCacheStrategy(DiskCacheStrategy.ALL);
