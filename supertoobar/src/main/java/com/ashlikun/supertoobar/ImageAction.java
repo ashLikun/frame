@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 /**
  * 作者　　: 李坤
@@ -54,7 +53,7 @@ public class ImageAction extends Action {
 
     public ImageAction setWidth(int width) {
         this.width = width;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
                 height);
         actionView.setLayoutParams(params);
         updata();
@@ -63,7 +62,7 @@ public class ImageAction extends Action {
 
     public ImageAction setHeight(int height) {
         this.height = height;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
                 height);
         actionView.setLayoutParams(params);
         updata();
@@ -119,7 +118,7 @@ public class ImageAction extends Action {
             if (isSetTintColor || tintColor != -1) {
                 imageView.setColorFilter(tintColor);
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
                     height);
             imageView.setLayoutParams(params);
         }
@@ -132,7 +131,7 @@ public class ImageAction extends Action {
      */
     @Override
     protected ImageView createView() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
                 height);
         imageView = new ImageView(getContext());
         updata();

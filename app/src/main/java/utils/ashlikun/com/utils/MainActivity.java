@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
     public void onClick(View view) {
         supperToolBar.setBackImgColor(0xffff0000);
         ImageAction action = supperToolBar.getAction(0);
+        action.setDrawableId(R.drawable.material_back);
         action.setTintColor(0xffff0000);
         action.setNotification(100);
         TextAction textAction = supperToolBar.getAction(2);

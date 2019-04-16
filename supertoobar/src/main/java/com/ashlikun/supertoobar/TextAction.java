@@ -3,7 +3,6 @@ package com.ashlikun.supertoobar;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -34,9 +33,10 @@ public class TextAction extends Action {
      */
     @Override
     protected TextView createView() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         textView = new TextView(getContext());
+        textView.setMaxLines(1);
         updata();
         textView.setLayoutParams(params);
         return textView;
