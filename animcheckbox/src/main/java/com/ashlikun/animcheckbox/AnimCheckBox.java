@@ -10,14 +10,15 @@ import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Parcelable;
-import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 
 /**
  * N
