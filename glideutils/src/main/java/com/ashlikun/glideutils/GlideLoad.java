@@ -3,9 +3,6 @@ package com.ashlikun.glideutils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
 import com.ashlikun.glideutils.okhttp.ProgressListener;
@@ -25,6 +22,10 @@ import com.bumptech.glide.request.target.ViewTarget;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * @author　　: 李坤

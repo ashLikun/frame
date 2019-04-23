@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="webview_progress_default_color">#ffffffff</color>
-    <color name="webview_progress_color">#ffff9a42</color>
-    <color name="webview_progress_message_color">#ff666666</color>
-    <color name="webview_progress_button_default_color">#ff666666</color>
-    <color name="webview_progress_button_stroke_color">#ff666666</color>
-</resources>

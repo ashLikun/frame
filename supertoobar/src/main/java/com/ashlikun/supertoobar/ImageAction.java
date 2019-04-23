@@ -1,7 +1,7 @@
 package com.ashlikun.supertoobar;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 

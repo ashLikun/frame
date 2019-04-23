@@ -2,7 +2,7 @@ package com.ashlikun.glideutils.okhttp;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.model.GlideUrl;
 

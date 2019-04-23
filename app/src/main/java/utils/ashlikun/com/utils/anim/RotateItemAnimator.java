@@ -1,12 +1,8 @@
 package utils.ashlikun.com.utils.anim;
 
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v7.view.menu.MenuView;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by ivy on 2017/3/21.
