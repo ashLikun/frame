@@ -2,8 +2,8 @@
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -13,8 +13,8 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 }
 
@@ -22,7 +22,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    superVersion = "1.0.0"
+    superVersion = "1.0.0-beta01"
     compileSdkVersion = 28
     buildToolsVersion = "28.0.3"
     designVersion = "com.google.android.material:material:" + superVersion
