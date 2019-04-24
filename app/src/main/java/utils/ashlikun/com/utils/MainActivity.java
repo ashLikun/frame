@@ -3,16 +3,11 @@ package utils.ashlikun.com.utils;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ashlikun.glideutils.GlideUtils;
 import com.ashlikun.supertoobar.ImageAction;
 import com.ashlikun.supertoobar.SuperToolBar;
 import com.ashlikun.supertoobar.TextAction;
@@ -26,6 +21,11 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
             @Override
             public void onBindViewHolder(MyHolder holder, int position) {
-                GlideUtils.showCircle(holder.imageView, image);
             }
 
             @Override
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
         RequestOptions options = new RequestOptions();
         options.transform(new RoundedCorners(DimensUtils.dip2px(this, 6)));
-        GlideUtils.show(findViewById(R.id.imageView), image, options);
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

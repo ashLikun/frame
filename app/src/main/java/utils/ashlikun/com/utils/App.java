@@ -2,8 +2,6 @@ package utils.ashlikun.com.utils;
 
 import android.app.Application;
 
-import com.ashlikun.glideutils.GlideUtils;
-
 /**
  * 作者　　: 李坤
  * 创建时间: 2017/12/29　16:56
@@ -16,7 +14,5 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        GlideUtils.setDEBUG(true);
-        GlideUtils.setBaseUrl("");
     }
 }

@@ -1,7 +1,6 @@
 include ':app',
         ':stickyrecyclerview',
         ':segmentcontrol',
-        ':glideutils',
         ':numberprogressbar',
         ':flatbutton',
         ':charbar',
