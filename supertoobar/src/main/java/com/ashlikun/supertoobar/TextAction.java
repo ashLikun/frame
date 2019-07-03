@@ -33,12 +33,9 @@ public class TextAction extends Action {
      */
     @Override
     protected TextView createView() {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
         textView = new TextView(getContext());
         textView.setMaxLines(1);
         updata();
-        textView.setLayoutParams(params);
         return textView;
     }
 

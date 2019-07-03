@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public abstract class Action {
     protected int width;
     protected int height;
     private TextView notificationTextView;
+    private int gravity = Gravity.CENTER;
 
     public Action(SuperToolBar toolBar) {
         context = toolBar.getContext();
@@ -51,12 +53,22 @@ public abstract class Action {
         actionView = new FrameLayout(getContext());
         actionView.setTag(this);
         BarHelp.setForeground(SuperToolBar.CLICK_COLOR, actionView);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         actionView.setLayoutParams(params);
     }
 
     public Action set() {
-        actionView.addView(createView());
+        View acV = createView();
+        if (acV.getLayoutParams() != null) {
+            ((FrameLayout.LayoutParams) acV.getLayoutParams()).gravity = gravity;
+        } else {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
+                    height);
+            params.gravity = gravity;
+            acV.setLayoutParams(params);
+        }
+        actionView.addView(acV);
         convert(actionView);
         return this;
     }
@@ -131,6 +143,11 @@ public abstract class Action {
      */
     public FrameLayout getActionView() {
         return actionView;
+    }
+
+    public Action setGravity(int gravity) {
+        this.gravity = gravity;
+        return this;
     }
 
     /**
