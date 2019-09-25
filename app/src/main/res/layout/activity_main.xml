@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:id="@+id/actionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/actionButton"
+        android:layout_below="@+id/toolBar"
         android:clickable="false"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -38,9 +38,11 @@
 
 
     <com.ashlikun.animcheckbox.AnimCheckBox
+        android:id="@+id/checkBox"
         style="@style/AnimCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/actionButton"
         app:ab_circleColor="@color/white"
         app:ab_isCircle="false"
         app:ab_noSelectStrokeColor="@color/gray_66"
@@ -48,8 +50,10 @@
         app:ab_strokeWidth="1dp" />
 
     <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBox"
         android:orientation="horizontal">
 
         <Button
@@ -69,12 +73,14 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="80dp"
-        android:layout_height="80dp" />
+        android:layout_height="80dp"
+        android:layout_below="@+id/ll1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/imageView"></androidx.recyclerview.widget.RecyclerView>
 
 
-</LinearLayout>
+</RelativeLayout>
