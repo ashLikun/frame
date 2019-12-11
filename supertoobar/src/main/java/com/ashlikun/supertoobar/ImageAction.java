@@ -85,7 +85,7 @@ public class ImageAction extends Action {
         this.tintColor = -1;
         isSetTintColor = false;
         if (imageView != null) {
-            imageView.setColorFilter(null);
+            imageView.clearColorFilter();
         }
         return this;
     }
