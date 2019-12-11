@@ -83,6 +83,7 @@ public class ImageAction extends Action {
 
     public ImageAction cleanTint() {
         this.tintColor = -1;
+        isSetTintColor = false;
         if (imageView != null) {
             imageView.setColorFilter(null);
         }
@@ -110,7 +111,7 @@ public class ImageAction extends Action {
             imageView.setId(IMAGE_ID);
             imageView.setImageDrawable(getDrawable());
             imageView.setPadding(actionPadding, actionPadding, actionPadding, actionPadding);
-            if (isSetTintColor || tintColor != -1) {
+            if (isSetTintColor) {
                 imageView.setColorFilter(tintColor);
             }
             if (imageView.getLayoutParams() != null) {
