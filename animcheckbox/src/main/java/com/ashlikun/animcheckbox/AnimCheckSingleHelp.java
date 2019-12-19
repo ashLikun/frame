@@ -102,18 +102,24 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
     public void setChecked(int index, boolean checked) {
         setChecked(index, checked, true);
     }
+
     public void setChecked(int index, boolean checked, boolean animation) {
         setChecked(index, checked, false, animation);
     }
+
     public void setCheckedNotifica(int index, boolean checked) {
         setCheckedNotifica(index, checked, true);
     }
+
     public void setCheckedNotifica(int index, boolean checked, boolean animation) {
         setChecked(index, checked, animation, true);
     }
+
     public void setChecked(int index, boolean checked, boolean isNotifica, boolean animation) {
         AnimCheckBox box = get(index);
-        if (box != null) {
+        if (!isNotifica) {
+            onChange(box, checked);
+        } else if (box != null) {
             box.setChecked(checked, isNotifica, animation);
         }
     }
