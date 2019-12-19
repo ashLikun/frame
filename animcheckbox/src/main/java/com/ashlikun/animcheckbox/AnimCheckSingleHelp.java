@@ -9,7 +9,7 @@ import java.util.List;
  * 创建时间: 2017/9/19　15:14
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：多个选择按钮的工具类
  */
 
 public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener {
