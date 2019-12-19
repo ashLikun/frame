@@ -49,6 +49,11 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
 
     @Override
     public boolean onChange(AnimCheckBox checkBox, boolean checked) {
+        onChange(checkBox, checked, true);
+        return false;
+    }
+
+    public void onChange(AnimCheckBox checkBox, boolean checked, boolean isNotifica) {
         mSelectIndex = -1;
         if (checked && getSize() > 2) {
             checkBox.setAutoSelect(false);
@@ -73,14 +78,14 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
             }
         }
 
-        if (mSelectIndex >= 0) {
-            for (int j = 0; j < onSingleSelectListener.size(); j++) {
-                onSingleSelectListener.get(j).onSingleSelect(checkBox, mSelectIndex);
+        if (isNotifica) {
+            if (mSelectIndex >= 0) {
+                for (int j = 0; j < onSingleSelectListener.size(); j++) {
+                    onSingleSelectListener.get(j).onSingleSelect(checkBox, mSelectIndex);
+                }
             }
         }
-        return false;
     }
-
 
     public void clean() {
         if (boxs != null) {
@@ -118,7 +123,14 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
     public void setChecked(int index, boolean checked, boolean isNotifica, boolean animation) {
         AnimCheckBox box = get(index);
         if (!isNotifica) {
-            onChange(box, checked);
+            for (int i = 0; i < boxs.size(); i++) {
+                AnimCheckBox item = boxs.get(i);
+                if (item != box) {
+                    item.setChecked(!checked, false, animation);
+                } else {
+                    item.setChecked(checked, false, animation);
+                }
+            }
         } else if (box != null) {
             box.setChecked(checked, isNotifica, animation);
         }
