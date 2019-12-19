@@ -99,6 +99,32 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
         return mSelectIndex;
     }
 
+    public void setChecked(int index, boolean checked) {
+        setChecked(index, checked, true);
+    }
+    public void setChecked(int index, boolean checked, boolean animation) {
+        setChecked(index, checked, false, animation);
+    }
+    public void setCheckedNotifica(int index, boolean checked) {
+        setCheckedNotifica(index, checked, true);
+    }
+    public void setCheckedNotifica(int index, boolean checked, boolean animation) {
+        setChecked(index, checked, animation, true);
+    }
+    public void setChecked(int index, boolean checked, boolean isNotifica, boolean animation) {
+        AnimCheckBox box = get(index);
+        if (box != null) {
+            box.setChecked(checked, isNotifica, animation);
+        }
+    }
+
+    public AnimCheckBox get(int index) {
+        if (boxs != null && boxs.size() > index) {
+            return boxs.get(index);
+        }
+        return null;
+    }
+
     public void addOnSingleSelectListener(OnSingleSelectListener onSingleSelectListener) {
         this.onSingleSelectListener.add(onSingleSelectListener);
     }
