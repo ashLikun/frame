@@ -415,7 +415,7 @@ public class SuperToolBar extends FrameLayout {
      *                                           设置中间的控件
      ********************************************************************************************/
 
-    public SuperToolBar setTitle(String title) {
+    public SuperToolBar setTitle(CharSequence title) {
         if (title == null) {
             return this;
         }
