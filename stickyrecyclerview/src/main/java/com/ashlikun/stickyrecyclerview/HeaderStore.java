@@ -1,7 +1,8 @@
 package com.ashlikun.stickyrecyclerview;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class HeaderStore {
     /**
      * 头部Position对应于的View
      */
-    private final HashMap<Integer, View> headersViewByHeadersIds;
+    private final HashMap<Integer, StickyRootView> headersViewByHeadersIds;
 
     /**
      * 保存头部view的高度
@@ -39,20 +40,20 @@ public class HeaderStore {
      *
      * @return
      */
-    public View getHeaderViewByItem(int position) {
+    public StickyRootView getHeaderViewByItem(int position) {
         if (position < 0) {
             return null;
         }
         if (!headersViewByHeadersIds.containsKey(position)) {
-            RecyclerView.ViewHolder headerViewHolder = adapter.onCreateViewHolder(parent);
+            CommonHeaderAdapter.StickyViewHolder headerViewHolder = adapter.onCreateViewHolder(parent);
             adapter.onBindViewHolder(headerViewHolder, position);
             layoutHeader(headerViewHolder.itemView);
-            headersViewByHeadersIds.put(position, headerViewHolder.itemView);
+            headersViewByHeadersIds.put(position, headerViewHolder.getStickyRootView());
         }
         return headersViewByHeadersIds.get(position);
     }
 
-    public View getHeaderViewByItem(RecyclerView.ViewHolder itemHolder) {
+    public StickyRootView getHeaderViewByItem(RecyclerView.ViewHolder itemHolder) {
         return getHeaderViewByItem(findHeaderViewHolderPosition(itemHolder));
     }
 
@@ -95,11 +96,11 @@ public class HeaderStore {
             return 0;
         }
         if (!headersHeightsByItemsIds.containsKey(itemPosition)) {
-            View header = getHeaderViewByItem(itemHolder);
+            StickyRootView header = getHeaderViewByItem(itemHolder);
             if (header == null) {
                 return 0;
             }
-            headersHeightsByItemsIds.put(itemPosition, header.getVisibility() == View.GONE ? 0 : header.getMeasuredHeight());
+            headersHeightsByItemsIds.put(itemPosition, header.view.getVisibility() == View.GONE ? 0 : header.getView().getMeasuredHeight());
         }
         return headersHeightsByItemsIds.get(itemPosition);
     }

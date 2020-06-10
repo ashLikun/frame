@@ -1,9 +1,10 @@
 package com.ashlikun.stickyrecyclerview;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by aurel on 08/11/14.
@@ -61,8 +62,8 @@ public class StickyHeadersTouchListener implements RecyclerView.OnItemTouchListe
 
             int position = findItemHolderUnder(e.getX(), e.getY());
             if (position != -1) {
-                View headerView = headerStore.getHeaderViewByItem(position);
-                listener.onHeaderClick(headerView, position);
+                StickyRootView headerView = headerStore.getHeaderViewByItem(position);
+                listener.onHeaderClick(headerView.getView(), position);
                 return true;
             }
 
