@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.ashlikun.supertoobar.ImageAction;
 import com.ashlikun.supertoobar.SuperToolBar;
 import com.ashlikun.supertoobar.TextAction;
@@ -21,11 +26,6 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, OnLoaddingListener {
 
@@ -84,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 .setTintColor(0xff000000)
                 .set());
         supperToolBar.setNotification(1, 7);
-        supperToolBar.addAction(new TextAction(supperToolBar, "分享")
+        supperToolBar.addAction(new TextAction(supperToolBar, "分享分享分享")
                 .setNotificationStrokeColor(0xff458788)
-                .setNotification(10)
+                .setNotificationMini()
                 .set());
 
         supperToolBar.setOnActionClickListener((index, action) ->
