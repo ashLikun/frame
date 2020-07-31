@@ -499,9 +499,7 @@ public class SuperToolBar extends FrameLayout {
                     ViewGroup.LayoutParams.MATCH_PARENT);
             action.getActionView().setLayoutParams(params);
         }
-        if (action.getActionView().getParent() != null) {
-            ((ViewGroup) action.getActionView().getParent()).removeView(action.getActionView());
-        }
+
         getActionLayout().addView(action.getActionView(), index);
         return action;
     }
@@ -512,11 +510,17 @@ public class SuperToolBar extends FrameLayout {
     public void addActions(ArrayList<Action> actionList) {
         int actions = actionList.size();
         for (int i = 0; i < actions; i++) {
-            addAction(actionList.get(i), i);
+            if (actionList.get(i).getActionView().getParent() != null) {
+                ((ViewGroup) actionList.get(i).getActionView().getParent()).removeView(actionList.get(i).getActionView());
+            }
+            addAction(actionList.get(i), getActionLayout().getChildCount() + i);
         }
     }
 
     public Action addAction(Action action) {
+        if (action.getActionView().getParent() != null) {
+            ((ViewGroup) action.getActionView().getParent()).removeView(action.getActionView());
+        }
         final int index = getActionLayout().getChildCount();
         return addAction(action, index);
     }
