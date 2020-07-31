@@ -455,7 +455,7 @@ public class SuperToolBar extends FrameLayout {
      * 移除指定的action
      */
     public void removeActionAt(int index) {
-        getActionLayout().removeViewAt(index);
+        removeAction(getAction(index));
     }
 
     /**
@@ -466,6 +466,10 @@ public class SuperToolBar extends FrameLayout {
         if (view != null) {
             getActionLayout().removeView(view);
         }
+    }
+
+    public boolean haveAction(Action action) {
+        return getViewByAction(action) != null;
     }
 
     /**
@@ -494,6 +498,9 @@ public class SuperToolBar extends FrameLayout {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             action.getActionView().setLayoutParams(params);
+        }
+        if (action.getActionView().getParent() != null) {
+            ((ViewGroup) action.getActionView().getParent()).removeView(action.getActionView());
         }
         getActionLayout().addView(action.getActionView(), index);
         return action;
