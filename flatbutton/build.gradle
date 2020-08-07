@@ -21,6 +21,7 @@ android {
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly 'androidx.annotation:annotation:' + rootProject.ext.superVersion
+    compileOnly 'androidx.appcompat:appcompat:' + rootProject.ext.superVersion
 }
 
 apply from: '../maven.gradle'

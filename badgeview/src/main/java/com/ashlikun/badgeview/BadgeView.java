@@ -1,16 +1,16 @@
 /*
  * BadgeView.java
  * BadgeView
- * 
+ *
  * Copyright (c) 2012 Stefan Jauker.
  * https://github.com/kodex83/BadgeView
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,7 +29,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -38,10 +37,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TabWidget;
-import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.view.ViewCompat;
 
 
-public class BadgeView extends TextView {
+public class BadgeView extends AppCompatTextView {
 
     private boolean mHideOnNull = true;
 
@@ -142,7 +143,7 @@ public class BadgeView extends TextView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.widget.TextView#setText(java.lang.CharSequence, android.widget.TextView.BufferType)
      */
     @Override
@@ -217,9 +218,9 @@ public class BadgeView extends TextView {
 
     /*
      * Attach the BadgeView to the TabWidget
-     * 
+     *
      * @param target the TabWidget to attach the BadgeView
-     * 
+     *
      * @param tabIndex index of the tab
      */
     public void setTargetView(TabWidget target, int tabIndex) {
@@ -229,7 +230,7 @@ public class BadgeView extends TextView {
 
     /*
      * Attach the BadgeView to the target view
-     * 
+     *
      * @param target the view to attach the BadgeView
      */
     public void setTargetView(View target) {

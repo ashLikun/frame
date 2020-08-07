@@ -9,11 +9,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.util.AttributeSet;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
-import android.util.AttributeSet;
-import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * 作者　　: 李坤
@@ -23,7 +24,7 @@ import android.widget.TextView;
  * colorRipple 默认为colorPressed
  */
 
-public class FlatButton extends TextView {
+public class FlatButton extends AppCompatTextView {
     //圆角
     private float cornerRadius;
     //边框宽度
