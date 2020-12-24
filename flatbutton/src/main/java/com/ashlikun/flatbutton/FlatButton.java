@@ -49,7 +49,7 @@ public class FlatButton extends AppCompatTextView {
     private int colorEnableText;
     //水波纹颜色
     private int colorRipple;
-    private int clickDelay = 200;
+    private int clickDelay = 500;
     //textColor是否使用ColorStateList
     private boolean isUseTextColorList = true;
     //渐变的方向
