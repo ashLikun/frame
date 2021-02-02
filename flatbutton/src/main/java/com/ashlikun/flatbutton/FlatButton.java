@@ -34,8 +34,10 @@ public class FlatButton extends AppCompatTextView {
     public int strokeColor = Color.TRANSPARENT;
     public int strokeColorSelect = Color.TRANSPARENT;
     public int strokeColorEnable = Color.TRANSPARENT;
+    public int strokeColorFocused = Color.TRANSPARENT;
     public boolean strokeColorSelectIsSet = false;
     public boolean strokeColorEnableIsSet = false;
+    public boolean strokeColorFocusedIsSet = false;
 
     //按下颜色 2,3是渐变,默认没有
     public int colorPressed;
@@ -100,8 +102,10 @@ public class FlatButton extends AppCompatTextView {
         strokeColor = attr.getColor(R.styleable.FlatButton_strokeColor, strokeColor);
         strokeColorSelect = attr.getColor(R.styleable.FlatButton_strokeColorSelect, strokeColorSelect);
         strokeColorEnable = attr.getColor(R.styleable.FlatButton_strokeColorEnable, strokeColorEnable);
+        strokeColorFocused = attr.getColor(R.styleable.FlatButton_strokeColorFocused, strokeColorFocused);
         strokeColorSelectIsSet = attr.hasValue(R.styleable.FlatButton_strokeColorSelect);
         strokeColorEnableIsSet = attr.hasValue(R.styleable.FlatButton_strokeColorEnable);
+        strokeColorFocusedIsSet = attr.hasValue(R.styleable.FlatButton_strokeColorFocused);
         strokeWidth = attr.getDimensionPixelSize(R.styleable.FlatButton_strokeWidth, 0);
 
         colorPressed = attr.getColor(R.styleable.FlatButton_colorPressed, 0xffeeeeee);
@@ -205,7 +209,7 @@ public class FlatButton extends AppCompatTextView {
         GradientDrawable drawablePressed = new GradientDrawable();
         drawablePressed.setCornerRadius(getCornerRadius());
         setGradientDrawableColor(drawablePressed, colorFocusedOrientation, colorFocused, colorFocused2, colorFocused3);
-        drawablePressed.setStroke((int) strokeWidth, strokeColor);
+        drawablePressed.setStroke((int) strokeWidth, strokeColorFocusedIsSet ? strokeColorFocused : strokeColor);
         return drawablePressed;
     }
 

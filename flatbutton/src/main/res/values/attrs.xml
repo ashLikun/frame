@@ -25,6 +25,7 @@
         <attr name="strokeColor" format="color" />
         <attr name="strokeColorSelect" format="color" />
         <attr name="strokeColorEnable" format="color" />
+        <attr name="strokeColorFocused" format="color" />
         <attr name="strokeWidth" format="dimension" />
         <attr name="cornerRadius" format="dimension" />
         <attr name="clickDelay" format="integer" />
