@@ -56,6 +56,16 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         setContentView(R.layout.activity_main);
         recycleView = findViewById(R.id.recycleView);
         supperToolBar = findViewById(R.id.toolBar);
+        recycleView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                findViewById(R.id.actionButton).setSelected(true);
+//                findViewById(R.id.actionButton).requestFocus();
+//                findViewById(R.id.actionButton).requestFocusFromTouch();
+            }
+        }, 1000);
+
         supperToolBar.setBack(this);
         DefaultItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setChangeDuration(0);
