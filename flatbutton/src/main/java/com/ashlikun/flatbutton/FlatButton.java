@@ -150,15 +150,15 @@ public class FlatButton extends AppCompatTextView {
     private Drawable getStateListDrawable() {
         StateListDrawable drawable = new StateListDrawable();
         try {
-            if (colorEnableIsSet) {
+            if (colorEnableIsSet || strokeColorEnableIsSet) {
                 drawable.addState(new int[]{-android.R.attr.state_enabled},
                         createEnableDrawable());
             }
-            if (colorFocusedIsSet) {
+            if (colorFocusedIsSet || strokeColorFocusedIsSet) {
                 drawable.addState(new int[]{android.R.attr.state_focused},
                         createFocusedDrawable());
             }
-            if (colorSelectedIsSet) {
+            if (colorSelectedIsSet || strokeColorSelectIsSet) {
                 drawable.addState(new int[]{android.R.attr.state_selected},
                         createSelectedDrawable());
             }
