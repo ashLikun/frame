@@ -38,11 +38,12 @@
     <com.ashlikun.animcheckbox.AnimCheckBox
         android:id="@+id/checkBox"
         style="@style/AnimCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/actionButton"
-        app:ab_circleColor="@color/white"
+        app:ab_circleColor="#ff000000"
         app:ab_isCircle="false"
+        app:ab_isSelect="true"
         app:ab_noSelectStrokeColor="@color/gray_66"
         app:ab_selectStrokeColor="@color/red"
         app:ab_strokeWidth="1dp" />
