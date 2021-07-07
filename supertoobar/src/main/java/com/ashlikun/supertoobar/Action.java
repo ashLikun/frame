@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,9 +27,11 @@ public abstract class Action {
     protected int notificationTextColor;
     protected int notificationBagColor;
     protected int notificationStrokeColor;
+    protected int notificationSize = 14;
     protected int actionPadding;
     protected int actionTextColor;
     protected int notificationMax = 99;
+    //消息数量 -1 代表没有数字
     protected int notificationNumber = -9999;
     protected SparseArray<Object> mKeyedTags;
     /**
@@ -37,6 +40,7 @@ public abstract class Action {
     protected int width;
     protected int height;
     private TextView notificationTextView;
+    private int gravity = Gravity.CENTER;
 
     public Action(SuperToolBar toolBar) {
         context = toolBar.getContext();
@@ -47,16 +51,27 @@ public abstract class Action {
         actionPadding = toolBar.actionPadding;
         width = toolBar.actionWidth;
         height = toolBar.actionHeight;
+        notificationSize = dip2px(14);
 
         actionView = new FrameLayout(getContext());
         actionView.setTag(this);
         BarHelp.setForeground(SuperToolBar.CLICK_COLOR, actionView);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         actionView.setLayoutParams(params);
     }
 
     public Action set() {
-        actionView.addView(createView());
+        View acV = createView();
+        if (acV.getLayoutParams() != null) {
+            ((FrameLayout.LayoutParams) acV.getLayoutParams()).gravity = gravity;
+        } else {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
+                    height);
+            params.gravity = gravity;
+            acV.setLayoutParams(params);
+        }
+        actionView.addView(acV);
         convert(actionView);
         return this;
     }
@@ -84,7 +99,7 @@ public abstract class Action {
      * @return
      */
     protected FrameLayout.LayoutParams getRightNumberParams() {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, dip2px(14));
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, dip2px(4),
                 dip2px(4), 0);
         params.gravity = Gravity.RIGHT | Gravity.TOP;
@@ -96,6 +111,7 @@ public abstract class Action {
      */
     protected TextView createNotification() {
         notificationTextView = new TextView(context);
+        notificationTextView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         updataNotification();
         return notificationTextView;
     }
@@ -133,11 +149,30 @@ public abstract class Action {
         return actionView;
     }
 
+    public Action setGravity(int gravity) {
+        this.gravity = gravity;
+        return this;
+    }
+
     /**
      * 设置消息
      */
     public Action setNotification(int number) {
         notificationNumber = number;
+        addNotification();
+        updataNotification();
+        return this;
+    }
+
+    public Action setNotificationMini() {
+        notificationNumber = -1;
+        addNotification();
+        updataNotification();
+        return this;
+    }
+
+    public Action setNotificationSize(int notificationSize) {
+        this.notificationSize = notificationSize;
         addNotification();
         updataNotification();
         return this;
@@ -216,11 +251,20 @@ public abstract class Action {
             notificationTextView.setTextSize(8);
             notificationTextView.setBackground(createNotificationBag());
             notificationTextView.setGravity(Gravity.CENTER);
-            notificationTextView.setMinWidth(dip2px(14));
+            notificationTextView.setMinWidth(notificationSize);
+            notificationTextView.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            notificationTextView.getLayoutParams().height = notificationSize;
             notificationTextView.setPadding(dip2px(2), 0,
                     dip2px(2), 0);
             notificationTextView.setTextColor(notificationTextColor);
-            BarHelp.setNotification(notificationTextView, notificationNumber, notificationMax);
+            notificationTextView.setText("");
+            if (notificationNumber == -1) {
+                notificationTextView.setVisibility(View.VISIBLE);
+                notificationTextView.getLayoutParams().width = notificationSize / 2;
+                notificationTextView.getLayoutParams().height = notificationSize / 2;
+            } else {
+                BarHelp.setNotification(notificationTextView, notificationNumber, notificationMax);
+            }
         }
     }
 

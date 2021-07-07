@@ -9,11 +9,11 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
-import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * 作者　　: 李坤
@@ -21,44 +21,65 @@ import android.widget.TextView;
  * <p>
  * 方法功能：兼容水波纹button 和 shared
  * colorRipple 默认为colorPressed
+ * <p>
+ * 设置完属性 调用 {@link FlatButton#setBackground}
  */
 
-public class FlatButton extends TextView {
+public class FlatButton extends AppCompatTextView {
     //圆角
-    private float cornerRadius;
+    public int cornerRadius;
     //边框宽度
-    private float strokeWidth;
+    public int strokeWidth;
     //边框颜色
-    private int strokeColor = Color.TRANSPARENT;
+    public int strokeColor = Color.TRANSPARENT;
+    public int strokeColorSelect = Color.TRANSPARENT;
+    public int strokeColorEnable = Color.TRANSPARENT;
+    public int strokeColorFocused = Color.TRANSPARENT;
+    public boolean strokeColorSelectIsSet = false;
+    public boolean strokeColorEnableIsSet = false;
+    public boolean strokeColorFocusedIsSet = false;
 
     //按下颜色 2,3是渐变,默认没有
-    private int colorPressed;
-    private int colorPressed2;
-    private int colorPressed3;
-    private int colorPressedText;
+    public int colorPressed;
+    public int colorPressed2;
+    public int colorPressed3;
+    //按下颜色 2,3是渐变,默认没有
+    public boolean colorSelectedIsSet;
+    public int colorSelected;
+    public int colorSelected2;
+    public int colorSelected3;
+    //获取焦点颜色 2,3是渐变,默认没有
+    public boolean colorFocusedIsSet;
+    public int colorFocused;
+    public int colorFocused2;
+    public int colorFocused3;
+    public int textColorPressed;
     //默认的颜色 2,3是渐变,默认没有
-    private int colorNormal;
+    public int colorNormal;
     private int colorNormal2;
-    private int colorNormal3;
-    private int textColor;
+    public int colorNormal3;
+    public int textColor;
     //不可用的颜色 2,3是渐变,默认没有
-    private int colorEnable;
-    private int colorEnable2;
-    private int colorEnable3;
-    private int colorEnableText;
+    public boolean colorEnableIsSet;
+    public int colorEnable;
+    public int colorEnable2;
+    public int colorEnable3;
+    public int textColorEnable;
     //水波纹颜色
-    private int colorRipple;
-    private int clickDelay = 200;
+    public int colorRipple;
+    public int clickDelay = 500;
     //textColor是否使用ColorStateList
-    private boolean isUseTextColorList = true;
+    public boolean isUseTextColorList = true;
     //渐变的方向
-    private int colorNormalOrientation = -1;
-    private int colorPressedOrientation = -1;
-    private int colorEnableOrientation = -1;
+    public int colorNormalOrientation = -1;
+    public int colorPressedOrientation = -1;
+    public int colorEnableOrientation = -1;
+    public int colorFocusedOrientation = -1;
+    public int colorSelectedOrientation = -1;
 
-    private long lastClickTime = 0;
+    public long lastClickTime = 0;
 
-    private boolean isUseBackground;
+    public boolean isUseBackground;
 
     public FlatButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -77,45 +98,70 @@ public class FlatButton extends TextView {
     private void init(Context context, AttributeSet attrs) {
         TypedArray attr = getTypedArray(context, attrs, R.styleable.FlatButton);
         isUseBackground = attr.hasValue(R.styleable.FlatButton_android_background);
-        cornerRadius = attr.getDimension(R.styleable.FlatButton_cornerRadius, dip2px(getContext(), 2));
+        cornerRadius = attr.getDimensionPixelSize(R.styleable.FlatButton_cornerRadius, dip2px(getContext(), 2));
         strokeColor = attr.getColor(R.styleable.FlatButton_strokeColor, strokeColor);
-        strokeWidth = attr.getDimension(R.styleable.FlatButton_strokeWidth, strokeWidth);
+        strokeColorSelect = attr.getColor(R.styleable.FlatButton_strokeColorSelect, strokeColorSelect);
+        strokeColorEnable = attr.getColor(R.styleable.FlatButton_strokeColorEnable, strokeColorEnable);
+        strokeColorFocused = attr.getColor(R.styleable.FlatButton_strokeColorFocused, strokeColorFocused);
+        strokeColorSelectIsSet = attr.hasValue(R.styleable.FlatButton_strokeColorSelect);
+        strokeColorEnableIsSet = attr.hasValue(R.styleable.FlatButton_strokeColorEnable);
+        strokeColorFocusedIsSet = attr.hasValue(R.styleable.FlatButton_strokeColorFocused);
+        strokeWidth = attr.getDimensionPixelSize(R.styleable.FlatButton_strokeWidth, 0);
+
         colorPressed = attr.getColor(R.styleable.FlatButton_colorPressed, 0xffeeeeee);
         colorPressed2 = attr.getColor(R.styleable.FlatButton_colorPressed2, 0);
         colorPressed3 = attr.getColor(R.styleable.FlatButton_colorPressed3, 0);
+
         colorNormal = attr.getColor(R.styleable.FlatButton_colorNormal, Color.TRANSPARENT);
         colorNormal2 = attr.getColor(R.styleable.FlatButton_colorNormal2, 0);
         colorNormal3 = attr.getColor(R.styleable.FlatButton_colorNormal3, 0);
-        textColor = attr.getColor(R.styleable.FlatButton_android_textColor, Color.GRAY);
-        colorPressedText = attr.getColor(R.styleable.FlatButton_colorPressedText, getCurrentTextColor());
-        colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
+
+        colorFocusedIsSet = attr.hasValue(R.styleable.FlatButton_colorFocused);
+        colorFocused = attr.getColor(R.styleable.FlatButton_colorFocused, Color.TRANSPARENT);
+        colorFocused2 = attr.getColor(R.styleable.FlatButton_colorFocused2, 0);
+        colorFocused3 = attr.getColor(R.styleable.FlatButton_colorFocused3, 0);
+
+        colorSelectedIsSet = attr.hasValue(R.styleable.FlatButton_colorSelected);
+        colorSelected = attr.getColor(R.styleable.FlatButton_colorSelected, Color.TRANSPARENT);
+        colorSelected2 = attr.getColor(R.styleable.FlatButton_colorSelected2, 0);
+        colorSelected3 = attr.getColor(R.styleable.FlatButton_colorSelected3, 0);
+
+        colorEnableIsSet = attr.hasValue(R.styleable.FlatButton_colorEnable);
         colorEnable = attr.getColor(R.styleable.FlatButton_colorEnable, colorPressed);
         colorEnable2 = attr.getColor(R.styleable.FlatButton_colorEnable2, 0);
         colorEnable3 = attr.getColor(R.styleable.FlatButton_colorEnable3, 0);
-        colorEnableText = attr.getColor(R.styleable.FlatButton_colorEnableText, colorPressedText);
+
+        textColor = attr.getColor(R.styleable.FlatButton_android_textColor, Color.GRAY);
+        textColorPressed = attr.getColor(R.styleable.FlatButton_colorPressedText, getCurrentTextColor());
+        colorRipple = attr.getColor(R.styleable.FlatButton_colorRipple, colorPressed);
+
+        textColorEnable = attr.getColor(R.styleable.FlatButton_colorEnableText, textColorPressed);
         clickDelay = attr.getInt(R.styleable.FlatButton_clickDelay, clickDelay);
         colorNormalOrientation = attr.getInt(R.styleable.FlatButton_colorNormalOrientation, -1);
         colorPressedOrientation = attr.getInt(R.styleable.FlatButton_colorPressedOrientation, -1);
         colorEnableOrientation = attr.getInt(R.styleable.FlatButton_colorEnableOrientation, -1);
+        colorFocusedOrientation = attr.getInt(R.styleable.FlatButton_colorFocusedOrientation, -1);
+        colorSelectedOrientation = attr.getInt(R.styleable.FlatButton_colorSelectedOrientation, -1);
         isUseTextColorList = attr.getBoolean(R.styleable.FlatButton_isUseTextColorList, isUseTextColorList);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setBackground();
+        setClickable(true);
     }
 
     private Drawable getStateListDrawable() {
         StateListDrawable drawable = new StateListDrawable();
         try {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                drawable.addState(new int[]{android.R.attr.state_pressed},
-                        createPressedDrawable());
-                drawable.addState(new int[]{android.R.attr.state_focused},
-                        createPressedDrawable());
-                drawable.addState(new int[]{android.R.attr.state_selected},
-                        createPressedDrawable());
+            if (colorEnableIsSet || strokeColorEnableIsSet) {
+                drawable.addState(new int[]{-android.R.attr.state_enabled},
+                        createEnableDrawable());
             }
-            drawable.addState(new int[]{-android.R.attr.state_enabled},
-                    createEnableDrawable());
+            if (colorFocusedIsSet || strokeColorFocusedIsSet) {
+                drawable.addState(new int[]{android.R.attr.state_focused},
+                        createFocusedDrawable());
+            }
+            if (colorSelectedIsSet || strokeColorSelectIsSet) {
+                drawable.addState(new int[]{android.R.attr.state_selected},
+                        createSelectedDrawable());
+            }
             drawable.addState(new int[]{}, createNormalDrawable());
             //文字的颜色
             if (isUseTextColorList) {
@@ -124,7 +170,11 @@ public class FlatButton extends TextView {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList colorList = new ColorStateList(new int[][]{{}}, new int[]{colorRipple});
                 return new RippleDrawable(colorList, drawable, createRippleDrawable());
+            } else {
+                drawable.addState(new int[]{android.R.attr.state_pressed},
+                        createPressedDrawable());
             }
+
         } finally {
 
         }
@@ -151,7 +201,23 @@ public class FlatButton extends TextView {
         GradientDrawable drawablePressed = new GradientDrawable();
         drawablePressed.setCornerRadius(getCornerRadius());
         setGradientDrawableColor(drawablePressed, colorEnableOrientation, colorEnable, colorEnable2, colorEnable3);
-        drawablePressed.setStroke((int) strokeWidth, strokeColor);
+        drawablePressed.setStroke((int) strokeWidth, strokeColorEnableIsSet ? strokeColorEnable : strokeColor);
+        return drawablePressed;
+    }
+
+    private Drawable createFocusedDrawable() {
+        GradientDrawable drawablePressed = new GradientDrawable();
+        drawablePressed.setCornerRadius(getCornerRadius());
+        setGradientDrawableColor(drawablePressed, colorFocusedOrientation, colorFocused, colorFocused2, colorFocused3);
+        drawablePressed.setStroke((int) strokeWidth, strokeColorFocusedIsSet ? strokeColorFocused : strokeColor);
+        return drawablePressed;
+    }
+
+    private Drawable createSelectedDrawable() {
+        GradientDrawable drawablePressed = new GradientDrawable();
+        drawablePressed.setCornerRadius(getCornerRadius());
+        setGradientDrawableColor(drawablePressed, colorSelectedOrientation, colorSelected, colorSelected2, colorSelected3);
+        drawablePressed.setStroke((int) strokeWidth, strokeColorSelectIsSet ? strokeColorSelect : strokeColor);
         return drawablePressed;
     }
 
@@ -209,14 +275,6 @@ public class FlatButton extends TextView {
         }
     }
 
-    public Drawable getDrawable(int id) {
-        return getResources().getDrawable(id);
-    }
-
-    public float getDimension(int id) {
-        return getResources().getDimension(id);
-    }
-
     public int getColor(int id) {
         return getResources().getColor(id);
     }
@@ -229,12 +287,13 @@ public class FlatButton extends TextView {
         return cornerRadius;
     }
 
-
-    public void setBackgroundCompat(Drawable drawable) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            setBackground(drawable);
-        } else {
-            setBackgroundDrawable(drawable);
+    public void setBackground() {
+        if (!isUseBackground) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                setBackground(getStateListDrawable());
+            } else {
+                setBackgroundDrawable(getStateListDrawable());
+            }
         }
     }
 
@@ -247,30 +306,36 @@ public class FlatButton extends TextView {
         if (colorNormal == 0) {
             return;
         }
-        this.colorNormal = getColor(colorNormal);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorNormalInt(getColor(colorNormal));
+    }
+
+    public void setColorNormalInt(int colorNormal) {
+        this.colorNormal = colorNormal;
+        setBackground();
     }
 
     public void setColorNormal2(@ColorRes int colorNormal) {
         if (colorNormal == 0) {
             return;
         }
-        this.colorNormal2 = getColor(colorNormal);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorNormal2Int(getColor(colorNormal));
+    }
+
+    public void setColorNormal2Int(int colorNormal) {
+        this.colorNormal2 = colorNormal;
+
     }
 
     public void setColorNormal3(@ColorRes int colorNormal) {
         if (colorNormal == 0) {
             return;
         }
-        this.colorNormal3 = getColor(colorNormal);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorNormal3Int(getColor(colorNormal));
+    }
+
+    public void setColorNormal3Int(int colorNormal) {
+        this.colorNormal3 = colorNormal;
+        setBackground();
     }
 
     /**
@@ -282,30 +347,36 @@ public class FlatButton extends TextView {
         if (colorPressed == 0) {
             return;
         }
-        this.colorPressed = getColor(colorPressed);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorPressedInt(getColor(colorPressed));
+    }
+
+    public void setColorPressedInt(int colorPressed) {
+        this.colorPressed = colorPressed;
+        setBackground();
     }
 
     public void setColorPressed2(@ColorRes int colorPressed) {
         if (colorPressed == 0) {
             return;
         }
-        this.colorPressed2 = getColor(colorPressed);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorPressed2Int(getColor(colorPressed));
+    }
+
+    public void setColorPressed2Int(int colorPressed) {
+        this.colorPressed2 = colorPressed;
+        setBackground();
     }
 
     public void setColorPressed3(@ColorRes int colorPressed) {
         if (colorPressed == 0) {
             return;
         }
-        this.colorPressed3 = getColor(colorPressed);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorPressed3Int(getColor(colorPressed));
+    }
+
+    public void setColorPressed3Int(int colorPressed) {
+        this.colorPressed3 = colorPressed;
+        setBackground();
     }
 
     /**
@@ -317,30 +388,36 @@ public class FlatButton extends TextView {
         if (colorEnable == 0) {
             return;
         }
-        this.colorEnable = getColor(colorEnable);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorEnableInt(getColor(colorEnable));
+    }
+
+    public void setColorEnableInt(int colorEnable) {
+        this.colorEnable = colorEnable;
+        setBackground();
     }
 
     public void setColorEnable2(@ColorRes int colorEnable) {
         if (colorEnable == 0) {
             return;
         }
-        this.colorEnable2 = getColor(colorEnable);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorEnable2Int(getColor(colorEnable));
+    }
+
+    public void setColorEnable2Int(int colorEnable) {
+        this.colorEnable2 = colorEnable;
+        setBackground();
     }
 
     public void setColorEnable3(@ColorRes int colorEnable) {
         if (colorEnable == 0) {
             return;
         }
-        this.colorEnable3 = getColor(colorEnable);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorEnable3Int(getColor(colorEnable));
+    }
+
+    public void setColorEnable3Int(int colorEnable) {
+        this.colorEnable3 = colorEnable;
+        setBackground();
     }
 
     /**
@@ -350,9 +427,7 @@ public class FlatButton extends TextView {
      */
     public void setColorNormalOrientation(int colorOrientation) {
         this.colorNormalOrientation = colorOrientation;
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setBackground();
     }
 
     /**
@@ -362,9 +437,7 @@ public class FlatButton extends TextView {
      */
     public void setColorPressedOrientation(int colorOrientation) {
         this.colorPressedOrientation = colorOrientation;
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setBackground();
     }
 
     /**
@@ -374,9 +447,7 @@ public class FlatButton extends TextView {
      */
     public void setColorEnableOrientation(int colorOrientation) {
         this.colorEnableOrientation = colorOrientation;
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setBackground();
     }
 
     /**
@@ -388,10 +459,12 @@ public class FlatButton extends TextView {
         if (colorRipple == 0) {
             return;
         }
-        this.colorRipple = getColor(colorRipple);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setColorRippleInt(getColor(colorRipple));
+    }
+
+    public void setColorRippleInt(int colorRipple) {
+        this.colorRipple = colorRipple;
+        setBackground();
     }
 
     /**
@@ -399,14 +472,9 @@ public class FlatButton extends TextView {
      *
      * @param cornerRadius
      */
-    public void setCornerRadius(@DimenRes int cornerRadius) {
-        if (cornerRadius == 0) {
-            return;
-        }
-        this.cornerRadius = getDimension(cornerRadius);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+    public void setCornerRadiusSize(int cornerRadius) {
+        this.cornerRadius = cornerRadius;
+        setBackground();
     }
 
     /**
@@ -415,13 +483,12 @@ public class FlatButton extends TextView {
      * @param strokeColor
      */
     public void setStrokeColor(@ColorRes int strokeColor) {
-        if (strokeColor == 0) {
-            return;
-        }
-        this.strokeColor = getColor(strokeColor);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+        setStrokeColorInt(getColor(strokeColor));
+    }
+
+    public void setStrokeColorInt(int strokeColor) {
+        this.strokeColor = strokeColor;
+        setBackground();
     }
 
     /**
@@ -429,14 +496,9 @@ public class FlatButton extends TextView {
      *
      * @param strokeWidth
      */
-    public void setStrokeWidth(@DimenRes int strokeWidth) {
-        if (strokeWidth == 0) {
-            return;
-        }
-        this.strokeWidth = getDimension(strokeWidth);
-        if (!isUseBackground) {
-            setBackgroundCompat(getStateListDrawable());
-        }
+    public void setStrokeWidthSize(int strokeWidth) {
+        this.strokeWidth = strokeWidth;
+        setBackground();
     }
 
     /**
@@ -453,13 +515,22 @@ public class FlatButton extends TextView {
     /**
      * 设置文字按下的颜色
      *
-     * @param colorPressedText
+     * @param textColorPressed
      */
-    public void setColorPressedText(@ColorRes int colorPressedText) {
-        if (colorPressedText == 0) {
+    public void setTextColorPressed(@ColorRes int textColorPressed) {
+        if (textColorPressed == 0) {
             return;
         }
-        this.colorPressedText = getColor(colorPressedText);
+        setTextColorPressedInt(getColor(textColorPressed));
+    }
+
+    /**
+     * 设置文字按下的颜色
+     *
+     * @param textColorPressed
+     */
+    public void setTextColorPressedInt(int textColorPressed) {
+        this.textColorPressed = textColorPressed;
         if (isUseTextColorList) {
             setTextColor(getColorStateList());
         }
@@ -468,18 +539,21 @@ public class FlatButton extends TextView {
     /**
      * 设置按钮不可用 时候  文字颜色
      *
-     * @param colorEnableText
+     * @param textColorEnable
      */
-    public void setColorEnableText(@ColorRes int colorEnableText) {
-        if (colorEnableText == 0) {
+    public void setTextColorEnable(@ColorRes int textColorEnable) {
+        if (textColorEnable == 0) {
             return;
         }
-        this.colorEnableText = getColor(colorEnableText);
+        setTextColorEnableInt(getColor(textColorEnable));
+    }
+
+    public void setTextColorEnableInt(int textColorEnable) {
+        this.textColorEnable = textColorEnable;
         if (isUseTextColorList) {
             setTextColor(getColorStateList());
         }
     }
-
 
     /**
      * textColor是否使用ColorStatusList
@@ -500,7 +574,7 @@ public class FlatButton extends TextView {
      */
     public void setUseBackground(boolean useBackground) {
         isUseBackground = useBackground;
-        setBackgroundCompat(getStateListDrawable());
+        setBackground();
     }
 
     /**
@@ -525,8 +599,8 @@ public class FlatButton extends TextView {
 
     private ColorStateList getColorStateList() {
         int normal = textColor;
-        int enable = colorEnableText;
-        int pressed = colorPressedText;
+        int enable = textColorEnable;
+        int pressed = textColorPressed;
         int[] colors = new int[]{pressed, enable, normal};
         int[][] states = new int[3][];
         states[0] = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};

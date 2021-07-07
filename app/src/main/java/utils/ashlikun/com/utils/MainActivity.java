@@ -3,16 +3,16 @@ package utils.ashlikun.com.utils;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ashlikun.glideutils.GlideUtils;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.ashlikun.supertoobar.ImageAction;
 import com.ashlikun.supertoobar.SuperToolBar;
 import com.ashlikun.supertoobar.TextAction;
@@ -56,6 +56,16 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
         setContentView(R.layout.activity_main);
         recycleView = findViewById(R.id.recycleView);
         supperToolBar = findViewById(R.id.toolBar);
+        recycleView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                findViewById(R.id.actionButton).setSelected(true);
+//                findViewById(R.id.actionButton).requestFocus();
+//                findViewById(R.id.actionButton).requestFocusFromTouch();
+            }
+        }, 1000);
+
         supperToolBar.setBack(this);
         DefaultItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setChangeDuration(0);
@@ -69,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
             @Override
             public void onBindViewHolder(MyHolder holder, int position) {
-                GlideUtils.showCircle(holder.imageView, image);
             }
 
             @Override
@@ -85,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
                 .setTintColor(0xff000000)
                 .set());
         supperToolBar.setNotification(1, 7);
-        supperToolBar.addAction(new TextAction(supperToolBar, "分享")
+        supperToolBar.addAction(new TextAction(supperToolBar, "分享分享分享")
                 .setNotificationStrokeColor(0xff458788)
-                .setNotification(10)
+                .setNotificationMini()
                 .set());
 
         supperToolBar.setOnActionClickListener((index, action) ->
@@ -95,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements RefreshLayout.OnR
 
         RequestOptions options = new RequestOptions();
         options.transform(new RoundedCorners(DimensUtils.dip2px(this, 6)));
-        GlideUtils.show(findViewById(R.id.imageView), image, options);
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

@@ -4,17 +4,19 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Parcelable;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -385,12 +387,12 @@ public class AnimCheckBox extends View {
     private void initDrawInnerCirclePaintAndPath() {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mCircleColor);
-        mPaint.setAlpha(mInnerCircleAlpha);
+        mPaint.setAlpha((int) (Color.alpha(mCircleColor) * (mInnerCircleAlpha / (0xFF * 1.0f))));
         mBroadPath.reset();
         if (isCircle) {
             mBroadPath.addArc(mInnerRectF, 0, 360);
         } else {
-            float radius = getRadius(mInnerRectF);
+            float radius = getRadius(mRectF);
             //顺时针
             mBroadPath.addRoundRect(mInnerRectF, radius, radius, Path.Direction.CW);
         }

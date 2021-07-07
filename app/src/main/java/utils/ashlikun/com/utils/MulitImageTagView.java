@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.ashlikun.pathanim.PathAnimHelper;
 import com.ashlikun.pathanim.PathAnimHelper.OnPathAnimCallback;
+import com.ashlikun.utils.other.DimensUtils;
 
 /**
  * 作者　　: 李坤
@@ -50,7 +51,7 @@ public class MulitImageTagView extends View implements OnPathAnimCallback {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.dp_3));
+        mPaint.setStrokeWidth(DimensUtils.dip2px(context, 3));
         path = new Path();
         pathBack = new Path();
         animPath = new Path();

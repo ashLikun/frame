@@ -33,6 +33,7 @@ public class TextAction extends Action {
      */
     @Override
     protected TextView createView() {
+        //文字宽度不能有父类限制
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         textView = new TextView(getContext());

@@ -1,6 +1,5 @@
 package com.ashlikun.stickyrecyclerview;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 /**
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
  * 功能介绍：基础的头部适配器
  */
 
-public interface StickyHeadersAdapter<HeaderViewHolder extends RecyclerView.ViewHolder> {
+public interface StickyHeadersAdapter<HeaderViewHolder extends CommonHeaderAdapter.StickyViewHolder> {
 
     /**
      * 创建一个ViewHolder

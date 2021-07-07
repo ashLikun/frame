@@ -7,9 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -20,6 +17,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,8 @@ public class SuperToolBar extends FrameLayout {
 
     public static final String ACTION_LAYOUT = "ACTION_LAYOUT";
     public static final int CLICK_COLOR = 0x88aaaaaa;
+    //默认的高度 45dp
+    public static final int DEFAULT_HEIGHT = 45;
     /**
      * 是否设置了状态栏透明
      */
@@ -47,7 +50,6 @@ public class SuperToolBar extends FrameLayout {
     protected FrameLayout leftLayout;
     protected FrameLayout centerLayout;
     protected FrameLayout rightLayout;
-    protected int barHeight;
     protected int statusHeight;
     protected TextView titleView;
     protected BackImageView backButton;
@@ -104,11 +106,10 @@ public class SuperToolBar extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int barHeight = dip2px(DEFAULT_HEIGHT);
+
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY) {
-            int barHeightT = MeasureSpec.getSize(heightMeasureSpec);
-            if (barHeightT > barHeight) {
-                barHeight = barHeightT;
-            }
+            barHeight = MeasureSpec.getSize(heightMeasureSpec);
         }
         int height = barHeight + (setTranslucentStatusBarPaddingTop ? getStatusHeight() : 0);
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
@@ -190,7 +191,7 @@ public class SuperToolBar extends FrameLayout {
     }
 
     private void initView(Context context, AttributeSet attrs) {
-        barHeight = dip2px(45);
+
         if (getBackground() == null) {
             //默认colorPrimary颜色
 //            TypedValue typedValue = new TypedValue();
@@ -414,7 +415,7 @@ public class SuperToolBar extends FrameLayout {
      *                                           设置中间的控件
      ********************************************************************************************/
 
-    public SuperToolBar setTitle(String title) {
+    public SuperToolBar setTitle(CharSequence title) {
         if (title == null) {
             return this;
         }
@@ -454,7 +455,7 @@ public class SuperToolBar extends FrameLayout {
      * 移除指定的action
      */
     public void removeActionAt(int index) {
-        getActionLayout().removeViewAt(index);
+        removeAction(getAction(index));
     }
 
     /**
@@ -465,6 +466,10 @@ public class SuperToolBar extends FrameLayout {
         if (view != null) {
             getActionLayout().removeView(view);
         }
+    }
+
+    public boolean haveAction(Action action) {
+        return getViewByAction(action) != null;
     }
 
     /**
@@ -494,6 +499,7 @@ public class SuperToolBar extends FrameLayout {
                     ViewGroup.LayoutParams.MATCH_PARENT);
             action.getActionView().setLayoutParams(params);
         }
+
         getActionLayout().addView(action.getActionView(), index);
         return action;
     }
@@ -504,11 +510,17 @@ public class SuperToolBar extends FrameLayout {
     public void addActions(ArrayList<Action> actionList) {
         int actions = actionList.size();
         for (int i = 0; i < actions; i++) {
-            addAction(actionList.get(i), i);
+            if (actionList.get(i).getActionView().getParent() != null) {
+                ((ViewGroup) actionList.get(i).getActionView().getParent()).removeView(actionList.get(i).getActionView());
+            }
+            addAction(actionList.get(i), getActionLayout().getChildCount() + i);
         }
     }
 
     public Action addAction(Action action) {
+        if (action.getActionView().getParent() != null) {
+            ((ViewGroup) action.getActionView().getParent()).removeView(action.getActionView());
+        }
         final int index = getActionLayout().getChildCount();
         return addAction(action, index);
     }

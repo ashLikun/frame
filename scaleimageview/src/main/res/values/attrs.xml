@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- ScaleImageView -->
-
-    <declare-styleable name="ScaleImageView">
-        <attr name="sci_ratio" format="integer"></attr>
-    </declare-styleable>
-</resources>

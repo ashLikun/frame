@@ -1,9 +1,10 @@
 package com.ashlikun.supertoobar;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import androidx.annotation.DrawableRes;
 
 /**
  * 作者　　: 李坤
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 public class ImageAction extends Action {
     private Drawable drawable;
     private int tintColor = -1;
+
     private boolean isSetTintColor = false;
 
     private ImageView imageView;
@@ -53,22 +55,15 @@ public class ImageAction extends Action {
 
     public ImageAction setWidth(int width) {
         this.width = width;
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
-                height);
-        actionView.setLayoutParams(params);
         updata();
         return this;
     }
 
     public ImageAction setHeight(int height) {
         this.height = height;
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
-                height);
-        actionView.setLayoutParams(params);
         updata();
         return this;
     }
-
 
     /**
      * 设置渲染的颜色
@@ -88,8 +83,9 @@ public class ImageAction extends Action {
 
     public ImageAction cleanTint() {
         this.tintColor = -1;
+        isSetTintColor = false;
         if (imageView != null) {
-            imageView.setColorFilter(null);
+            imageView.clearColorFilter();
         }
         return this;
     }
@@ -115,12 +111,13 @@ public class ImageAction extends Action {
             imageView.setId(IMAGE_ID);
             imageView.setImageDrawable(getDrawable());
             imageView.setPadding(actionPadding, actionPadding, actionPadding, actionPadding);
-            if (isSetTintColor || tintColor != -1) {
+            if (isSetTintColor) {
                 imageView.setColorFilter(tintColor);
             }
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
-                    height);
-            imageView.setLayoutParams(params);
+            if (imageView.getLayoutParams() != null) {
+                imageView.getLayoutParams().width = width;
+                imageView.getLayoutParams().height = height;
+            }
         }
     }
 
@@ -131,11 +128,8 @@ public class ImageAction extends Action {
      */
     @Override
     protected ImageView createView() {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
-                height);
         imageView = new ImageView(getContext());
         updata();
-        imageView.setLayoutParams(params);
         return imageView;
     }
 }

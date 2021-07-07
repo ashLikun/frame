@@ -1,9 +1,8 @@
 package utils.ashlikun.com.utils.anim;
 
-import android.animation.Animator;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by ivy on 2017/3/22.

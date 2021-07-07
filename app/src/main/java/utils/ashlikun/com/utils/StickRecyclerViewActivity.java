@@ -1,12 +1,14 @@
 package utils.ashlikun.com.utils;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ashlikun.adapter.ViewHolder;
 import com.ashlikun.adapter.recyclerview.CommonAdapter;
@@ -53,14 +55,22 @@ public class StickRecyclerViewActivity extends AppCompatActivity {
         headerAdapter = new CommonHeaderAdapter<LoopViewData>
                 (this, R.layout.head_item_list, listDatas) {
             @Override
-            public boolean isHeader(int position) {
+            public boolean isHeader(int position, LoopViewData data) {
                 return position == 3 || position == 8 || position == 10 || position == 20 || position == 15;
             }
 
             @Override
             public void convert(StickyViewHolder holder, LoopViewData loopViewData) {
                 TextView tv = holder.getView(R.id.textView);
+                ImageView iv = holder.getView(R.id.imageView);
                 tv.setText(loopViewData.getShowText());
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        iv.setImageResource(R.mipmap.ic_cj_clock);
+                        holder.invalidate();
+                    }
+                }, 1000);
             }
 
         };

@@ -2,8 +2,9 @@ package com.ashlikun.stickyrecyclerview;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author　　: 李坤
@@ -50,7 +51,7 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    private void drawHeaders(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    private void drawHeaders(final Canvas c, RecyclerView parent, RecyclerView.State state) {
         final int childCount = parent.getChildCount();
         final RecyclerView.LayoutManager lm = parent.getLayoutManager();
         //最后一次绘制的y位置
@@ -68,8 +69,8 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
                 //只绘制开启粘性后第一个view，或者是头部的view
                 if (headerStore.isHeader(holder) || (headerStore.isSticky() && i == headerStore.headerSize)) {
                     //获取头部view，计算位置
-                    View header = headerStore.getHeaderViewByItem(holder);
-                    if (header != null && header.getVisibility() == View.VISIBLE) {
+                    final StickyRootView header = headerStore.getHeaderViewByItem(holder);
+                    if (header != null && header.view.getVisibility() == View.VISIBLE) {
                         int headerHeight = headerStore.getHeaderHeight(holder);
                         float y = getHeaderY(child, lm) + translationY;
                         if (headerStore.isSticky() && lastY != null && lastY < y + headerHeight) {
@@ -77,7 +78,8 @@ public class StickyHeadersItemDecoration extends RecyclerView.ItemDecoration {
                         }
                         c.save();
                         c.translate(0, y);
-                        header.draw(c);
+                        header.setCanvas(c);
+                        header.draw();
                         c.restore();
                         lastY = y;
                     }

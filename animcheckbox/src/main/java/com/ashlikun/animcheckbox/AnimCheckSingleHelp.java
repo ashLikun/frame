@@ -9,7 +9,7 @@ import java.util.List;
  * 创建时间: 2017/9/19　15:14
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：多个选择按钮的工具类
  */
 
 public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener {
@@ -49,6 +49,11 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
 
     @Override
     public boolean onChange(AnimCheckBox checkBox, boolean checked) {
+        onChange(checkBox, checked, true);
+        return false;
+    }
+
+    public void onChange(AnimCheckBox checkBox, boolean checked, boolean isNotifica) {
         mSelectIndex = -1;
         if (checked && getSize() > 2) {
             checkBox.setAutoSelect(false);
@@ -73,14 +78,14 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
             }
         }
 
-        if (mSelectIndex >= 0) {
-            for (int j = 0; j < onSingleSelectListener.size(); j++) {
-                onSingleSelectListener.get(j).onSingleSelect(checkBox, mSelectIndex);
+        if (isNotifica) {
+            if (mSelectIndex >= 0) {
+                for (int j = 0; j < onSingleSelectListener.size(); j++) {
+                    onSingleSelectListener.get(j).onSingleSelect(checkBox, mSelectIndex);
+                }
             }
         }
-        return false;
     }
-
 
     public void clean() {
         if (boxs != null) {
@@ -97,6 +102,45 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
 
     public int getSelectIndex() {
         return mSelectIndex;
+    }
+
+    public void setChecked(int index, boolean checked) {
+        setChecked(index, checked, true);
+    }
+
+    public void setChecked(int index, boolean checked, boolean animation) {
+        setChecked(index, checked, false, animation);
+    }
+
+    public void setCheckedNotifica(int index, boolean checked) {
+        setCheckedNotifica(index, checked, true);
+    }
+
+    public void setCheckedNotifica(int index, boolean checked, boolean animation) {
+        setChecked(index, checked, animation, true);
+    }
+
+    public void setChecked(int index, boolean checked, boolean isNotifica, boolean animation) {
+        AnimCheckBox box = get(index);
+        if (!isNotifica) {
+            for (int i = 0; i < boxs.size(); i++) {
+                AnimCheckBox item = boxs.get(i);
+                if (item != box) {
+                    item.setChecked(!checked, false, animation);
+                } else {
+                    item.setChecked(checked, false, animation);
+                }
+            }
+        } else if (box != null) {
+            box.setChecked(checked, isNotifica, animation);
+        }
+    }
+
+    public AnimCheckBox get(int index) {
+        if (boxs != null && boxs.size() > index) {
+            return boxs.get(index);
+        }
+        return null;
     }
 
     public void addOnSingleSelectListener(OnSingleSelectListener onSingleSelectListener) {
