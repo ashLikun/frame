@@ -10,6 +10,9 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
     }
+    buildFeatures {
+        buildConfig = false
+    }
     buildTypes {
         release {
             minifyEnabled false
