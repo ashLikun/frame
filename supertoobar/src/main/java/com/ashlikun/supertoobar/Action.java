@@ -47,8 +47,14 @@ public abstract class Action {
     private List<OnActionClick> clickListener;
     private int delayMillis = 0;
     protected int index = 0;
+    protected boolean isSetOk = false;
 
     public Action(SuperToolBar toolBar) {
+        init(toolBar);
+    }
+
+
+    private void init(SuperToolBar toolBar) {
         context = toolBar.getContext();
         notificationBagColor = toolBar.notificationBagColor;
         notificationTextColor = toolBar.notificationTextColor;
@@ -96,6 +102,7 @@ public abstract class Action {
         }
         actionView.addView(acV);
         convert(actionView);
+        isSetOk = true;
         return this;
     }
 

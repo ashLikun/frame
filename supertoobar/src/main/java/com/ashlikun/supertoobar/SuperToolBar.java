@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -483,7 +484,7 @@ public class SuperToolBar extends FrameLayout {
      * 添加一个Action view
      */
     public Action addAction(final Action action, final int index) {
-        if (action.getActionView() == null) {
+        if (!action.isSetOk) {
             action.set();
         }
         action.index = index;
@@ -606,6 +607,18 @@ public class SuperToolBar extends FrameLayout {
     public void setBackImgColor(int backImgColor) {
         this.backImgColor = backImgColor;
         setBackImage(backImage);
+    }
+
+    public TextAction createTextAction(String text) {
+        return new TextAction(this, text);
+    }
+
+    public ImageAction createImageAction(Drawable drawable) {
+        return new ImageAction(this, drawable);
+    }
+
+    public ImageAction createImageAction(@DrawableRes int drawableId) {
+        return new ImageAction(this, drawableId);
     }
 
     /********************************************************************************************
