@@ -36,7 +36,11 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
         }
         for (int i = 0; i < boxs.size(); i++) {
             AnimCheckBox item = boxs.get(i);
+            item.removeOnCheckedChangeListener(this);
             item.addOnCheckedChangeListener(this);
+            if (item.isChecked()) {
+                mSelectIndex = i;
+            }
         }
     }
 
@@ -45,6 +49,7 @@ public class AnimCheckSingleHelp implements AnimCheckBox.OnCheckedChangeListener
             boxs = new ArrayList<>();
         }
         boxs.addAll(Arrays.asList(box));
+        single();
     }
 
     @Override

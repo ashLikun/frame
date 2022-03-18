@@ -486,9 +486,10 @@ public class SuperToolBar extends FrameLayout {
         if (action.getActionView() == null) {
             action.set();
         }
-        action.getActionView().setOnClickListener(new View.OnClickListener() {
+        action.index = index;
+        action.addClickListener(new Action.OnActionClick() {
             @Override
-            public void onClick(View v) {
+            public void onActionClick(int index, Action action) {
                 if (onActionClickListener != null) {
                     onActionClickListener.onActionClick(index, action);
                 }

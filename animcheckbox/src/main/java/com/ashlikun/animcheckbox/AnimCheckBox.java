@@ -594,6 +594,13 @@ public class AnimCheckBox extends View {
         mOnCheckedChangeListeners.add(listener);
     }
 
+    public boolean removeOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        if (mOnCheckedChangeListeners != null) {
+            return mOnCheckedChangeListeners.remove(listener);
+        }
+        return false;
+    }
+
     public void setOnCheckedChangeListener(OnCheckedChangeListener onCheckedChangeListener) {
         this.onCheckedChangeListener = onCheckedChangeListener;
     }

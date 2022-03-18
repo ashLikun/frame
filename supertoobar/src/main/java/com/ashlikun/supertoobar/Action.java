@@ -11,6 +11,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 作者　　: 李坤
  * 创建时间: 2018/7/26　11:34
@@ -41,6 +44,9 @@ public abstract class Action {
     protected int height;
     private TextView notificationTextView;
     private int gravity = Gravity.CENTER;
+    private List<OnActionClick> clickListener;
+    private int delayMillis = 0;
+    protected int index = 0;
 
     public Action(SuperToolBar toolBar) {
         context = toolBar.getContext();
@@ -59,6 +65,23 @@ public abstract class Action {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         actionView.setLayoutParams(params);
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (delayMillis > 0) {
+                    v.setClickable(false);
+                    v.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            v.setClickable(true);
+                        }
+                    }, delayMillis);
+                }
+                for (OnActionClick onClickListener : clickListener) {
+                    onClickListener.onActionClick(index, Action.this);
+                }
+            }
+        });
     }
 
     public Action set() {
@@ -228,6 +251,32 @@ public abstract class Action {
             return mKeyedTags.get(key);
         }
         return null;
+    }
+
+    /**
+     * 点击
+     */
+    public Action addClickListener(OnActionClick clickListener) {
+        if (this.clickListener == null) {
+            this.clickListener = new ArrayList<>();
+        }
+        this.clickListener.add(clickListener);
+        return this;
+    }
+
+    /**
+     * 点击
+     */
+    public boolean removeClickListener(OnActionClick clickListener) {
+        if (this.clickListener != null) {
+            return this.clickListener.remove(clickListener);
+        }
+        return false;
+    }
+
+    public Action setDelayMillis(int delayMillis) {
+        this.delayMillis = delayMillis;
+        return this;
     }
 
     /********************************************************************************************

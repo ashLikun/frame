@@ -2,18 +2,19 @@ package com.ashlikun.animcheckbox;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 /**
  * 作者　　: 李坤
  * 创建时间: 2017/9/18　17:49
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：
+ * 功能介绍：多选集合
  */
 
 public class CheckBoxGroup extends ViewGroup {
