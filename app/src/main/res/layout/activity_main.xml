@@ -22,8 +22,8 @@
         android:layout_width="100dp"
         android:layout_height="32dp"
         android:layout_marginTop="20dp"
-        android:gravity="center"
         android:focusable="true"
+        android:gravity="center"
         android:text="确认键重试"
         android:textColor="#000000"
         android:textSize="14dp"
@@ -75,11 +75,17 @@
         android:layout_height="80dp"
         android:layout_below="@+id/ll1" />
 
+    <com.ashlikun.segmentcontrol.SegmentControl
+        android:id="@+id/segmentControl"
+        android:layout_below="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></com.ashlikun.segmentcontrol.SegmentControl>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/imageView"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_below="@+id/segmentControl"></androidx.recyclerview.widget.RecyclerView>
 
 
 </RelativeLayout>

@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -16,7 +15,7 @@ import android.view.ViewConfiguration;
 /**
  * 作者　　: 李坤
  * 创建时间: 2017/1/4 14:00
- *
+ * <p>
  * 方法功能：多段选择器
  */
 
@@ -40,7 +39,6 @@ public class SegmentControl extends View {
 
     private int mHorizonGap;
     private int mVerticalGap;
-
 
 
     private int mSingleChildWidth;
@@ -67,28 +65,28 @@ public class SegmentControl extends View {
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SegmentControl);
 
-        String textArray = ta.getString(R.styleable.SegmentControl_scTexts);
+        String textArray = ta.getString(R.styleable.SegmentControl_android_text);
 
         if (textArray != null) {
-            mTexts = textArray.split("\\|");
+            mTexts = textArray.split("|");
         }
 
 
         mTextSize = ta.getDimensionPixelSize(R.styleable.SegmentControl_android_textSize, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, context.getResources().getDisplayMetrics()));
-        mSelectedBackgroundColors = ta.getColor(R.styleable.SegmentControl_selectedBackgroundColors, 0xffffffff);
-        mSelectedTextColors = ta.getColor(R.styleable.SegmentControl_selectedTextColors, 0xffffffff);
-        mCornerRadius = ta.getDimensionPixelSize(R.styleable.SegmentControl_scCornerRadius, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, context.getResources().getDisplayMetrics()));
-        mDirection = Direction.values()[ta.getInt(R.styleable.SegmentControl_direction, 0)];
+        mSelectedBackgroundColors = ta.getColor(R.styleable.SegmentControl_sc_selectedBackgroundColors, 0xffffffff);
+        mSelectedTextColors = ta.getColor(R.styleable.SegmentControl_sc_selectedTextColors, 0xffffffff);
+        mCornerRadius = ta.getDimensionPixelSize(R.styleable.SegmentControl_sc_cornerRadius, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, context.getResources().getDisplayMetrics()));
+        mDirection = Direction.values()[ta.getInt(R.styleable.SegmentControl_sc_direction, 0)];
 
-        mHorizonGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_horizonGap, 0);
-        mVerticalGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_verticalGap, 0);
+        mHorizonGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_sc_horizonGap, 0);
+        mVerticalGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_sc_verticalGap, 0);
 
-        mCurrentIndex = ta.getInt(R.styleable.SegmentControl_selectedIndex, 0);//默认选中第一个
+        mCurrentIndex = ta.getInt(R.styleable.SegmentControl_sc_selectedIndex, 0);//默认选中第一个
         if (mTexts != null && mTexts.length > 0 && mCurrentIndex > mTexts.length - 1) {
             mCurrentIndex = mTexts.length - 1;
         }
 
-        int gap = ta.getDimensionPixelSize(R.styleable.SegmentControl_gaps, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, context.getResources().getDisplayMetrics()));
+        int gap = ta.getDimensionPixelSize(R.styleable.SegmentControl_sc_gaps, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, context.getResources().getDisplayMetrics()));
 
         if (mHorizonGap == 0) mHorizonGap = gap;
         if (mVerticalGap == 0) mVerticalGap = gap;
@@ -98,12 +96,7 @@ public class SegmentControl extends View {
         mBackgroundDrawable = new RadiusDrawable(mCornerRadius, true, 0);
         mBackgroundDrawable.setStrokeWidth(2);
         mBackgroundDrawable.setStrokeColor(mSelectedBackgroundColors);
-
-        if (Build.VERSION.SDK_INT < 16) {
-            setBackgroundDrawable(mBackgroundDrawable);
-        } else {
-            setBackground(mBackgroundDrawable);
-        }
+        setBackground(mBackgroundDrawable);
 
         mSelectedDrawable = new RadiusDrawable(mCornerRadius, false, mSelectedBackgroundColors);
 
