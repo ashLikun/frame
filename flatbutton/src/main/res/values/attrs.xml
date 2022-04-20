@@ -28,6 +28,10 @@
         <attr name="strokeColorFocused" format="color" />
         <attr name="strokeWidth" format="dimension" />
         <attr name="cornerRadius" format="dimension" />
+        <attr name="cornerRadiiLeftTop" format="dimension" />
+        <attr name="cornerRadiiRightTop" format="dimension" />
+        <attr name="cornerRadiiLeftBottom" format="dimension" />
+        <attr name="cornerRadiiRightBottom" format="dimension" />
         <attr name="clickDelay" format="integer" />
         <attr name="isUseTextColorList" format="boolean" />
 

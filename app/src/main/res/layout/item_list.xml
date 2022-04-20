@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="60dp">
 
-    <data>
-
-        <variable
-            name="data"
-            type="com.ashlikun.wheelview3d.adapter.LoopViewData"></variable>
-
-        <import
-            alias="aaaa"
-            type="com.ashlikun.wheelview3d.adapter.LoopViewData"></import>
-    </data>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="60dp">
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{data.showText}" />
-    </LinearLayout>
-</layout>
+        android:layout_height="wrap_content" />
+</LinearLayout>

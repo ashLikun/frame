@@ -27,7 +27,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 public class FlatButton extends AppCompatTextView {
     //圆角
-    public int cornerRadius;
+    public float cornerRadius;
+    public float[] cornerRadii;
     //边框宽度
     public int strokeWidth;
     //边框颜色
@@ -99,6 +100,17 @@ public class FlatButton extends AppCompatTextView {
         TypedArray attr = getTypedArray(context, attrs, R.styleable.FlatButton);
         isUseBackground = attr.hasValue(R.styleable.FlatButton_android_background);
         cornerRadius = attr.getDimensionPixelSize(R.styleable.FlatButton_cornerRadius, dip2px(getContext(), 2));
+        int cornerRadiiLeftTop = attr.getDimensionPixelSize(R.styleable.FlatButton_cornerRadiiLeftTop, 0);
+        int cornerRadiiRightTop = attr.getDimensionPixelSize(R.styleable.FlatButton_cornerRadiiRightTop, 0);
+        int cornerRadiiLeftBottom = attr.getDimensionPixelSize(R.styleable.FlatButton_cornerRadiiLeftBottom, 0);
+        int cornerRadiiRightBottom = attr.getDimensionPixelSize(R.styleable.FlatButton_cornerRadiiRightBottom, 0);
+        if (cornerRadiiLeftTop > 0 || cornerRadiiRightTop > 0 || cornerRadiiLeftBottom > 0 || cornerRadiiRightBottom > 0) {
+            cornerRadii = new float[]{cornerRadiiLeftTop == 0 ? cornerRadius : cornerRadiiLeftTop, cornerRadiiLeftTop == 0 ? cornerRadius : cornerRadiiLeftTop,
+                    cornerRadiiRightTop == 0 ? cornerRadius : cornerRadiiRightTop, cornerRadiiRightTop == 0 ? cornerRadius : cornerRadiiRightTop,
+                    cornerRadiiRightBottom == 0 ? cornerRadius : cornerRadiiRightBottom, cornerRadiiRightBottom == 0 ? cornerRadius : cornerRadiiRightBottom,
+                    cornerRadiiLeftBottom == 0 ? cornerRadius : cornerRadiiLeftBottom, cornerRadiiLeftBottom == 0 ? cornerRadius : cornerRadiiLeftBottom};
+        }
+
         strokeColor = attr.getColor(R.styleable.FlatButton_strokeColor, strokeColor);
         strokeColorSelect = attr.getColor(R.styleable.FlatButton_strokeColorSelect, strokeColorSelect);
         strokeColorEnable = attr.getColor(R.styleable.FlatButton_strokeColorEnable, strokeColorEnable);
@@ -144,7 +156,6 @@ public class FlatButton extends AppCompatTextView {
         colorSelectedOrientation = attr.getInt(R.styleable.FlatButton_colorSelectedOrientation, -1);
         isUseTextColorList = attr.getBoolean(R.styleable.FlatButton_isUseTextColorList, isUseTextColorList);
         setBackground();
-        setClickable(true);
     }
 
     private Drawable getStateListDrawable() {
@@ -181,55 +192,44 @@ public class FlatButton extends AppCompatTextView {
         return drawable;
     }
 
-    private Drawable createNormalDrawable() {
-        GradientDrawable drawableBottom = new GradientDrawable();
-        drawableBottom.setCornerRadius(getCornerRadius());
-        drawableBottom.setStroke((int) strokeWidth, strokeColor);
-        setGradientDrawableColor(drawableBottom, colorNormalOrientation, colorNormal, colorNormal2, colorNormal3);
-        return drawableBottom;
+    protected GradientDrawable createGradientDrawable() {
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setCornerRadius(getCornerRadius());
+        if (getCornerRadii() != null) {
+            drawable.setCornerRadii(getCornerRadii());
+        }
+        drawable.setStroke((int) strokeWidth, strokeColor);
+        return drawable;
     }
 
-    private Drawable createPressedDrawable() {
-        GradientDrawable drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(getCornerRadius());
-        setGradientDrawableColor(drawablePressed, colorPressedOrientation, colorPressed, colorPressed2, colorPressed3);
-        drawablePressed.setStroke((int) strokeWidth, strokeColor);
-        return drawablePressed;
+    protected Drawable createNormalDrawable() {
+        return setGradientDrawableColor(createGradientDrawable(), colorNormalOrientation, colorNormal, colorNormal2, colorNormal3);
     }
 
-    private Drawable createEnableDrawable() {
-        GradientDrawable drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(getCornerRadius());
-        setGradientDrawableColor(drawablePressed, colorEnableOrientation, colorEnable, colorEnable2, colorEnable3);
-        drawablePressed.setStroke((int) strokeWidth, strokeColorEnableIsSet ? strokeColorEnable : strokeColor);
-        return drawablePressed;
+    protected Drawable createPressedDrawable() {
+
+        return setGradientDrawableColor(createGradientDrawable(), colorPressedOrientation, colorPressed, colorPressed2, colorPressed3);
     }
 
-    private Drawable createFocusedDrawable() {
-        GradientDrawable drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(getCornerRadius());
-        setGradientDrawableColor(drawablePressed, colorFocusedOrientation, colorFocused, colorFocused2, colorFocused3);
-        drawablePressed.setStroke((int) strokeWidth, strokeColorFocusedIsSet ? strokeColorFocused : strokeColor);
-        return drawablePressed;
+    protected Drawable createEnableDrawable() {
+        return setGradientDrawableColor(createGradientDrawable(), colorEnableOrientation, colorEnable, colorEnable2, colorEnable3);
     }
 
-    private Drawable createSelectedDrawable() {
-        GradientDrawable drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(getCornerRadius());
-        setGradientDrawableColor(drawablePressed, colorSelectedOrientation, colorSelected, colorSelected2, colorSelected3);
-        drawablePressed.setStroke((int) strokeWidth, strokeColorSelectIsSet ? strokeColorSelect : strokeColor);
-        return drawablePressed;
+    protected Drawable createFocusedDrawable() {
+        return setGradientDrawableColor(createGradientDrawable(), colorFocusedOrientation, colorFocused, colorFocused2, colorFocused3);
     }
 
-    private Drawable createRippleDrawable() {
-        GradientDrawable drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(getCornerRadius());
-        drawablePressed.setColor(colorRipple);
-        drawablePressed.setStroke((int) strokeWidth, strokeColor);
-        return drawablePressed;
+    protected Drawable createSelectedDrawable() {
+        return setGradientDrawableColor(createGradientDrawable(), colorSelectedOrientation, colorSelected, colorSelected2, colorSelected3);
     }
 
-    private void setGradientDrawableColor(GradientDrawable drawable, int colorOrientation, int... color) {
+    protected Drawable createRippleDrawable() {
+        GradientDrawable drawable = createGradientDrawable();
+        drawable.setColor(colorRipple);
+        return drawable;
+    }
+
+    protected GradientDrawable setGradientDrawableColor(GradientDrawable drawable, int colorOrientation, int... color) {
         GradientDrawable.Orientation orientation = getGradientOrientation(colorOrientation);
         if (orientation != null) {
             drawable.setOrientation(orientation);
@@ -250,9 +250,10 @@ public class FlatButton extends AppCompatTextView {
         } else {
             drawable.setColor(color[0]);
         }
+        return drawable;
     }
 
-    private GradientDrawable.Orientation getGradientOrientation(int colorOrientation) {
+    protected GradientDrawable.Orientation getGradientOrientation(int colorOrientation) {
         switch (colorOrientation) {
             case 0:
                 return GradientDrawable.Orientation.TOP_BOTTOM;
@@ -287,20 +288,19 @@ public class FlatButton extends AppCompatTextView {
         return cornerRadius;
     }
 
+    public float[] getCornerRadii() {
+        return cornerRadii;
+    }
+
+
     public void setBackground() {
         if (!isUseBackground) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                setBackground(getStateListDrawable());
-            } else {
-                setBackgroundDrawable(getStateListDrawable());
-            }
+            setBackground(getStateListDrawable());
         }
     }
 
     /**
      * 背景  设置默认的颜色
-     *
-     * @param colorNormal
      */
     public void setColorNormal(@ColorRes int colorNormal) {
         if (colorNormal == 0) {
@@ -340,8 +340,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 背景   设置按下的颜色
-     *
-     * @param colorPressed
      */
     public void setColorPressed(@ColorRes int colorPressed) {
         if (colorPressed == 0) {
@@ -381,8 +379,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 背景，设置不可用的颜色
-     *
-     * @param colorEnable
      */
     public void setColorEnable(@ColorRes int colorEnable) {
         if (colorEnable == 0) {
@@ -422,8 +418,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置渐变方向
-     *
-     * @param colorOrientation
      */
     public void setColorNormalOrientation(int colorOrientation) {
         this.colorNormalOrientation = colorOrientation;
@@ -432,8 +426,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置渐变方向
-     *
-     * @param colorOrientation
      */
     public void setColorPressedOrientation(int colorOrientation) {
         this.colorPressedOrientation = colorOrientation;
@@ -442,8 +434,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置渐变方向
-     *
-     * @param colorOrientation
      */
     public void setColorEnableOrientation(int colorOrientation) {
         this.colorEnableOrientation = colorOrientation;
@@ -452,8 +442,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置水波纹颜色
-     *
-     * @param colorRipple
      */
     public void setColorRipple(@ColorRes int colorRipple) {
         if (colorRipple == 0) {
@@ -469,18 +457,31 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置圆角
-     *
-     * @param cornerRadius
      */
-    public void setCornerRadiusSize(int cornerRadius) {
+    public void setCornerRadius(int cornerRadius) {
         this.cornerRadius = cornerRadius;
+        cornerRadii = null;
         setBackground();
+    }
+
+    public void setCornerRadii(float[] cornerRadii) {
+        if (cornerRadii != null) {
+            if (cornerRadii.length == 8) {
+                this.cornerRadii = cornerRadii;
+                setBackground();
+            } else if (cornerRadii.length == 4) {
+                this.cornerRadii = new float[]{cornerRadii[0], cornerRadii[0],
+                        cornerRadii[1], cornerRadii[1],
+                        cornerRadii[2], cornerRadii[2],
+                        cornerRadii[3], cornerRadii[3]};
+                setBackground();
+            }
+        }
+
     }
 
     /**
      * 设置边框颜色
-     *
-     * @param strokeColor
      */
     public void setStrokeColor(@ColorRes int strokeColor) {
         setStrokeColorInt(getColor(strokeColor));
@@ -493,8 +494,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置边框大小
-     *
-     * @param strokeWidth
      */
     public void setStrokeWidthSize(int strokeWidth) {
         this.strokeWidth = strokeWidth;
@@ -503,8 +502,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 默认文字颜色
-     *
-     * @param textColor
      */
     @Override
     public void setTextColor(@ColorInt int textColor) {
@@ -514,8 +511,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置文字按下的颜色
-     *
-     * @param textColorPressed
      */
     public void setTextColorPressed(@ColorRes int textColorPressed) {
         if (textColorPressed == 0) {
@@ -526,8 +521,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置文字按下的颜色
-     *
-     * @param textColorPressed
      */
     public void setTextColorPressedInt(int textColorPressed) {
         this.textColorPressed = textColorPressed;
@@ -538,8 +531,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置按钮不可用 时候  文字颜色
-     *
-     * @param textColorEnable
      */
     public void setTextColorEnable(@ColorRes int textColorEnable) {
         if (textColorEnable == 0) {
@@ -557,8 +548,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * textColor是否使用ColorStatusList
-     *
-     * @param useTextColorList
      */
     public void setUseTextColorList(boolean useTextColorList) {
         isUseTextColorList = useTextColorList;
@@ -569,8 +558,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 设置是否使用外部设置的background
-     *
-     * @param useBackground
      */
     public void setUseBackground(boolean useBackground) {
         isUseBackground = useBackground;
@@ -579,8 +566,6 @@ public class FlatButton extends AppCompatTextView {
 
     /**
      * 点击延迟
-     *
-     * @param clickDelay
      */
     public void setClickDelay(int clickDelay) {
         this.clickDelay = clickDelay;

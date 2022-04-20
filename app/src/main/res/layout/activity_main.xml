@@ -17,7 +17,7 @@
 
     </com.ashlikun.supertoobar.SuperToolBar>
 
-    <com.ashlikun.flatbutton.FlatButton xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.ashlikun.flatbutton.FlatButton
         android:id="@+id/actionButton"
         android:layout_width="100dp"
         android:layout_height="32dp"
@@ -28,6 +28,8 @@
         android:textColor="#000000"
         android:textSize="14dp"
         app:colorNormal="#ffffffff"
+        app:cornerRadiiLeftBottom="4dp"
+        app:cornerRadiiLeftTop="8dp"
         app:colorPressed="#ffffffff"
         app:colorRipple="#ff999999"
         app:cornerRadius="20dp"
@@ -77,9 +79,9 @@
 
     <com.ashlikun.segmentcontrol.SegmentControl
         android:id="@+id/segmentControl"
-        android:layout_below="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></com.ashlikun.segmentcontrol.SegmentControl>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"></com.ashlikun.segmentcontrol.SegmentControl>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"

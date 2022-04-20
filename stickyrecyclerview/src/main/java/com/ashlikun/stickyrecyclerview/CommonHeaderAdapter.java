@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -40,10 +41,14 @@ public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<Com
 
     @Override
     public boolean isHeader(int position) {
-        return isHeader(position, getItemData(position));
+        T t = getItemData(position);
+        if (t != null) {
+            return isHeader(position, getItemData(position));
+        }
+        return false;
     }
 
-    public abstract boolean isHeader(int position, T data);
+    public abstract boolean isHeader(int position, @NonNull T data);
 
     public T getItemData(int position) {
         if (mDatas == null) {
@@ -64,10 +69,13 @@ public abstract class CommonHeaderAdapter<T> implements StickyHeadersAdapter<Com
     @Override
     public void onBindViewHolder(StickyViewHolder headerViewHolder, int position) {
         headerViewHolder.updatePosition(position);
-        convert(headerViewHolder, getItemData(position));
+        T t = getItemData(position);
+        if (t != null) {
+            convert(headerViewHolder, getItemData(position));
+        }
     }
 
-    public abstract void convert(StickyViewHolder holder, T t);
+    public abstract void convert(StickyViewHolder holder, @NonNull T t);
 
 
     public static class StickyViewHolder extends RecyclerView.ViewHolder {

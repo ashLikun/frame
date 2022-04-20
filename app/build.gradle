@@ -1,11 +1,6 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'kotlin-android'
 android {
-    packagingOptions {
-        pickFirst 'META-INF/foo.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
@@ -24,26 +19,23 @@ android {
             }
         }
     }
-    dataBinding {
-        enabled true
+    buildFeatures {
+        viewBinding = true
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-/**
- * aar文件的编译
- */
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-        maven {
-            url "https://jitpack.io"
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -53,6 +45,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation rootProject.ext.designVersion
+    implementation "androidx.core:core:1.6.+"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     api 'jp.wasabeef:glide-transformations:3.2.0'
     annotationProcessor 'androidx.annotation:annotation:' + rootProject.ext.superVersion
@@ -62,7 +56,7 @@ dependencies {
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.4.3'
     implementation 'com.github.ashLikun:XRecycleView:1.0.1'
-    implementation 'com.github.ashLikun.CommonAdapter:adapter:2.0.1'
+    api 'com.github.ashLikun:CommonAdapter:4.4.0'
     implementation project(':stickyrecyclerview')
     implementation project(':flatbutton')
     implementation project(':numberprogressbar')
