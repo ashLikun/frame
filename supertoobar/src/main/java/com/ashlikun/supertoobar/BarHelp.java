@@ -1,7 +1,9 @@
 package com.ashlikun.supertoobar;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -9,12 +11,13 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
-import androidx.annotation.ColorInt;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 
 /**
  * 作者　　: 李坤
@@ -120,5 +123,46 @@ class BarHelp {
         int g = Color.green(color);
         int b = Color.blue(color);
         return r * 0.299 + g * 0.578 + b * 0.114 <= 192;
+    }
+
+    /**
+     * 获得状态栏的高度
+     *
+     * @return
+     */
+    public static int getStatusHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    /**
+     * 获取Bar默认大小
+     */
+    public static int getActionBarSize(Context context) {
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
+                new int[]{android.R.attr.actionBarSize});
+        int barHeight = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+        return barHeight;
+    }
+
+    /**
+     * 获取Bar默认大小
+     */
+    public static int getActionBarSizeOrDefault(Context context) {
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
+                new int[]{android.R.attr.actionBarSize});
+        int barHeight = (int) styledAttributes.getDimension(0, context.getResources().getDimensionPixelSize(R.dimen.stb_default_height));
+        styledAttributes.recycle();
+        return barHeight;
     }
 }

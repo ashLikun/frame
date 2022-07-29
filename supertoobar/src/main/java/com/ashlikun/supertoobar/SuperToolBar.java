@@ -38,8 +38,6 @@ public class SuperToolBar extends FrameLayout {
 
     public static final String ACTION_LAYOUT = "ACTION_LAYOUT";
     public static final int CLICK_COLOR = 0x88aaaaaa;
-    //默认的高度 45dp
-    public static final int DEFAULT_HEIGHT = 45;
     /**
      * 是否设置了状态栏透明
      */
@@ -77,12 +75,14 @@ public class SuperToolBar extends FrameLayout {
     //返回键是否是正方形
     protected boolean backImgSquare = false;
     protected boolean isSetBackImgColor = false;
-    protected int bottonLineHeight = dip2px(0.5f);
-    protected int actionPadding = dip2px(8f);
+    protected int bottonLineHeight = BarHelp.dip2px(getContext(), 0.5f);
+    protected int actionPadding = BarHelp.dip2px(getContext(), 8f);
     /**
      * 返回键的内间距
      */
-    protected int backPadding = dip2px(12f);
+    protected int backPadding = BarHelp.dip2px(getContext(), 12f);
+
+    protected int barHeight = 0;
 
     /**
      * action的宽高,一般只用于图片
@@ -105,14 +105,60 @@ public class SuperToolBar extends FrameLayout {
         initView(context, attrs);
     }
 
+    private void initView(Context context, AttributeSet attrs) {
+        barHeight = BarHelp.getActionBarSizeOrDefault(context);
+
+        if (getBackground() == null) {
+            //默认colorPrimary颜色
+//            TypedValue typedValue = new TypedValue();
+//            context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            setBackgroundColor(getResources().getColor(R.color.supertoolbar_backgroung_color));
+        }
+        TypedArray a = context.obtainStyledAttributes(
+                attrs,
+                R.styleable.SuperToolBar);
+        titleColor = a.getColor(R.styleable.SuperToolBar_stb_titleColor, titleColor);
+        titleSize = a.getDimension(R.styleable.SuperToolBar_stb_titleSize, BarHelp.dip2px(getContext(), titleSize));
+        title = a.getString(R.styleable.SuperToolBar_stb_title);
+        if (a.hasValue(R.styleable.SuperToolBar_stb_backImgColor)) {
+            isSetBackImgColor = true;
+        }
+        backImgSquare = a.getBoolean(R.styleable.SuperToolBar_stb_backImgSquare, backImgSquare);
+        backPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_backImgPadding, backPadding);
+        backImgColor = a.getColor(R.styleable.SuperToolBar_stb_backImgColor, backImgColor);
+        bottonLineColor = a.getColor(R.styleable.SuperToolBar_stb_bottonLineColor, bottonLineColor);
+        notificationBagColor = a.getColor(R.styleable.SuperToolBar_stb_notificationBagColor, notificationBagColor);
+        notificationTextColor = a.getColor(R.styleable.SuperToolBar_stb_notificationTextColor, notificationTextColor);
+        bottonLineHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_bottonLineHeight, bottonLineHeight);
+        backImage = a.getResourceId(R.styleable.SuperToolBar_stb_backImg, backImage);
+        actionTextColor = a.getColor(R.styleable.SuperToolBar_stb_actionTextColor, actionTextColor);
+        actionPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionPadding, actionPadding);
+        actionWidth = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionWidth, actionWidth);
+        actionHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionHeight, actionHeight);
+        notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
+        androidMTranslucentStatusBar = a.getColor(R.styleable.SuperToolBar_stb_androidMTranslucentStatusBarColor, androidMTranslucentStatusBar);
+        a.recycle();
+
+        linePaint = new Paint();
+        linePaint.setAntiAlias(true);
+        linePaint.setStyle(Paint.Style.FILL);
+
+        setBottonLine(bottonLineHeight);
+        //这3个布局都是Fragment
+        addMainLayout();
+        initLeftLayout();
+        initCenterLayout();
+        initRightLayout();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int barHeight = dip2px(DEFAULT_HEIGHT);
+        int barContentHeight = barHeight;
 
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY) {
-            barHeight = MeasureSpec.getSize(heightMeasureSpec);
+            barContentHeight = MeasureSpec.getSize(heightMeasureSpec);
         }
-        int height = barHeight + (setTranslucentStatusBarPaddingTop ? getStatusHeight() : 0);
+        int height = barContentHeight + (setTranslucentStatusBarPaddingTop ? BarHelp.getStatusHeight(getContext()) : 0);
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final MarginLayoutParams leftLp = (MarginLayoutParams) leftLayout.getLayoutParams();
@@ -157,19 +203,6 @@ public class SuperToolBar extends FrameLayout {
         }
     }
 
-    /**
-     * 获得状态栏的高度
-     *
-     * @return
-     */
-    public int getStatusHeight() {
-        int result = 0;
-        int resourceId = getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getContext().getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -186,55 +219,6 @@ public class SuperToolBar extends FrameLayout {
         }
     }
 
-    private int dip2px(float dipValue) {
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
-
-    private void initView(Context context, AttributeSet attrs) {
-
-        if (getBackground() == null) {
-            //默认colorPrimary颜色
-//            TypedValue typedValue = new TypedValue();
-//            context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-            setBackgroundColor(getResources().getColor(R.color.supertoolbar_backgroung_color));
-        }
-        TypedArray a = context.obtainStyledAttributes(
-                attrs,
-                R.styleable.SuperToolBar);
-        titleColor = a.getColor(R.styleable.SuperToolBar_stb_titleColor, titleColor);
-        titleSize = a.getDimension(R.styleable.SuperToolBar_stb_titleSize, dip2px(titleSize));
-        title = a.getString(R.styleable.SuperToolBar_stb_title);
-        if (a.hasValue(R.styleable.SuperToolBar_stb_backImgColor)) {
-            isSetBackImgColor = true;
-        }
-        backImgSquare = a.getBoolean(R.styleable.SuperToolBar_stb_backImgSquare, backImgSquare);
-        backPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_backImgPadding, backPadding);
-        backImgColor = a.getColor(R.styleable.SuperToolBar_stb_backImgColor, backImgColor);
-        bottonLineColor = a.getColor(R.styleable.SuperToolBar_stb_bottonLineColor, bottonLineColor);
-        notificationBagColor = a.getColor(R.styleable.SuperToolBar_stb_notificationBagColor, notificationBagColor);
-        notificationTextColor = a.getColor(R.styleable.SuperToolBar_stb_notificationTextColor, notificationTextColor);
-        bottonLineHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_bottonLineHeight, bottonLineHeight);
-        backImage = a.getResourceId(R.styleable.SuperToolBar_stb_backImg, backImage);
-        actionTextColor = a.getColor(R.styleable.SuperToolBar_stb_actionTextColor, actionTextColor);
-        actionPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionPadding, actionPadding);
-        actionWidth = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionWidth, actionWidth);
-        actionHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionHeight, actionHeight);
-        notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
-        androidMTranslucentStatusBar = a.getColor(R.styleable.SuperToolBar_stb_androidMTranslucentStatusBarColor, androidMTranslucentStatusBar);
-        a.recycle();
-
-        linePaint = new Paint();
-        linePaint.setAntiAlias(true);
-        linePaint.setStyle(Paint.Style.FILL);
-
-        setBottonLine(bottonLineHeight);
-        //这3个布局都是Fragment
-        addMainLayout();
-        initLeftLayout();
-        initCenterLayout();
-        initRightLayout();
-    }
 
     /**
      * 初始化左边layout
@@ -312,7 +296,7 @@ public class SuperToolBar extends FrameLayout {
             actionLayout = new LinearLayout(getContext());
             actionLayout.setOrientation(LinearLayout.HORIZONTAL);
             actionLayout.setTag(ACTION_LAYOUT);
-            rightLayout.setPadding(0, 0, dip2px(5), 0);
+            rightLayout.setPadding(0, 0, BarHelp.dip2px(getContext(), 5), 0);
             rightLayout.addView(actionLayout, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
         }
         return actionLayout;
@@ -585,7 +569,7 @@ public class SuperToolBar extends FrameLayout {
     public SuperToolBar setTranslucentStatusBarPaddingTop(boolean isNeedAndroidMHalf) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTranslucentStatusBarPaddingTop = true;
-            statusHeight = getStatusHeight();
+            statusHeight = BarHelp.getStatusHeight(getContext());
             setPadding(getPaddingLeft(), statusHeight, getPaddingRight(), getPaddingBottom());
             if (isNeedAndroidMHalf) {
                 androidMTranslucentStatusBar = 0x00000000;
@@ -619,6 +603,15 @@ public class SuperToolBar extends FrameLayout {
 
     public ImageAction createImageAction(@DrawableRes int drawableId) {
         return new ImageAction(this, drawableId);
+    }
+
+    public int getBarHeight() {
+        return barHeight;
+    }
+
+    public void setBarHeight(int barHeight) {
+        this.barHeight = barHeight;
+        invalidate();
     }
 
     /********************************************************************************************
