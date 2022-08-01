@@ -1,9 +1,10 @@
 package com.ashlikun.supertoobar;
 
 import android.content.Context;
+import android.util.AttributeSet;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
-import android.util.AttributeSet;
 
 /**
  * 作者　　: 李坤
@@ -12,7 +13,7 @@ import android.util.AttributeSet;
  * <p>
  * 功能介绍：返回键，正方形
  */
-class BackImageView extends AppCompatImageView {
+public class BackImageView extends AppCompatImageView {
     //返回键是否是正方形
     protected boolean backImgSquare = false;
 

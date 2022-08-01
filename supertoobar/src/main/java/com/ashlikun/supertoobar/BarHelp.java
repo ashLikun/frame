@@ -26,7 +26,7 @@ import androidx.core.view.ViewCompat;
  * <p>
  * 功能介绍：设置前景色效果的兼容
  */
-class BarHelp {
+public class BarHelp {
 
     /**
      * 作者　　: 李坤
