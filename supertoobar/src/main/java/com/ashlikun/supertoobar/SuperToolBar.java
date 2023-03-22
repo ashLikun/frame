@@ -89,6 +89,10 @@ public class SuperToolBar extends FrameLayout {
      */
     protected int actionWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
     protected int actionHeight = ViewGroup.LayoutParams.MATCH_PARENT;
+    /**
+     * 防止暴力点击
+     */
+    protected int clickDelay = 500;
 
     private Action.OnActionClick onActionClickListener;
 
@@ -114,9 +118,7 @@ public class SuperToolBar extends FrameLayout {
 //            context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
             setBackgroundColor(getResources().getColor(R.color.supertoolbar_backgroung_color));
         }
-        TypedArray a = context.obtainStyledAttributes(
-                attrs,
-                R.styleable.SuperToolBar);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SuperToolBar);
         titleColor = a.getColor(R.styleable.SuperToolBar_stb_titleColor, titleColor);
         titleSize = a.getDimension(R.styleable.SuperToolBar_stb_titleSize, BarHelp.dip2px(getContext(), titleSize));
         title = a.getString(R.styleable.SuperToolBar_stb_title);
@@ -135,6 +137,7 @@ public class SuperToolBar extends FrameLayout {
         actionPadding = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionPadding, actionPadding);
         actionWidth = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionWidth, actionWidth);
         actionHeight = (int) a.getDimension(R.styleable.SuperToolBar_stb_actionHeight, actionHeight);
+        clickDelay = (int) a.getInt(R.styleable.SuperToolBar_stb_clickDelay, clickDelay);
         notificationStrokeColor = a.getColor(R.styleable.SuperToolBar_stb_notificationStrokeColor, notificationStrokeColor);
         androidMTranslucentStatusBar = a.getColor(R.styleable.SuperToolBar_stb_androidMTranslucentStatusBarColor, androidMTranslucentStatusBar);
         a.recycle();
@@ -164,14 +167,10 @@ public class SuperToolBar extends FrameLayout {
         final MarginLayoutParams leftLp = (MarginLayoutParams) leftLayout.getLayoutParams();
         final MarginLayoutParams rightLp = (MarginLayoutParams) rightLayout.getLayoutParams();
         final MarginLayoutParams centerLp = (MarginLayoutParams) centerLayout.getLayoutParams();
-        int leftRightSize = leftLayout.getMeasuredWidth() + leftLp.leftMargin + leftLp.rightMargin
-                + rightLayout.getMeasuredWidth() + rightLp.leftMargin + rightLp.rightMargin
-                + getPaddingLeft() + getPaddingRight()
-                + centerLp.leftMargin - centerLp.rightMargin;
+        int leftRightSize = leftLayout.getMeasuredWidth() + leftLp.leftMargin + leftLp.rightMargin + rightLayout.getMeasuredWidth() + rightLp.leftMargin + rightLp.rightMargin + getPaddingLeft() + getPaddingRight() + centerLp.leftMargin - centerLp.rightMargin;
         //如果中间layout放不下,就强制设置成最大值
         if (centerLayout.getMeasuredWidth() >= getMeasuredWidth() - leftRightSize) {
-            centerLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - leftRightSize, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(centerLayout.getMeasuredHeight(), MeasureSpec.EXACTLY));
+            centerLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - leftRightSize, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(centerLayout.getMeasuredHeight(), MeasureSpec.EXACTLY));
         }
     }
 
@@ -183,9 +182,7 @@ public class SuperToolBar extends FrameLayout {
         final MarginLayoutParams centerLp = (MarginLayoutParams) centerLayout.getLayoutParams();
         int leftSize = leftLayout.getMeasuredWidth() + leftLp.leftMargin + leftLp.rightMargin;
         int rightSize = rightLayout.getMeasuredWidth() + rightLp.leftMargin + rightLp.rightMargin;
-        int leftRightSize = Math.max(leftSize, rightSize) * 2
-                + getPaddingLeft() + getPaddingRight()
-                + centerLp.leftMargin - centerLp.rightMargin;
+        int leftRightSize = Math.max(leftSize, rightSize) * 2 + getPaddingLeft() + getPaddingRight() + centerLp.leftMargin - centerLp.rightMargin;
         //如果中间layout放不下,就强制设置成最大值
         if (centerLayout.getMeasuredWidth() >= getMeasuredWidth() - leftRightSize) {
             int newLeft = 0;
@@ -360,8 +357,7 @@ public class SuperToolBar extends FrameLayout {
     public void setBack(final Activity activity) {
         if (backButton == null) {
             backButton = new BackImageView(getContext());
-            backButton.setPadding(backPadding, 0,
-                    backPadding, 0);
+            backButton.setPadding(backPadding, 0, backPadding, 0);
             backButton.backImgSquare = backImgSquare;
             FrameLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
             params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
@@ -481,8 +477,7 @@ public class SuperToolBar extends FrameLayout {
             }
         });
         if (action.getActionView().getLayoutParams() == null) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             action.getActionView().setLayoutParams(params);
         }
 

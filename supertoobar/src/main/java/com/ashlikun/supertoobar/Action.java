@@ -63,6 +63,7 @@ public abstract class Action {
         actionPadding = toolBar.actionPadding;
         width = toolBar.actionWidth;
         height = toolBar.actionHeight;
+        delayMillis = toolBar.clickDelay;
         notificationSize = dip2px(14);
 
         actionView = new FrameLayout(getContext());

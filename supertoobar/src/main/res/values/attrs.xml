@@ -20,5 +20,7 @@
         <attr name="stb_actionPadding" format="dimension" />
         <attr name="stb_actionWidth" format="dimension" />
         <attr name="stb_actionHeight" format="dimension" />
+        <!--防止暴力点击-->
+        <attr name="stb_clickDelay" format="integer" />
     </declare-styleable>
 </resources>
